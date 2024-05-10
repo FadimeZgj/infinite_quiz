@@ -34,7 +34,13 @@
             height: 48px;
         }
 
-        .login-btn {
+        .errors-msg{
+            margin: auto;
+            font-size: medium;
+            color: #9d2e33;
+        }
+
+        .signup-btn {
             width: 314px;
             height: 48px;
             border-radius: 50px;
@@ -44,10 +50,15 @@
 
         }
 
-        a{
-            color: #261447;
-            font-size: 20px;
+        .cancel-btn {
+            width: 314px;
+            height: 48px;
+            border-radius: 50px;
+            border: 2px solid #F4D06F;
+            margin: 2% 0 2% 0;
+
         }
+
 
     }
 }
