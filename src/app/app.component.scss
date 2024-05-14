@@ -1,4 +1,15 @@
-.register-login{
-    background-color: #8906E6;
+$purple : #8906E6;
+$yellow : #F4D06F;
+$confirmation : #59CE93;
+$warning : #DF5F5F;
+$nav-font-color:#261447;
+
+@mixin button-style($border,$background-color,$font-color){
+    width: 314px;
+    height: 48px;
+    border-radius: 50px;
+    border: $border;
+    background-color: $background-color;
+    color: $font-color;
 }
 

@@ -1,3 +1,5 @@
+@import "../app.component.scss";
+
 .div-form {
     background-color: #8906E6;
     display: flex;
@@ -35,11 +37,7 @@
         }
 
         .login-btn {
-            width: 314px;
-            height: 48px;
-            border-radius: 50px;
-            border: none;
-            background-color: #F4D06F;
+            @include button-style(none,$yellow,$nav-font-color);
             margin: 2% 0 2% 0;
 
         }
