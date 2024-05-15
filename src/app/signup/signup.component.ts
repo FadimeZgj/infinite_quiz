@@ -13,6 +13,7 @@ export class SignupComponent {
   noMatch : boolean = false
 
   signUpForm = new FormGroup({
+    firstname: new FormControl('', [Validators.required, ]),
     email: new FormControl('',[Validators.required, Validators.email]),
     pw:  new FormControl('', [Validators.required, Validators.pattern(/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{12,}$/)]),
     cpw: new FormControl('', [Validators.required, ]),
