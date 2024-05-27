@@ -1,0 +1,27 @@
+<app-navbar [title]="quizlists_title"></app-navbar>
+
+<div class="container">
+    <form class="d-flex w-50 mt-5" role="search">
+
+        <div class="input-group me-2">
+        <span class="input-group-text"><i class="bi bi-search"></i></span>
+        <input class="form-control" type="search" placeholder="Rédiger ici votre recherche" aria-label="Rédiger ici votre recherche">
+        </div>
+        <button class="btn btn-sm btn-outline-secondary" type="submit">recherche</button>       
+      </form>
+
+
+      <div class="card-list">
+        <div>
+            <p class="quiz-number">N° du quiz : </p>
+            <p class="quiz-title">Titre du quiz</p>
+            <p class="creation-date">Date de création quiz</p>
+            <p class="quiz-type">si en équipe ou solo</p>
+        </div>
+        <div class="icons-card-list">
+          <a href="http://" class="icons details"><i class="bi bi-eye fs-2"></i><span>Voir le détail</span></a>
+          <a href="http://" class=" icons play"> <i class="bi bi-play-circle fs-2"></i> <span>Jouer</span></a>
+        </div>
+      </div>
+</div>
+
