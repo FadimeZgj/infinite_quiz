@@ -1,0 +1,22 @@
+@import "../quizlists/quizlists.component.scss";
+// @import "../app.component.scss";
+
+.add-quesstion-btn{
+    @include button-style(none,$yellow,$nav-font-color);
+    text-decoration: none;
+}
+
+.delete-quiz-btn{
+    @include button-style(2px solid $purple, white, $purple);
+    text-decoration: none;
+}
+
+.delete-question{
+    color: $purple;
+}
+
+.question{
+    font-size: 20px;
+    font-weight: bold;
+    color: $purple
+}
