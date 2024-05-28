@@ -2,36 +2,22 @@
 
 header{
 
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-
     background-color: $purple;
     color: white;
     font-size: 32px;
 
-    h1{
-        width: 100%;
-        text-align: center;
-    }
     button {
         color: white;
     }
 }
 
 nav {
-    
-    height: 100vh;
-    
+        
     background-color: $nav-font-color;
     color: white;
 
-    img{
-        margin: 5% auto 5% auto;
-    }
 
     .butn-profil{
-        margin: 0 auto 5% auto;
         background-color: $yellow;
         color: $nav-font-color;
         font-size: 20px;
@@ -42,10 +28,6 @@ nav {
         padding: 2%;
         font-weight: bold;
         
-        display: flex;
-        flex-direction: row;
-        justify-content: space-around;
-        align-items: center;
         
     }
     
@@ -62,7 +44,6 @@ nav {
                 }
             }
             
-            margin: 7%;
         }
     }
 }

@@ -1,13 +1,13 @@
 <app-navbar [title]="questionlists_title"></app-navbar>
 
 <div class="container">
-<div class="d-flex flex-row justify-content-between flex-wrap">
-    <a class="add-quesstion-btn text-center p-2 mt-5" href=""> <i class="bi bi-plus-lg"></i> Ajouter une question</a>
-    <a class="delete-quiz-btn text-center p-2 mt-5" href="">Supprimer le quiz</a>
+<div class="d-flex flex-column flex-md-row justify-content-between align-items-center">
+    <a class="add-quesstion-btn text-center p-2 my-4" href=""> <i class="bi bi-plus-lg"></i> Ajouter une question</a>
+    <a class="delete-quiz-btn text-center p-2 my-4" href="">Supprimer le quiz</a>
 </div>
 
 
-      <div class="card-list">
+      <div class="card-list d-flex flex-lg-row flex-column justify-content-between align-items-center">
         <h2 class="question">la question ?</h2>
         <div class="icons-card-list">
           <a href="http://" class="icons details"><i class="bi bi-eye fs-2"></i><span>Voir le détail</span></a>
