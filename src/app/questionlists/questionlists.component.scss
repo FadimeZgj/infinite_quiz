@@ -2,13 +2,14 @@
 // @import "../app.component.scss";
 
 .add-quesstion-btn{
-    @include button-style(none,$yellow,$nav-font-color);
+    @include button-style($yellow,$yellow,$nav-font-color,false);
     text-decoration: none;
 }
 
 .delete-quiz-btn{
-    @include button-style(2px solid $purple, white, $purple);
+    @include button-style($purple, white, $purple,true);
     text-decoration: none;
+
 }
 
 .delete-question{

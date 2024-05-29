@@ -1,49 +1,38 @@
 @import "../app.component.scss";
 
 .div-form {
-    background-color: #8906E6;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    background-color: $purple;
     height: 100vh;
 
     form {
-        margin: auto;
-        height: auto;
 
         display: flex;
         flex-direction: column;
         align-items: center;
 
-        padding: 2%;
         border-radius: 30px;
         background-color: white ;
-        box-shadow: 1px 1px 40px 16px #F3E3FF;
+        box-shadow: $shadow;
         width: 360px;
 
 
 
         label {
-            color: #8906E6;
+            color: $purple;
             margin-top: 8%;
         }
 
         input {
-            background-color: #E2E2E6;
-            border-radius: 50px;
-            border: none;
-            width: 314px;
-            height: 48px;
+          @include input-style(314px);
         }
 
         .login-btn {
-            @include button-style(none,$yellow,$nav-font-color);
-            margin: 2% 0 2% 0;
+            @include button-style($yellow,$yellow,$nav-font-color,false);
 
         }
 
         a{
-            color: #261447;
+            color: $nav-font-color;
             font-size: 20px;
         }
 

@@ -4,14 +4,43 @@ $confirmation : #59CE93;
 $warning : #DF5F5F;
 $nav-font-color:#261447;
 $grey : #F1F1F3;
+$input-background:#E2E2E6;
+$shadow : 1px 1px 40px 16px #F3E3FF;
 
 
-@mixin button-style($border,$background-color,$font-color){
+@mixin button-style($border,$background-color,$font-color, $light){
     width: 314px;
     height: 48px;
     border-radius: 50px;
-    border: $border;
     background-color: $background-color;
     color: $font-color;
+    border: 2px solid $border;
+
+
+    @if $light{
+
+        &:hover{
+            background: linear-gradient($border,$border),linear-gradient($grey,$grey);
+            background-blend-mode: overlay;
+    
+        }
+    
+    }@else{
+        &:hover{
+            background: linear-gradient($border,$border),linear-gradient($grey,$grey);
+            background-blend-mode: multiply;
+    
+        }
+    
+    }
+    
+
 }
 
+@mixin input-style($widht){
+    background-color: $input-background;
+    border-radius: 50px;
+    border: none;
+    height: 48px;
+    width: $widht;
+}

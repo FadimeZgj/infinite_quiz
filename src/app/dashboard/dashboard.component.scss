@@ -15,7 +15,7 @@
         background-color: $yellow;
         .dashboard-btn{
             text-decoration: none;
-            @include button-style(none,$purple,white);
+            @include button-style($purple,$purple,white,false);
             width: 160px;
             align-content: center;
             text-align: center;
