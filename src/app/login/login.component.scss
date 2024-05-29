@@ -10,11 +10,8 @@
         flex-direction: column;
         align-items: center;
 
-        border-radius: 30px;
-        background-color: white ;
+        @include card-style(360px, auto, white,white, 30px);
         box-shadow: $shadow;
-        width: 360px;
-
 
 
         label {

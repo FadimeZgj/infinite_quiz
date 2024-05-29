@@ -44,3 +44,11 @@ $shadow : 1px 1px 40px 16px #F3E3FF;
     height: 48px;
     width: $widht;
 }
+
+@mixin card-style($width, $height,$background-color, $border, $radius){
+    width: $width;
+    height: $height;
+    background-color: $background-color;
+    border: 2px solid $border;
+    border-radius: $radius;
+}

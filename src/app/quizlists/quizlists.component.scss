@@ -2,8 +2,7 @@
 
 .card-list{
 
-    background-color: $grey;
-    border-radius: 18px;
+    @include card-style(auto, auto, $grey, $grey, 18px);
     padding: 2%;
     margin: 1% 0 1% 0;
 
