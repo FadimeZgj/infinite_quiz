@@ -6,6 +6,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { QuizlistsComponent } from './quizlists/quizlists.component';
 import { QuestionlistsComponent } from './questionlists/questionlists.component';
 import { AddQuizComponent } from './add-quiz/add-quiz.component';
+import { AddquestionComponent } from './addquestion/addquestion.component';
 
 export const routes: Routes = [
     {path: 'login', component: LoginComponent},
@@ -14,6 +15,7 @@ export const routes: Routes = [
     {path: 'quizlists', component: QuizlistsComponent},
     {path: 'questionlist', component: QuestionlistsComponent},
     {path: 'addquiz', component: AddQuizComponent},
+    {path: 'addquestion', component: AddquestionComponent},
     {path: 'nav', component: NavbarComponent},
 
 

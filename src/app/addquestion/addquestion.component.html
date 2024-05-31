@@ -1,0 +1,57 @@
+<app-navbar [title]="addQuestion_title"></app-navbar>
+
+<form>
+    <div class="card-question p-3 p-sm-5 m-4">
+    <div class="mb-3">
+        <label for="TextInput0" class="form-label">Entrez votre question</label>
+        <input type="text" id="TextInput0" class="form-control">
+    </div>
+
+    <table class="table">
+
+          <tr>
+            <th><label for="TextInput1" class="form-label">Proposition 1</label></th>
+            <th><label for="checkInput" class="form-label ps-5">Bonne(s) réponse(s)</label></th>
+          </tr>
+          <tr>
+            <td class="w-75"><input type="text" id="TextInput1" class="form-control"></td>
+            <td class="ps-5"><input  type="checkbox" class="form-check-input" id="checkInput"></td>
+          </tr>
+
+          <tr>
+            <th><label for="TextInput2" class="form-label">Proposition 2</label></th>
+          </tr>
+          <tr>
+            <td class="w-75"><input type="text" id="TextInput2" class="form-control"></td>
+            <td class="ps-5"><input  type="checkbox" class="form-check-input" ></td>
+          </tr>
+
+          <tr>
+            <th><label for="TextInput3" class="form-label">Proposition 3</label></th>
+          </tr>
+          <tr>
+            <td class="w-75"><input type="text" id="TextInput3" class="form-control"></td>
+            <td class="ps-5"><input  type="checkbox" class="form-check-input" ></td>
+          </tr>
+
+          <tr>
+            <th><label for="TextInput4" class="form-label">Proposition 4</label></th>
+          </tr>
+          <tr>
+            <td class="w-75"><input type="text" id="TextInput4" class="form-control"></td>
+            <td class="ps-5"><input  type="checkbox" class="form-check-input" ></td>
+          </tr>
+      </table>
+
+    </div>
+
+
+
+    <div class="d-flex flex-row justify-content-evenly flex-wrap">
+        <button type="submit" class="register-btn mt-4">Enregistrer</button>
+        <button type="reset" class="cancel-btn mt-4">Annuler</button>
+    </div>
+
+
+
+</form>
