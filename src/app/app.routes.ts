@@ -7,6 +7,7 @@ import { QuizlistsComponent } from './quizlists/quizlists.component';
 import { QuestionlistsComponent } from './questionlists/questionlists.component';
 import { AddQuizComponent } from './add-quiz/add-quiz.component';
 import { AddquestionComponent } from './addquestion/addquestion.component';
+import { StartGameComponent } from './start-game/start-game.component';
 
 export const routes: Routes = [
     {path: 'login', component: LoginComponent},
@@ -16,6 +17,7 @@ export const routes: Routes = [
     {path: 'questionlist', component: QuestionlistsComponent},
     {path: 'addquiz', component: AddQuizComponent},
     {path: 'addquestion', component: AddquestionComponent},
+    {path: 'startgame', component: StartGameComponent},
     {path: 'nav', component: NavbarComponent},
 
 
