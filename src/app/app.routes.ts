@@ -10,6 +10,7 @@ import { AddquestionComponent } from './addquestion/addquestion.component';
 import { StartGameComponent } from './start-game/start-game.component';
 import { InvitePlayersComponent } from './invite-players/invite-players.component';
 import { WaitingRoomComponent } from './waiting-room/waiting-room.component';
+import { EnterGameComponent } from './enter-game/enter-game.component';
 
 export const routes: Routes = [
     {path: 'login', component: LoginComponent},
@@ -22,6 +23,7 @@ export const routes: Routes = [
     {path: 'startgame', component: StartGameComponent},
     {path: 'inviteplayers', component: InvitePlayersComponent},
     {path: 'waitingroom', component: WaitingRoomComponent},
+    {path: 'entergame', component: EnterGameComponent},
     {path: 'nav', component: NavbarComponent},
 
 
