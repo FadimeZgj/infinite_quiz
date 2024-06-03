@@ -11,6 +11,7 @@ import { StartGameComponent } from './start-game/start-game.component';
 import { InvitePlayersComponent } from './invite-players/invite-players.component';
 import { WaitingRoomComponent } from './waiting-room/waiting-room.component';
 import { EnterGameComponent } from './enter-game/enter-game.component';
+import { GameComponent } from './game/game.component';
 
 export const routes: Routes = [
     {path: 'login', component: LoginComponent},
@@ -24,6 +25,7 @@ export const routes: Routes = [
     {path: 'inviteplayers', component: InvitePlayersComponent},
     {path: 'waitingroom', component: WaitingRoomComponent},
     {path: 'entergame', component: EnterGameComponent},
+    {path: 'game', component: GameComponent},
     {path: 'nav', component: NavbarComponent},
 
 
