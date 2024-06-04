@@ -15,6 +15,7 @@ import { GameComponent } from './game/game.component';
 import { ScoreComponent } from './score/score.component';
 import { RankingComponent } from './ranking/ranking.component';
 import { StatisticsComponent } from './statistics/statistics.component';
+import { SettingComponent } from './setting/setting.component';
 
 export const routes: Routes = [
     {path: 'login', component: LoginComponent},
@@ -32,6 +33,7 @@ export const routes: Routes = [
     {path: 'score', component: ScoreComponent},
     {path: 'rank', component: RankingComponent},
     {path: 'statistics', component: StatisticsComponent},
+    {path: 'setting', component: SettingComponent},
     {path: 'nav', component: NavbarComponent},
 
 
