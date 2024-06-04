@@ -1,0 +1,32 @@
+<app-navbar [title]="statistics_title"></app-navbar>
+
+<div class="container">
+    <form class="d-flex w-50 mt-5" role="search">
+
+        <div class="input-group me-2">
+        <span class="input-group-text"><i class="bi bi-search"></i></span>
+        <input class="form-control" type="search" placeholder="Rédiger ici votre recherche" aria-label="Rédiger ici votre recherche">
+        </div>
+        <button class="btn btn-sm btn-outline-secondary" type="submit">recherche</button>       
+      </form>
+
+
+      <div class="d-flex flex-row flex-wrap">
+        <div class="card-quiz m-2">
+            <div class="card-title py-1">
+                <h2>{{quiz_title}}</h2>
+                <p>{{date_game}}</p>
+            </div>
+            <div class="d-flex flex-row justify-content-center p-2">
+                <img src={{profil}} alt="">
+                <span class="ms-3">
+                    <h3>{{pseudo}}</h3>
+                    <p>Score : {{score}}</p>
+                </span>
+            </div>
+        </div>
+
+      </div>
+</div>
+
+
