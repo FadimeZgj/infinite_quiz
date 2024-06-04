@@ -1,0 +1,15 @@
+<app-navbar [title]="rank_title"></app-navbar>
+
+<div class="container">
+    <div class="card-list d-flex flex-md-row flex-column align-items-center">
+        <span [style]="background" class="rank-badge m-4 d-flex justify-center align-items-center">
+            <p class="m-auto fw-bold">{{rank_number}}</p>
+        </span>
+
+        <div>
+            <h2>{{pseudo}}</h2>
+            <p class="score">Score : <span>{{score}}</span></p>
+        </div>
+
+    </div>
+</div>

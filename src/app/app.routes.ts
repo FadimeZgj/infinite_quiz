@@ -13,6 +13,7 @@ import { WaitingRoomComponent } from './waiting-room/waiting-room.component';
 import { EnterGameComponent } from './enter-game/enter-game.component';
 import { GameComponent } from './game/game.component';
 import { ScoreComponent } from './score/score.component';
+import { RankingComponent } from './ranking/ranking.component';
 
 export const routes: Routes = [
     {path: 'login', component: LoginComponent},
@@ -28,6 +29,7 @@ export const routes: Routes = [
     {path: 'entergame', component: EnterGameComponent},
     {path: 'game', component: GameComponent},
     {path: 'score', component: ScoreComponent},
+    {path: 'rank', component: RankingComponent},
     {path: 'nav', component: NavbarComponent},
 
 
