@@ -17,6 +17,7 @@ import { RankingComponent } from './ranking/ranking.component';
 import { StatisticsComponent } from './statistics/statistics.component';
 import { SettingComponent } from './setting/setting.component';
 import { UserInformationsComponent } from './user-informations/user-informations.component';
+import { ChangePasswordComponent } from './change-password/change-password.component';
 
 export const routes: Routes = [
     {path: 'login', component: LoginComponent},
@@ -36,6 +37,7 @@ export const routes: Routes = [
     {path: 'statistics', component: StatisticsComponent},
     {path: 'setting', component: SettingComponent},
     {path: 'userinfos', component: UserInformationsComponent},
+    {path: 'changepassword', component: ChangePasswordComponent},
     {path: 'nav', component: NavbarComponent},
 
 
