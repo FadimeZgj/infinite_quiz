@@ -19,6 +19,7 @@ import { SettingComponent } from './setting/setting.component';
 import { UserInformationsComponent } from './user-informations/user-informations.component';
 import { ChangePasswordComponent } from './change-password/change-password.component';
 import { CreateOrganizationComponent } from './create-organization/create-organization.component';
+import { StafflistComponent } from './stafflist/stafflist.component';
 
 export const routes: Routes = [
     {path: 'login', component: LoginComponent},
@@ -40,6 +41,7 @@ export const routes: Routes = [
     {path: 'userinfos', component: UserInformationsComponent},
     {path: 'changepassword', component: ChangePasswordComponent},
     {path: 'createorganization', component: CreateOrganizationComponent},
+    {path: 'stafflist', component: StafflistComponent},
     {path: 'nav', component: NavbarComponent},
 
 
