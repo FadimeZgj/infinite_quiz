@@ -22,6 +22,7 @@ import { CreateOrganizationComponent } from './create-organization/create-organi
 import { StafflistComponent } from './stafflist/stafflist.component';
 import { AddstaffComponent } from './addstaff/addstaff.component';
 import { LogoutComponent } from './logout/logout.component';
+import { TeamComponent } from './team/team.component';
 
 export const routes: Routes = [
     {path: 'login', component: LoginComponent},
@@ -35,6 +36,7 @@ export const routes: Routes = [
     {path: 'inviteplayers', component: InvitePlayersComponent},
     {path: 'waitingroom', component: WaitingRoomComponent},
     {path: 'entergame', component: EnterGameComponent},
+    {path: 'team', component: TeamComponent},
     {path: 'game', component: GameComponent},
     {path: 'score', component: ScoreComponent},
     {path: 'rank', component: RankingComponent},
