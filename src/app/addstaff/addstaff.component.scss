@@ -1,0 +1,38 @@
+@import "../app.component.scss";
+.div-form {
+
+    height: 95vh;
+
+    form {
+
+        @include card-style(auto, auto, white,$purple, 30px);
+
+
+        label {
+            color: $purple;
+            margin-top: 8%;
+        }
+
+        input {
+            @include input-style(314px);
+            margin-right: 20px;
+ 
+        }
+
+        .errors-msg{
+            margin: auto;
+            font-size: medium;
+            color: #9d2e33;
+        }
+
+        .validate-btn {
+            @include button-style($yellow, $yellow, $nav-font-color, false);
+        }
+
+        .cancel-btn {
+            @include button-style($purple, white, $purple, true);
+        }
+
+
+    }
+}
