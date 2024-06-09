@@ -1,0 +1,11 @@
+@import "../app.component.scss";
+.div-form{
+    height: 90vh;
+    color: white;
+    .card-profile{
+        @include card-style(375px, auto, $purple, $purple, 30px);
+    .logout-btn{
+        @include button-style($yellow,$yellow,$nav-font-color,false);
+    }
+    }
+}

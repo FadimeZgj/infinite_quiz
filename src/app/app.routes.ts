@@ -21,6 +21,7 @@ import { ChangePasswordComponent } from './change-password/change-password.compo
 import { CreateOrganizationComponent } from './create-organization/create-organization.component';
 import { StafflistComponent } from './stafflist/stafflist.component';
 import { AddstaffComponent } from './addstaff/addstaff.component';
+import { LogoutComponent } from './logout/logout.component';
 
 export const routes: Routes = [
     {path: 'login', component: LoginComponent},
@@ -44,6 +45,7 @@ export const routes: Routes = [
     {path: 'createorganization', component: CreateOrganizationComponent},
     {path: 'stafflist', component: StafflistComponent},
     {path: 'staff', component: AddstaffComponent},
+    {path: 'logout', component: LogoutComponent},
     {path: 'nav', component: NavbarComponent},
 
 
