@@ -1,0 +1,28 @@
+<app-navbar [title]="quiz_title"></app-navbar>
+
+<div class="container">
+    <h2 class="mt-5 text-center">{{question}}</h2>
+    <div class="responses row">
+        <div class="col">
+            <input type="checkbox" class="btn-check" id="btn-check-1" autocomplete="off">
+            <label style="background-color: #5FB1DF;" class="btn m-4" for="btn-check-1">{{proposition_1}}</label>
+        </div>
+        <div class="col">
+            <input type="checkbox" class="btn-check" id="btn-check-2" autocomplete="off">
+            <label style="background-color: #DFB45F ;" class="btn m-4" for="btn-check-2">{{proposition_2}}</label>
+        </div>
+    </div>
+
+    <div class="responses row">
+        <div class="col">
+            <input type="checkbox" class="btn-check" id="btn-check-3" autocomplete="off">
+            <label style="background-color: #E8865C ;" class="btn m-4" for="btn-check-3">{{proposition_3}}</label>
+        </div>
+        <div class="col">
+            <input type="checkbox" class="btn-check" id="btn-check-4" autocomplete="off">
+            <label style="background-color: #33CCB6 ;" class="btn m-4" for="btn-check-4">{{proposition_4}}</label>
+        </div>
+
+    </div>
+
+</div>

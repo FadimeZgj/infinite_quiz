@@ -1,0 +1,29 @@
+<app-navbar [title]="user_information"></app-navbar>
+<div class="div-form d-flex justify-center align-items-center">
+    <form class="m-auto h-auto p-3 d-flex flex-column align-items-center" [formGroup]="userForm" (ngSubmit)="onSubmit()">
+        <div>
+            <div class="form-group">
+                <label for="InputFirstName">Entrer votre prénom</label>
+                <input formControlName="firstname" type="text" class="form-control"
+                    aria-describedby="Saissisez votre prénom" placeholder={{user_name}}>
+
+                <label for="InputEmail1">Entrer votre Email</label>
+                <input formControlName="email" type="email" class="form-control"
+                    aria-describedby="Saissisez votre email" placeholder={{user_email}}>
+
+                @if ((userForm.get('email')?.errors?.['email'] || userForm.get('email')?.errors?.['required']) &&
+                userForm.get('email')?.touched){
+                <p class="errors-msg">
+                    Veuillez entrez un mail valide.
+                </p>
+                }
+            </div>
+
+        </div>
+        <div class="form-group form-check">
+            <input formControlName="robbot" type="hidden" aria-hidden="true">
+        </div>
+        <button aria-label="Bouton de validation" type="submit" class="validate-btn my-3">Valider</button>
+        <button aria-label="Bouton d'annulation" class="cancel-btn my-3">Annuler</button>
+    </form>
+</div>

@@ -1,0 +1,23 @@
+<app-navbar [title]="organization_title"></app-navbar>
+<div class="div-form d-flex justify-center align-items-center">
+    <form class="m-auto h-auto p-3 d-flex flex-column align-items-center" [formGroup]="organisationForm" (ngSubmit)="onSubmit()">
+        <div>
+            <div class="form-group">
+                <label for="InputNameOrganization">Nom de la structure</label>
+                <input formControlName="name_organization" type="text" class="form-control"
+                    aria-describedby="Saissisez le nom de votre structure" placeholder="Ma structure">
+            </div>
+            <div class="form-group">
+                <label for="InputCountry">Pays de la structure</label>
+                <input formControlName="country_organization" type="text" class="form-control"
+                    aria-describedby="Saissisez le pays de votre structure" placeholder="France">
+            </div>
+
+        </div>
+        <div class="form-group form-check">
+            <input formControlName="robbot" type="hidden" aria-hidden="true">
+        </div>
+        <button aria-label="Bouton de validation" type="submit" class="validate-btn my-3">Valider</button>
+        <button aria-label="Bouton d'annulation" class="cancel-btn my-3">Annuler</button>
+    </form>
+</div>

@@ -1,0 +1,48 @@
+<app-navbar [title]="add_staff_title"></app-navbar>
+<div class="div-form mt-2 d-flex justify-center align-items-center">
+    <form class="m-auto h-auto p-3 d-flex flex-column align-items-center" [formGroup]="staffForm"
+        (ngSubmit)="onSubmit()">
+
+        <div class="d-flex flex-md-row flex-column">
+            <div class="form-group">
+                <label for="InputFirstName">Prénom</label>
+                <input formControlName="firstname" type="text" class="form-control"
+                    aria-describedby="Saissisez le prénom" placeholder={{staff_firstname}}>
+
+                <label for="InputLastName">Nom</label>
+                <input formControlName="lastname" type="text" class="form-control" aria-describedby="Saissisez le nom"
+                    placeholder={{staff_lastname}}>
+
+                <label for="InputEmail">Email</label>
+                <input formControlName="email" type="email" class="form-control"
+                    aria-describedby="Saissisez un email" placeholder={{staff_email}}>
+
+                @if ((staffForm.get('email')?.errors?.['email'] || staffForm.get('email')?.errors?.['required']) &&
+                staffForm.get('email')?.touched){
+                <p class="errors-msg">
+                    Veuillez entrez un mail valide.
+                </p>
+                }
+            </div>
+            <div class="form-group">
+                <label for="InputDepartement">Service</label>
+                <input formControlName="departement" type="text" class="form-control"
+                    aria-describedby="Saissisez le service" placeholder={{staff_departement}}>
+                <label for="InputPosition">Poste</label>
+                <input formControlName="position" type="text" class="form-control"
+                    aria-describedby="Saissisez le poste occupé" placeholder={{staff_position}}>
+            </div>
+
+        </div>
+
+        <div class="form-group form-check">
+            <input formControlName="robbot" type="hidden" aria-hidden="true">
+        </div>
+
+        <div class="d-flex flex-md-row flex-column">
+            <button aria-label="Bouton de validation" type="submit" class="validate-btn m-3">Valider</button>
+            <button aria-label="Bouton d'annulation" class="cancel-btn m-3">Annuler</button>
+        </div>
+
+    </form>
+</div>

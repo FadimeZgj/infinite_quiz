@@ -1,0 +1,14 @@
+@import "../app.component.scss";
+.div-form{
+    height: 100vh;
+    color: white;
+    .card-quiz{
+        @include card-style(375px, auto, $purple, $purple, 30px);
+    .player{
+        @include button-style($yellow,$yellow,$nav-font-color,false);
+    }
+    .master{
+        @include button-style($yellow,white,$nav-font-color,true);
+    }
+    }
+}

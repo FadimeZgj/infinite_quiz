@@ -1,0 +1,33 @@
+@import "../app.component.scss";
+
+.card-question{
+    @include card-style(auto, auto, white, $purple, 30px);
+
+    input[type="text"]{
+        @include input-style(100%);
+    }
+
+    input[type="checkbox"]{
+        background-color: $input-background;
+        border: none;
+        height: 40px;
+        width: 50%;
+        &:checked{
+            background-color: $confirmation;
+        }
+    }
+
+    label{
+        font-size: 20px;
+        color: $purple;
+        font-weight:200;
+    }
+}
+
+.register-btn{
+    @include button-style($yellow,$yellow, $nav-font-color,false)
+}
+
+.cancel-btn{
+    @include button-style($purple,white, $purple,true)
+}
