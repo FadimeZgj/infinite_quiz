@@ -18,6 +18,7 @@ import { StatisticsComponent } from './statistics/statistics.component';
 import { SettingComponent } from './setting/setting.component';
 import { UserInformationsComponent } from './user-informations/user-informations.component';
 import { ChangePasswordComponent } from './change-password/change-password.component';
+import { CreateOrganizationComponent } from './create-organization/create-organization.component';
 
 export const routes: Routes = [
     {path: 'login', component: LoginComponent},
@@ -38,6 +39,7 @@ export const routes: Routes = [
     {path: 'setting', component: SettingComponent},
     {path: 'userinfos', component: UserInformationsComponent},
     {path: 'changepassword', component: ChangePasswordComponent},
+    {path: 'createorganization', component: CreateOrganizationComponent},
     {path: 'nav', component: NavbarComponent},
 
 
