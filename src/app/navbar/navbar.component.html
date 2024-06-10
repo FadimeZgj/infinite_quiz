@@ -10,15 +10,16 @@
     </div>
 
     <img  class="mx-auto my-3" src="/assets/images/logo-navbar.png" alt="Logo infinite quiz" />
-    <a class="butn-profil mx-auto d-flex flex-row justify-content-around align-items-center" href=""><i class="fs-1 bi bi-person-circle"></i> <span>Mon Profil</span></a>
+    <a class="butn-profil mx-auto d-flex flex-row justify-content-around align-items-center" routerLink="/logout"><i class="fs-1 bi bi-person-circle"></i> <span>Mon Profil</span></a>
 
     <ul class="ms-5 mt-sm-3">
-      <li class="m-4 m-sm-3"><a href=""><i class="fs-3 bi bi-house-fill"></i> Accueil </a></li>
-      <li class="m-4 m-sm-3"><a href=""><i class="fs-3 bi bi-bookmark-plus-fill"></i> Créer un quiz</a></li>
-      <li class="m-4 m-sm-3"><a href=""><i class="fs-3 bi bi-play-circle-fill"></i> Jouer </a></li>
-      <li class="m-4 m-sm-3"><a href=""><i class="fs-3 bi bi-file-bar-graph-fill"></i> Statistiques </a></li>
-      <li class="m-4 m-sm-3"><a href=""><i class="fs-3 bi bi-briefcase-fill"></i> Ma Structure</a></li>
-      <li class="m-4 m-sm-3"><a href=""><i class="fs-3 bi bi-gear-fill"></i> Paramètres</a></li>
+      <li class="m-4 m-sm-3"><a routerLinkActive="link-active" routerLink="/dashboard"><i class="me-2 fs-3 bi bi-house-fill"></i>Accueil </a></li>
+      <li class="m-4 m-sm-3"><a routerLinkActive="link-active" routerLink="/addquiz"><i class="me-2 fs-3 bi bi-bookmark-plus-fill"></i>Créer un quiz</a></li>
+      <li class="m-4 m-sm-3"><a routerLinkActive="link-active" routerLink="/startgame"><i class="me-2 fs-3 bi bi-play-circle-fill"></i>Jouer </a></li>
+      <li class="m-4 m-sm-3"><a routerLinkActive="link-active" routerLink="/statistics"><i class="me-2 fs-3 bi bi-file-bar-graph-fill"></i>Statistiques </a></li>
+      <li class="m-4 m-sm-3"><a routerLinkActive="link-active" routerLink="/createorganization"><i class="me-2 fs-3 bi bi-briefcase-fill"></i>Ma Structure</a></li>
+      <li class="m-4 m-sm-3"><a routerLinkActive="link-active" routerLink="/setting"><i class="me-2 fs-3 bi bi-gear-fill"></i>Paramètres</a></li>
     </ul>
 
   </nav>
+  
