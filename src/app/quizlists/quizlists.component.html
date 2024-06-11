@@ -10,11 +10,11 @@
         <button class="btn btn-sm btn-outline-secondary" type="submit">recherche</button>       
       </form>
 
-
+      @for (quiz of listQuiz ; track quiz.id) {
       <div class="card-list d-flex flex-md-row flex-column justify-content-between align-items-center">
         <div>
-            <h2>N° du quiz : </h2>
-            <h3>Titre du quiz</h3>
+            <h2>N° du quiz : {{quiz.id}}</h2>
+            <h3>{{quiz.title}}</h3>
             <p class="creation-date">Date de création quiz</p>
             <p class="quiz-type">si en équipe ou solo</p>
         </div>
@@ -23,5 +23,6 @@
           <a href="http://" class=" icons play"> <i class="bi bi-play-circle fs-2"></i> <span>Jouer</span></a>
         </div>
       </div>
+    }
 </div>
 
