@@ -15,8 +15,7 @@
         <div>
             <h2>N° du quiz : {{quiz.id}}</h2>
             <h3>{{quiz.title}}</h3>
-            <p class="creation-date">Date de création quiz</p>
-            <p class="quiz-type">si en équipe ou solo</p>
+            <p class="quiz-type">{{quiz.group ? "En équipe" : "En solo"}}</p>
         </div>
         <div class="icons-card-list">
           <a href="http://" class="icons details"><i class="bi bi-eye fs-2"></i><span>Voir le détail</span></a>

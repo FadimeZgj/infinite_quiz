@@ -22,16 +22,16 @@ export class QuizlistsComponent {
 
     if (jwt != null) {
       this.http
-        .get<any>('http://127.0.0.1:8000/api/quizzes', { headers: { Authorization: 'Bearer ' + jwt } })
+        .get<Quiz[]>('http://127.0.0.1:8000/api/quizzes', { headers: { Authorization: 'Bearer ' + jwt } })
         .subscribe(
-          (response) => {
-            console.log('API Response:', response);
-            if (Array.isArray(response)) {
-              this.listQuiz = response;
-            } else if (response['hydra:member']) {
-              this.listQuiz = response['hydra:member'];
+          (listQuiz) => {
+            console.log('API Response:', listQuiz);
+            if (Array.isArray(listQuiz)) {
+              this.listQuiz = listQuiz;
+            } else if (listQuiz['hydra:member']) {
+              this.listQuiz = listQuiz['hydra:member'];
             } else {
-              console.error('Unexpected response format', response);
+              console.error('Unexpected response format', listQuiz);
             }
           },
           (error) => {
