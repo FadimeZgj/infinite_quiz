@@ -42,6 +42,7 @@ export class AddQuizComponent {
   formulaire: FormGroup = this.formBuilder.group({
     title: ['',[Validators.required, Validators.minLength(3)]],
     group: [null, [Validators.required]],
+    nb_questions: [1,[Validators.required]]
   });
 
   onAddQuiz() {
@@ -56,6 +57,11 @@ export class AddQuizComponent {
     this.http.get(`http://127.0.0.1:8000/api/users?username=${username}`, { headers: { Authorization: 'Bearer ' + jwt } })
       .subscribe((response: any) => {
         const userId = response['hydra:member'][0]?.id;
+        const nb_questions = this.formulaire.value.nb_questions
+        console.log(nb_questions)
+
+        sessionStorage.removeItem('nb_questions');
+        sessionStorage.setItem("nb_questions", nb_questions)
 
         console.log(this.formulaire.value)
         this.submitted = true;
@@ -71,7 +77,7 @@ export class AddQuizComponent {
             .post('http://127.0.0.1:8000/api/quizzes', quizData, { headers: { Authorization: 'Bearer ' + jwt, 'Content-Type': 'application/ld+json' } })
             .subscribe((newQuiz) => {
               console.log(newQuiz)
-              this.router.navigateByUrl('/quizlists');
+              this.router.navigateByUrl('/addquestion');
             });
         }
       });
