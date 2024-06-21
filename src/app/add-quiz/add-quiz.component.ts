@@ -58,7 +58,6 @@ export class AddQuizComponent {
       .subscribe((response: any) => {
         const userId = response['hydra:member'][0]?.id;
         const nb_questions = this.formulaire.value.nb_questions
-        console.log(nb_questions)
 
         sessionStorage.removeItem('nb_questions');
         sessionStorage.setItem("nb_questions", nb_questions)
@@ -71,13 +70,15 @@ export class AddQuizComponent {
             user: `http://127.0.0.1:8000/api/users/${userId}` // Adjust based on your API structure
           };
 
-          console.log(quizData)
-
           this.http
             .post('http://127.0.0.1:8000/api/quizzes', quizData, { headers: { Authorization: 'Bearer ' + jwt, 'Content-Type': 'application/ld+json' } })
-            .subscribe((newQuiz) => {
+            .subscribe((newQuiz: any) => {
               console.log(newQuiz)
-              this.router.navigateByUrl('/addquestion');
+
+              const quizId = newQuiz.id;
+              console.log('Quiz ID:', quizId);
+              
+              this.router.navigateByUrl(`/addquestion/${quizId}`);
             });
         }
       });
