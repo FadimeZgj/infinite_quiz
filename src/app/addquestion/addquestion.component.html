@@ -1,37 +1,38 @@
 <app-navbar [title]="addQuestion_title"></app-navbar>
 
 <form [formGroup]="formulaire" (ngSubmit)="onAddQuestion()">
-  <div class="card-question p-3 p-sm-5 m-4">
-    <div class="mb-3">
-      <label for="TextInput0" class="form-label">Entrez votre question</label>
-      <input type="text" id="TextInput0" class="form-control" formControlName="question">
+  <div class="card-question p-3 p-sm-5 m-4" formArrayName="questions">
+    @for (question of questions.controls; let i= $index; track i) {
+    <div [formGroupName]="i">
+      <div class="mb-3">
+        <label for="TextInput0" class="form-label">Entrez votre question</label>
+        <input type="text" id="TextInput0" class="form-control" formControlName="question">
+      </div>
+
+      <table class="table">
+        <tbody formArrayName="responses">
+          @for (response of getResponses(i).controls; let j=$index; track j) {
+            <ng-container >
+          <tr>
+            <th><label for="TextInput1" class="form-label">Proposition {{j + 1}} </label></th>
+            <th><label for="checkInput" class="form-label ps-5">Bonne(s) réponse(s)</label></th>
+          </tr>
+          <tr [formGroupName]="j">
+            <td class="w-75"><input type="text" id="TextInput1" class="form-control" formControlName="response"></td>
+            <td class="ps-5"><input type="checkbox" class="form-check-input" id="checkInput" formControlName="correct">
+            </td>
+          </tr>
+          </ng-container>
+        }
+        </tbody>
+      </table>
     </div>
-
-    <table class="table">
-
-      <tbody formArrayName="responses">
-        <!-- @for (item of numbers; track numbers.length) { -->
-          @for (response of responses.controls; track $index) {
-        <tr>
-          <th><label for="TextInput1" class="form-label">Proposition {{$index +1}} </label></th>
-          <th><label for="checkInput" class="form-label ps-5">Bonne(s) réponse(s)</label></th>
-        </tr>
-        <tr [formGroupName]="$index">
-          <td class="w-75"><input type="text" id="TextInput1" class="form-control" formControlName="response"></td>
-          <td class="ps-5"><input type="checkbox" class="form-check-input" id="checkInput" formControlName="correct"></td>
-        </tr>
-      }
-        <!-- } -->
-      </tbody>
-    </table>
-
+    }
   </div>
 
   <div class="d-flex flex-row justify-content-evenly flex-wrap">
     <button type="submit" class="register-btn mt-4">Enregistrer</button>
     <button type="reset" class="cancel-btn mt-4">Annuler</button>
   </div>
-
-
 
 </form>
