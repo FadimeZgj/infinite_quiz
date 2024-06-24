@@ -21,3 +21,15 @@
     font-weight: bold;
     color: $purple
 }
+
+.confirm-quiz-btn {
+    @include button-style($warning,$warning,$grey,false);
+    max-width: 8em;
+    font-size: 17px;
+}
+
+.cancel-removal-btn {
+    @include button-style($grey,$grey,$nav-font-color,false);
+    max-width: 8em;
+    font-size: 17px;
+}

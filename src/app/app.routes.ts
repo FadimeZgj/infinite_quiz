@@ -30,6 +30,7 @@ export const routes: Routes = [
     {path: 'dashboard', component: DashboardComponent},
     {path: 'quizlists', component: QuizlistsComponent},
     {path: 'questionlist', component: QuestionlistsComponent},
+    {path: 'questionlist/:id', component: QuestionlistsComponent},
     {path: 'addquiz', component: AddQuizComponent},
     {path: 'addquestion', component: AddquestionComponent},
     {path: 'addquestion/:id', component: AddquestionComponent},
