@@ -35,6 +35,7 @@ export const routes: Routes = [
     {path: 'addquestion', component: AddquestionComponent},
     {path: 'addquestion/:id', component: AddquestionComponent},
     {path: 'startgame', component: StartGameComponent},
+    {path: 'startgame/:quizId', component: StartGameComponent},
     {path: 'inviteplayers', component: InvitePlayersComponent},
     {path: 'waitingroom', component: WaitingRoomComponent},
     {path: 'entergame', component: EnterGameComponent},

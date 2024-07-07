@@ -18,8 +18,8 @@
             <p class="quiz-type">{{quiz.group ? "En équipe" : "En solo"}}</p>
         </div>
         <div class="icons-card-list">
-          <a href="http://" class="icons details"><i class="bi bi-eye fs-2"></i><span>Voir le détail</span></a>
-          <a href="http://" class=" icons play"> <i class="bi bi-play-circle fs-2"></i> <span>Jouer</span></a>
+          <a class="icons details" routerLink="/questionlist/{{quiz.id}}"><i class="bi bi-eye fs-2"></i><span>Voir le détail</span></a>
+          <a class=" icons play" routerLink="/startgame/{{quiz.id}}"> <i class="bi bi-play-circle fs-2"></i> <span>Jouer</span></a>
         </div>
       </div>
     }
