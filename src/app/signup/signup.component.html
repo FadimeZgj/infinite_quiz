@@ -1,5 +1,6 @@
 <div class="div-form d-flex justify-center align-items-center">
-    <form class="m-auto h-auto p-3 d-flex flex-column align-items-center" [formGroup]="signUpForm" (ngSubmit)="onSubmit()">
+    <form class="m-auto h-auto p-3 d-flex flex-column align-items-center" [formGroup]="signUpForm"
+        (ngSubmit)="onSubmit()">
         <img class="fit-picture" src="/assets/images/logo.png" alt="Logo infinite quiz" />
         <div>
             <div class="form-group">
@@ -22,35 +23,37 @@
 
             <div class="form-group">
                 <label for="InputPassword">Entrer votre mot de passe</label>
-                <input formControlName="pw" type="password" class="form-control"
+                <input formControlName="plainPassword" type="password" class="form-control"
                     aria-describedby="Saissisez votre mot de passe" placeholder="mot de passe">
             </div>
-            <div class="form-group">
+            <div class="form-group mb-3">
                 <label for="ConfInputPassword">Confirmer votre mot de passe</label>
                 <input formControlName="cpw" type="password" class="form-control"
                     aria-describedby="Confirmer votre mot de passe" placeholder="mot de passe">
             </div>
-            @if (noMatch){
+
+            <div class="form-group pot">
+                <input formControlName="honneypot" type="text" aria-hidden="true" value="">
+            </div>
+
+            @if (error_msg){
             <p class="errors-msg">
-                La confirmation ne correspond pas au mot de passe entré.
+                {{error_msg}}
             </p>
             }
-            @else if ((signUpForm.get('pw')?.errors?.['required'] || signUpForm.get('pw')?.errors?.['pattern'])&& signUpForm.get('pw')?.touched){
+            @else if ((signUpForm.get('plainPassword')?.errors?.['required'] ||
+            signUpForm.get('plainPassword')?.errors?.['pattern'])&& signUpForm.get('plainPassword')?.touched){
             <div class="errors-msg">
-                Veuillez entrer un mot de passe de 12 carctères contenant au moins : 
-                <ul>
+                Veuillez entrer un mot de passe de 12 caractères contenant au moins : <ul>
                     <li>une majuscule</li>
                     <li>une minuscule</li>
                     <li>un chiffre</li>
                     <li>un caractère spéciale</li>
                 </ul>
-
             </div>
             }
         </div>
-        <div class="form-group form-check">
-            <input formControlName="robbot" type="hidden" aria-hidden="true">
-        </div>
+
         <button aria-label="Bouton de validation" type="submit" class="signup-btn my-3">S'inscrire</button>
         <button aria-label="Bouton d'annulation" class="cancel-btn my-3">Annuler</button>
     </form>
