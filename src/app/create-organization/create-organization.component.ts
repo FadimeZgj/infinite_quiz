@@ -46,7 +46,8 @@ export class CreateOrganizationComponent {
 
       const organizationValue = {
         ...this.organizationForm.value,
-        user: [`http://127.0.0.1:8000/api/users/${userId}`]
+        user: [`http://127.0.0.1:8000/api/users/${userId}`],
+        owner: `http://127.0.0.1:8000/api/users/${userId}`
       };
 
       // console.log(organizationValue);
