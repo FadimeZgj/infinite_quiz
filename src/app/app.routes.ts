@@ -1,58 +1,115 @@
 import { Routes } from '@angular/router';
-import { LoginComponent } from './login/login.component';
-import { SignupComponent } from './signup/signup.component';
-import { NavbarComponent } from './navbar/navbar.component';
-import { DashboardComponent } from './dashboard/dashboard.component';
-import { QuizlistsComponent } from './quizlists/quizlists.component';
-import { QuestionlistsComponent } from './questionlists/questionlists.component';
-import { AddQuizComponent } from './add-quiz/add-quiz.component';
-import { AddquestionComponent } from './addquestion/addquestion.component';
-import { StartGameComponent } from './start-game/start-game.component';
-import { InvitePlayersComponent } from './invite-players/invite-players.component';
-import { WaitingRoomComponent } from './waiting-room/waiting-room.component';
-import { EnterGameComponent } from './enter-game/enter-game.component';
-import { GameComponent } from './game/game.component';
-import { ScoreComponent } from './score/score.component';
-import { RankingComponent } from './ranking/ranking.component';
-import { StatisticsComponent } from './statistics/statistics.component';
-import { SettingComponent } from './setting/setting.component';
-import { UserInformationsComponent } from './user-informations/user-informations.component';
-import { ChangePasswordComponent } from './change-password/change-password.component';
-import { CreateOrganizationComponent } from './create-organization/create-organization.component';
-import { StafflistComponent } from './stafflist/stafflist.component';
-import { AddstaffComponent } from './addstaff/addstaff.component';
-import { LogoutComponent } from './logout/logout.component';
-import { TeamComponent } from './team/team.component';
 
 export const routes: Routes = [
-    {path: 'login', component: LoginComponent},
-    {path: 'signup', component: SignupComponent},
-    {path: 'dashboard', component: DashboardComponent},
-    {path: 'dashboard/:id', component: DashboardComponent},
-    {path: 'quizlists', component: QuizlistsComponent},
-    {path: 'questionlist', component: QuestionlistsComponent},
-    {path: 'questionlist/:id', component: QuestionlistsComponent},
-    {path: 'addquiz', component: AddQuizComponent},
-    {path: 'addquestion', component: AddquestionComponent},
-    {path: 'addquestion/:id', component: AddquestionComponent},
-    {path: 'startgame', component: StartGameComponent},
-    {path: 'startgame/:quizId', component: StartGameComponent},
-    {path: 'inviteplayers', component: InvitePlayersComponent},
-    {path: 'waitingroom', component: WaitingRoomComponent},
-    {path: 'entergame', component: EnterGameComponent},
-    {path: 'team', component: TeamComponent},
-    {path: 'game', component: GameComponent},
-    {path: 'score', component: ScoreComponent},
-    {path: 'rank', component: RankingComponent},
-    {path: 'statistics', component: StatisticsComponent},
-    {path: 'setting', component: SettingComponent},
-    {path: 'userinfos', component: UserInformationsComponent},
-    {path: 'changepassword', component: ChangePasswordComponent},
-    {path: 'createorganization', component: CreateOrganizationComponent},
-    {path: 'stafflist', component: StafflistComponent},
-    {path: 'staff', component: AddstaffComponent},
-    {path: 'logout', component: LogoutComponent},
-    {path: 'nav', component: NavbarComponent},
+    {
+        path: 'login',
+        loadComponent: () => import('./login/login.component').then(m => m.LoginComponent)
+      },
+      {
+        path: 'signup',
+        loadComponent: () => import('./signup/signup.component').then(m => m.SignupComponent)
+      },
+      {
+        path: 'dashboard',
+        loadComponent: () => import('./dashboard/dashboard.component').then(m => m.DashboardComponent),
+        children: [
+          { path: ':id', loadComponent: () => import('./dashboard/dashboard.component').then(m => m.DashboardComponent) }
+        ]
+      },
+      {
+        path: 'quizlists',
+        loadComponent: () => import('./quizlists/quizlists.component').then(m => m.QuizlistsComponent)
+      },
+      {
+        path: 'questionlist',
+        loadComponent: () => import('./questionlists/questionlists.component').then(m => m.QuestionlistsComponent),
+        children: [
+          { path: ':id', loadComponent: () => import('./questionlists/questionlists.component').then(m => m.QuestionlistsComponent) }
+        ]
+      },
+      {
+        path: 'addquiz',
+        loadComponent: () => import('./add-quiz/add-quiz.component').then(m => m.AddQuizComponent)
+      },
+      {
+        path: 'addquestion',
+        loadComponent: () => import('./addquestion/addquestion.component').then(m => m.AddquestionComponent),
+        children: [
+          { path: ':id', loadComponent: () => import('./addquestion/addquestion.component').then(m => m.AddquestionComponent) }
+        ]
+      },
+      {
+        path: 'startgame',
+        loadComponent: () => import('./start-game/start-game.component').then(m => m.StartGameComponent),
+        children: [
+          { path: ':quizId', loadComponent: () => import('./start-game/start-game.component').then(m => m.StartGameComponent) }
+        ]
+      },
+      {
+        path: 'inviteplayers',
+        loadComponent: () => import('./invite-players/invite-players.component').then(m => m.InvitePlayersComponent)
+      },
+      {
+        path: 'waitingroom',
+        loadComponent: () => import('./waiting-room/waiting-room.component').then(m => m.WaitingRoomComponent)
+      },
+      {
+        path: 'entergame',
+        loadComponent: () => import('./enter-game/enter-game.component').then(m => m.EnterGameComponent)
+      },
+      {
+        path: 'team',
+        loadComponent: () => import('./team/team.component').then(m => m.TeamComponent)
+      },
+      {
+        path: 'game',
+        loadComponent: () => import('./game/game.component').then(m => m.GameComponent)
+      },
+      {
+        path: 'score',
+        loadComponent: () => import('./score/score.component').then(m => m.ScoreComponent)
+      },
+      {
+        path: 'rank',
+        loadComponent: () => import('./ranking/ranking.component').then(m => m.RankingComponent)
+      },
+      {
+        path: 'statistics',
+        loadComponent: () => import('./statistics/statistics.component').then(m => m.StatisticsComponent)
+      },
+      {
+        path: 'setting',
+        loadComponent: () => import('./setting/setting.component').then(m => m.SettingComponent)
+      },
+      {
+        path: 'userinfos',
+        loadComponent: () => import('./user-informations/user-informations.component').then(m => m.UserInformationsComponent)
+      },
+      {
+        path: 'changepassword',
+        loadComponent: () => import('./change-password/change-password.component').then(m => m.ChangePasswordComponent)
+      },
+      {
+        path: 'createorganization',
+        loadComponent: () => import('./create-organization/create-organization.component').then(m => m.CreateOrganizationComponent)
+      },
+      {
+        path: 'stafflist',
+        loadComponent: () => import('./stafflist/stafflist.component').then(m => m.StafflistComponent)
+      },
+      {
+        path: 'staff',
+        loadComponent: () => import('./addstaff/addstaff.component').then(m => m.AddstaffComponent)
+      },
+      {
+        path: 'logout',
+        loadComponent: () => import('./logout/logout.component').then(m => m.LogoutComponent)
+      },
+      {
+        path: 'nav',
+        loadComponent: () => import('./navbar/navbar.component').then(m => m.NavbarComponent)
+      },
+      { path: '**', redirectTo: 'login' }
 
 
 ];
