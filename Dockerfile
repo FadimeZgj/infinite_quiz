@@ -1,5 +1,5 @@
 FROM node:20 AS build
-# Répertoire utilisé par convention pour les conteneurs Docker
+
 WORKDIR /var/www/html/infinite_quiz
 
 COPY . /var/www/html/infinite_quiz
