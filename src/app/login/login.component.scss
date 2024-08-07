@@ -27,6 +27,9 @@
             @include button-style($yellow,$yellow,$nav-font-color,false);
 
         }
+        .signup-btn{
+            @include button-style($yellow, white, $nav-font-color,true)
+        }
 
         a{
             color: $nav-font-color;
