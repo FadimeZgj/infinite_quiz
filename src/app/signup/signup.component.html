@@ -1,7 +1,7 @@
 <div class="div-form d-flex justify-center align-items-center">
-    <form class="m-auto h-auto p-3 d-flex flex-column align-items-center" [formGroup]="signUpForm"
+    <form class="m-auto h-auto px-4 py-2 d-flex flex-column align-items-center justify-center" [formGroup]="signUpForm"
         (ngSubmit)="onSubmit()">
-        <img class="fit-picture" src="/assets/images/logo.png" alt="Logo infinite quiz" />
+        <img src="/assets/images/logo.png" alt="Logo infinite quiz" />
         <div>
             <div class="form-group">
                 <label for="InputFirstName">Entrer votre prénom</label>
@@ -14,7 +14,7 @@
 
                 @if ((signUpForm.get('email')?.errors?.['email'] || signUpForm.get('email')?.errors?.['required']) &&
                 signUpForm.get('email')?.touched){
-                <p class="errors-msg">
+                <p class="errors-msg text-center">
                     Veuillez entrez un mail valide.
                 </p>
                 }
@@ -26,7 +26,7 @@
                 <input formControlName="plainPassword" type="password" class="form-control"
                     aria-describedby="Saissisez votre mot de passe" placeholder="mot de passe">
             </div>
-            <div class="form-group mb-3">
+            <div class="form-group mb-1">
                 <label for="ConfInputPassword">Confirmer votre mot de passe</label>
                 <input formControlName="cpw" type="password" class="form-control"
                     aria-describedby="Confirmer votre mot de passe" placeholder="mot de passe">
@@ -54,7 +54,7 @@
             }
         </div>
 
-        <button aria-label="Bouton de validation" type="submit" class="signup-btn my-3">S'inscrire</button>
-        <button routerLink="/login" aria-label="Bouton d'annulation" class="cancel-btn my-3">Annuler</button>
+        <button aria-label="Bouton de validation" type="submit" class="signup-btn my-2">S'inscrire</button>
+        <button routerLink="/login" aria-label="Bouton d'annulation" class="cancel-btn my-2">Annuler</button>
     </form>
 </div>
