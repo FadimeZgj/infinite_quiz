@@ -1,6 +1,8 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { TestBed, ComponentFixture } from '@angular/core/testing';
 import { SignupComponent } from './signup.component';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { ActivatedRoute } from '@angular/router';
+
 
 describe('SignupComponent', () => {
   let component: SignupComponent;
@@ -8,16 +10,21 @@ describe('SignupComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [SignupComponent]
-    })
-    .compileComponents();
-    
+      imports: [
+        HttpClientTestingModule,
+        SignupComponent
+      ],
+      providers: [
+        { provide: ActivatedRoute, useValue: { snapshot: {} } } // Simulez ActivatedRoute
+      ],
+    }).compileComponents();
+
     fixture = TestBed.createComponent(SignupComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it('should create the component', () => {
     expect(component).toBeTruthy();
   });
 });

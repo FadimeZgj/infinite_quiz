@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { TeamComponent } from './team.component';
+import { ActivatedRoute } from '@angular/router';
 
 describe('TeamComponent', () => {
   let component: TeamComponent;
@@ -8,7 +9,10 @@ describe('TeamComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TeamComponent]
+      imports: [TeamComponent],
+      providers: [
+        { provide: ActivatedRoute, useValue: { snapshot: {} } } // Simulez ActivatedRoute
+      ],
     })
     .compileComponents();
     

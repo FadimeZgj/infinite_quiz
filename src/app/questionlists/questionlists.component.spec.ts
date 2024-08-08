@@ -1,6 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { QuestionlistsComponent } from './questionlists.component';
+import { ActivatedRoute } from '@angular/router';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('QuestionlistsComponent', () => {
   let component: QuestionlistsComponent;
@@ -8,7 +10,12 @@ describe('QuestionlistsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [QuestionlistsComponent]
+      imports: [QuestionlistsComponent,
+        HttpClientTestingModule
+      ],
+      providers: [
+        { provide: ActivatedRoute, useValue: { snapshot: {} } } // Simulez ActivatedRoute
+      ],
     })
     .compileComponents();
     

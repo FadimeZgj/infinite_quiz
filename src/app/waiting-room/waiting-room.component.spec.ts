@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { WaitingRoomComponent } from './waiting-room.component';
+import { ActivatedRoute } from '@angular/router';
 
 describe('WaitingRoomComponent', () => {
   let component: WaitingRoomComponent;
@@ -8,7 +9,10 @@ describe('WaitingRoomComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [WaitingRoomComponent]
+      imports: [WaitingRoomComponent],
+      providers: [
+        { provide: ActivatedRoute, useValue: { snapshot: {} } } // Simulez ActivatedRoute
+      ],
     })
     .compileComponents();
     

@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { UserInformationsComponent } from './user-informations.component';
+import { ActivatedRoute } from '@angular/router';
 
 describe('UserInformationsComponent', () => {
   let component: UserInformationsComponent;
@@ -8,7 +9,10 @@ describe('UserInformationsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [UserInformationsComponent]
+      imports: [UserInformationsComponent],
+      providers: [
+        { provide: ActivatedRoute, useValue: { snapshot: {} } } // Simulez ActivatedRoute
+      ],
     })
     .compileComponents();
     

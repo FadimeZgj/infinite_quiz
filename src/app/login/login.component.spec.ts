@@ -2,7 +2,7 @@ import { TestBed, ComponentFixture } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { LoginComponent } from './login.component';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 describe('LoginComponent', () => {
   // instenciation du composant
@@ -25,7 +25,9 @@ describe('LoginComponent', () => {
         ReactiveFormsModule,
         LoginComponent
       ],
-      declarations: []
+      providers: [
+        { provide: ActivatedRoute, useValue: { snapshot: {} } } // <- Simulez ActivatedRoute si nécessaire
+      ]
     }).compileComponents();
 
     // création du composant

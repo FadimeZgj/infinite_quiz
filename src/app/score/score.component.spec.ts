@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ScoreComponent } from './score.component';
+import { ActivatedRoute } from '@angular/router';
 
 describe('ScoreComponent', () => {
   let component: ScoreComponent;
@@ -8,7 +9,10 @@ describe('ScoreComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ScoreComponent]
+      imports: [ScoreComponent],
+      providers: [
+        { provide: ActivatedRoute, useValue: { snapshot: {} } } // Simulez ActivatedRoute
+      ],
     })
     .compileComponents();
     

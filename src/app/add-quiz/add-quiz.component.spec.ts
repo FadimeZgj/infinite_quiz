@@ -1,6 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { AddQuizComponent } from './add-quiz.component';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { ActivatedRoute } from '@angular/router';
 
 describe('AddQuizComponent', () => {
   let component: AddQuizComponent;
@@ -8,7 +10,14 @@ describe('AddQuizComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AddQuizComponent]
+      imports: [
+        HttpClientTestingModule,
+        AddQuizComponent
+      ],
+      providers: [
+        { provide: ActivatedRoute, useValue: { snapshot: {} } } // Simulez ActivatedRoute
+      ],
+
     })
     .compileComponents();
     

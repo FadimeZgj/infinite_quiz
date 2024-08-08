@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { EnterGameComponent } from './enter-game.component';
+import { ActivatedRoute } from '@angular/router';
 
 describe('EnterGameComponent', () => {
   let component: EnterGameComponent;
@@ -8,7 +9,10 @@ describe('EnterGameComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [EnterGameComponent]
+      imports: [EnterGameComponent],
+      providers: [
+        { provide: ActivatedRoute, useValue: { snapshot: {} } } // Simulez ActivatedRoute
+      ],
     })
     .compileComponents();
     
