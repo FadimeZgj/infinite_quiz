@@ -10,12 +10,15 @@
 
         label {
             color: $purple;
-            margin-top: 8%;
+            margin-top: 3%;
         }
 
         input {
             @include input-style(314px)
- 
+
+        }
+        ::placeholder {
+            color: $nav-font-color;
         }
 
         .errors-msg{
