@@ -3,14 +3,23 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { ReactiveFormsModule } from '@angular/forms';
 import { SignupComponent } from './signup.component';
 import { ActivatedRoute, Router } from '@angular/router';
+import { LoaderService } from '../services/loaderService/loader.service';
+import { CleanDataService } from '../services/cleanDataService/clean-data.service';
 
 describe('SignupComponent', () => {
   let component: SignupComponent;
   let fixture: ComponentFixture<SignupComponent>;
-  let httpMock: HttpTestingController;
+  let httpClientTesting: HttpTestingController;
   let router: Router;
+  let loaderServiceSpy: jasmine.SpyObj<LoaderService>;
+  let cleanDataServiceSpy: jasmine.SpyObj<CleanDataService>;
 
   beforeEach(async () => {
+
+    // je créé des objet pour surveiller mes services
+    cleanDataServiceSpy = jasmine.createSpyObj('CleanDataService', ['cleanObject']);
+    loaderServiceSpy = jasmine.createSpyObj('LoaderService', ['show', 'hide']);
+
     await TestBed.configureTestingModule({
       imports: [
         HttpClientTestingModule,
@@ -18,131 +27,168 @@ describe('SignupComponent', () => {
         SignupComponent
       ],
       providers: [
-        { provide: ActivatedRoute, useValue: { snapshot: {} } } // <- Simulez ActivatedRoute si nécessaire
+        { provide: CleanDataService, useValue: cleanDataServiceSpy },
+        { provide: LoaderService, useValue: loaderServiceSpy },
+        { provide: ActivatedRoute, useValue: { snapshot: {} } } 
       ]
     }).compileComponents();
 
     fixture = TestBed.createComponent(SignupComponent);
     component = fixture.componentInstance;
-    httpMock = TestBed.inject(HttpTestingController);
+    httpClientTesting = TestBed.inject(HttpTestingController);
     router = TestBed.inject(Router);
+    cleanDataServiceSpy = TestBed.inject(CleanDataService) as jasmine.SpyObj<CleanDataService>;
+    loaderServiceSpy = TestBed.inject(LoaderService) as jasmine.SpyObj<LoaderService>;
     fixture.detectChanges();
   });
 
   afterEach(() => {
-    httpMock.verify();
+    httpClientTesting.verify();
   });
 
-  it('should create the component', () => {
+  it('devrait créer le composant', () => {
     expect(component).toBeTruthy();
   });
 
-  it('le formulaire ne doit pas être soumis si les mot de passe ne match pas', () => {
-    component.signUpForm.setValue({
+  it('devrait ne pas soumettre le formulaire si les mots de passe ne match pas', () => {
+    const formvalue = {
       firstname: 'John',
-      email: 'john.doe@example.com',
-      plainPassword: 'password123',
-      cpw: 'password456', 
+      email: 'john@doe.fr',
+      plainPassword: 'Password123!',
+      cpw: 'Password124!', 
       honneypot: ''
-    });
+    }
+
+    cleanDataServiceSpy.cleanObject.and.returnValue(formvalue);
+
+    component.signUpForm.setValue(formvalue);
 
     component.onSubmit();
 
+    expect(loaderServiceSpy.hide).toHaveBeenCalled();
     expect(component.error_msg).toBe("La confirmation ne correspond pas au mot de passe entré.");
-    const req = httpMock.expectNone('http://127.0.0.1:8000/api/users');
+    httpClientTesting.expectNone('http://127.0.0.1:8000/api/users');
   });
 
-  it('si le formulaire est invalide alors il ne doit pas être soumis', () => {
-    component.signUpForm.setValue({
-      firstname: '', 
-      email: 'john.doe@example.com',
-      plainPassword: 'password123',
-      cpw: 'password123',
+  it('devrait afficher une erreur si le formulaire est invalide', () => {
+    const formvalue = {
+      firstname: '',
+      email: 'john@doe.fr',
+      plainPassword: 'Password123!',
+      cpw: 'Password123!', 
       honneypot: ''
-    });
+    }
+    // simulation de l'action de mon service CleanData pour que celui-ci soit bien pris en compte dans ce test
+    cleanDataServiceSpy.cleanObject.and.returnValue(formvalue);
+
+    component.signUpForm.setValue(formvalue);
 
     component.onSubmit();
 
-    expect(component.error_msg).toBe("La confirmation ne correspond pas au mot de passe entré.");
-    const req = httpMock.expectNone('http://127.0.0.1:8000/api/users');
+    expect(loaderServiceSpy.hide).toHaveBeenCalled();
+    expect(component.error_msg).toBe("Le formulaire n'est pas conforme.");
+    httpClientTesting.expectNone('http://127.0.0.1:8000/api/users');
   });
 
-  it('si honneypot n\'est pas vide alors il y a une redirection vers le login', () => {
+  it("ne devrait pas soumettre le formulaire si le champ honneypot est rempli", () => {
     spyOn(router, 'navigateByUrl');
 
-    component.signUpForm.setValue({
+    const formvalue = {
       firstname: 'John',
-      email: 'john.doe@example.com',
-      plainPassword: 'password123',
-      cpw: 'password123',
-      honneypot: 'spam'  // Filled honeypot
-    });
+      email: 'john@doe.fr',
+      plainPassword: 'Password123!',
+      cpw: 'Password123!', 
+      honneypot: 'bot'
+    }
+    cleanDataServiceSpy.cleanObject.and.returnValue(formvalue);
+
+    component.signUpForm.setValue(formvalue);
 
     component.onSubmit();
 
     expect(router.navigateByUrl).toHaveBeenCalledWith('/login');
-    const req = httpMock.expectNone('http://127.0.0.1:8000/api/users');
+    httpClientTesting.expectNone('http://127.0.0.1:8000/api/users');
   });
 
-  it('si le formulaire est valide il doit être soumis', () => {
+  it('devrait soumettre le formulaire avec des valeurs valides', () => {
     spyOn(router, 'navigateByUrl');
 
-    component.signUpForm.setValue({
+    const formvalue = {
       firstname: 'John',
-      email: 'john.doe@example.com',
-      plainPassword: 'password123',
-      cpw: 'password123',
+      email: 'john@doe.fr',
+      plainPassword: 'Password123!',
+      cpw: 'Password123!', 
       honneypot: ''
-    });
+    }
+    cleanDataServiceSpy.cleanObject.and.returnValue(formvalue);
+
+    component.signUpForm.setValue(formvalue);
 
     component.onSubmit();
 
-    const signupReq = httpMock.expectOne('http://127.0.0.1:8000/api/users');
+    const signupReq = httpClientTesting.expectOne('http://127.0.0.1:8000/api/users');
     expect(signupReq.request.method).toBe('POST');
     signupReq.flush({});
 
-    const loginReq = httpMock.expectOne('http://127.0.0.1:8000/api/login_check');
+    const loginReq = httpClientTesting.expectOne('http://127.0.0.1:8000/api/login_check');
     expect(loginReq.request.method).toBe('POST');
     loginReq.flush({ token: 'jwt' });
+    expect(localStorage.getItem('jwt')).toBe('jwt');
+
+    const userInfoRequest = httpClientTesting.expectOne('http://127.0.0.1:8000/api/users?email=john@doe.fr');
+    expect(userInfoRequest.request.method).toBe('GET');
+    
+    const mockUserInfoResponse = { 'hydra:member': [{ id: 1, name: 'John', email: 'john@doe.fr' }] };
+    userInfoRequest.flush(mockUserInfoResponse);
+
+    const storedUserInfo = sessionStorage.getItem('userInfo');
+    expect(storedUserInfo).toBeTruthy();
 
     expect(localStorage.getItem('jwt')).toBe('jwt');
+    expect(loaderServiceSpy.hide).toHaveBeenCalled();
     expect(router.navigateByUrl).toHaveBeenCalledWith('/dashboard');
   });
 
-  it('si la requète d\'inscription n\'est pas bonne alors je dois avoir mon message d\'erreur', () => {
-    component.signUpForm.setValue({
+  it("devrait afficher un message d'erreur si l'inscription échou", () => {
+    const formvalue = {
       firstname: 'John',
-      email: 'john.doe@example.com',
-      plainPassword: 'password123',
-      cpw: 'password123',
+      email: 'john@doe.fr',
+      plainPassword: 'Password123!',
+      cpw: 'Password123!', 
       honneypot: ''
-    });
+    }
+    cleanDataServiceSpy.cleanObject.and.returnValue(formvalue);
+
+    component.signUpForm.setValue(formvalue);
 
     component.onSubmit();
 
-    const signupReq = httpMock.expectOne('http://127.0.0.1:8000/api/users');
+    const signupReq = httpClientTesting.expectOne('http://127.0.0.1:8000/api/users');
     signupReq.flush({}, { status: 400, statusText: 'Bad Request' });
 
     expect(component.error_msg).toBe("Le formulaire n'est pas conforme. Veuillez réessayer.");
   });
 
-  it('si la requète de login n\'est pas bonne alors je dois avoir mon message d\'erreur', () => {
-    component.signUpForm.setValue({
+  it("devrait afficher un message d'erreur si la connexion échou", () => {
+    const formvalue = {
       firstname: 'John',
-      email: 'john.doe@example.com',
-      plainPassword: 'password123',
-      cpw: 'password123',
+      email: 'john@doe.fr',
+      plainPassword: 'Password123!',
+      cpw: 'Password123!', 
       honneypot: ''
-    });
+    }
+    cleanDataServiceSpy.cleanObject.and.returnValue(formvalue);
+
+    component.signUpForm.setValue(formvalue);
 
     component.onSubmit();
 
-    const signupReq = httpMock.expectOne('http://127.0.0.1:8000/api/users');
+    const signupReq = httpClientTesting.expectOne('http://127.0.0.1:8000/api/users');
     signupReq.flush({});
 
-    const loginReq = httpMock.expectOne('http://127.0.0.1:8000/api/login_check');
+    const loginReq = httpClientTesting.expectOne('http://127.0.0.1:8000/api/login_check');
     loginReq.flush({}, { status: 400, statusText: 'Bad Request' });
 
-    expect(component.error_msg).toBe("Le formulaire n'est pas conforme. Veuillez réessayer.");
+    expect(component.error_msg).toBe("Une erreur s'est produite. Veuillez réessayer plus tard.");
   });
 });

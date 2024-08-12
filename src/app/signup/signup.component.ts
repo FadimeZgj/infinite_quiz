@@ -2,6 +2,9 @@ import { HttpClient} from '@angular/common/http';
 import { Component, inject } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
+import { CleanDataService } from '../services/cleanDataService/clean-data.service';
+import { LoaderService } from '../services/loaderService/loader.service';
+import * as CryptoJS from 'crypto-js';
 
 @Component({
   selector: 'app-signup',
@@ -12,6 +15,10 @@ import { Router, RouterLink } from '@angular/router';
 })
 export class SignupComponent {
 
+  constructor(private CleanDataService: CleanDataService,
+    private loaderService: LoaderService
+  ) {}
+
   http : HttpClient =inject(HttpClient);
   router : Router = inject(Router);
   error_msg:string="";
@@ -19,49 +26,87 @@ export class SignupComponent {
   signUpForm = new FormGroup({
     firstname: new FormControl('', [Validators.required, ]),
     email: new FormControl('',[Validators.required, Validators.email]),
-    plainPassword:  new FormControl('', [Validators.required]),
-    // plainPassword:  new FormControl('', [Validators.required, Validators.pattern(/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*+_'-]).{12,}$/)]),
+    plainPassword:  new FormControl('', [Validators.required, Validators.pattern(/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[\!"\#\$\%\&\'\(\)\*\+\,\-\.\/\:\;\<\=\>\?\@\[\\\]\^\_\`\{\|\}\~])/)]),
+    // plainPassword:  new FormControl('', [Validators.required, Validators.pattern(/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[\!"\#\$\%\&\'\(\)\*\+\,\-\.\/\:\;\<\=\>\?\@\[\\\]\^\_\`\{\|\}\~]).{12,}$/)]),
     cpw: new FormControl('', [Validators.required, ]),
     honneypot: new FormControl(''),
   });
 
   onSubmit() {
+
+    this.loaderService.show();
+
     if (this.error_msg) {
+      // Dans le cas où le formulaire a déjà été soumis je réinitialise le error_msg
       this.error_msg=""
-      console.log("check");
     }
-    console.log('click');
-    
-    const formInputs=this.signUpForm.value
-    
-    if (formInputs['honneypot']) {
+
+   
+    const formInputs=this.CleanDataService.cleanObject(this.signUpForm.value)
+        
+    if (formInputs['honneypot'] && formInputs['honneypot'].length > 0) {
+      this.loaderService.hide();
       this.router.navigateByUrl('/login');
+
     } else {
+
       if (formInputs['plainPassword']!=formInputs['cpw']) {
+        this.loaderService.hide();
         this.error_msg="La confirmation ne correspond pas au mot de passe entré."
-      } else if(this.signUpForm.invalid)
+      } 
+      
+      else if(this.signUpForm.invalid)
         {
-          this.error_msg="La confirmation ne correspond pas au mot de passe entré."
+          this.loaderService.hide();        
+          this.error_msg="Le formulaire n'est pas conforme."
         }
+
       else{
   
         delete formInputs['cpw']
         
         const user={username:formInputs['email'], password:formInputs['plainPassword'], honneypot:formInputs['honneypot']}
   
-        this.http.post<any>('http://127.0.0.1:8000/api/users',JSON.stringify(this.signUpForm.value), {headers: {'Content-Type': 'application/ld+json' }}).subscribe({
+        this.http.post<any>('http://127.0.0.1:8000/api/users',JSON.stringify(formInputs), {headers: {'Content-Type': 'application/ld+json' }}).subscribe({
           next: (resp) =>{
          
           console.log("inscrit");
-          this.http.post<any>('http://127.0.0.1:8000/api/login_check',JSON.stringify(user), {headers: {'Content-Type': 'application/ld+json' }}).subscribe({
-            next: (resp) =>{
-            localStorage.setItem('jwt', resp.token);
-           this.router.navigateByUrl('/dashboard');
-            
-          }, error: (err)=>{this.error_msg="Le formulaire n'est pas conforme. Veuillez réessayer."}})
+
+          
+          this.http.post<any>('http://127.0.0.1:8000/api/login_check',JSON.stringify(user), {headers: {'Content-Type': 'application/ld+json' }})
+          .subscribe({
+            next :  (resp) => {
+              
+            if (resp) {
+              localStorage.setItem('jwt', resp.token);
+    
+              this.http.get<any>(`http://127.0.0.1:8000/api/users?email=${user['username']}`, { headers: { Authorization: 'Bearer ' + resp.token } })
+              .subscribe({
+                
+                next: (response: any) => {
+                  
+                // création de la clé de décriptage grace à l'algorithme de hashage SHA256 qui fourni un hashe de 32 octet( taille max autorisé pour une clé)
+                // cela permet également de ce défaire des caractères spéciaux pouvant être présent dans le jwt 
+                const secretKey = CryptoJS.SHA256(resp.token).toString();
+                const encryptData = CryptoJS.AES.encrypt(JSON.stringify(response['hydra:member'][0]), secretKey).toString();
+                sessionStorage.setItem('userInfo', encryptData);       
+                
+              },
+              error: (err)=>{this.error_msg="Une erreur s'est produite. Veuillez réessayer plus tard.", this.loaderService.hide()}
+              })
+              this.loaderService.hide();
+              this.router.navigateByUrl('/dashboard');
+            } 
+      
+          },
+    
+          error: (err)=>{this.error_msg="Une erreur s'est produite. Veuillez réessayer plus tard.",this.loaderService.hide()},
+          }
+    
+        ) 
                 
         },
-        error: (err)=>{this.error_msg="Le formulaire n'est pas conforme. Veuillez réessayer."}})
+        error: (err)=>{this.error_msg="Le formulaire n'est pas conforme. Veuillez réessayer.",this.loaderService.hide()}})
         
       }
   
