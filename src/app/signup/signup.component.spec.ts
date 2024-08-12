@@ -138,8 +138,8 @@ describe('SignupComponent', () => {
     const userInfoRequest = httpClientTesting.expectOne('http://127.0.0.1:8000/api/users?email=john@doe.fr');
     expect(userInfoRequest.request.method).toBe('GET');
     
-    const mockUserInfoResponse = { 'hydra:member': [{ id: 1, name: 'John', email: 'john@doe.fr' }] };
-    userInfoRequest.flush(mockUserInfoResponse);
+    const userInfoResponse = { 'hydra:member': [{ id: 1, name: 'John', email: 'john@doe.fr' }] };
+    userInfoRequest.flush(userInfoResponse);
 
     const storedUserInfo = sessionStorage.getItem('userInfo');
     expect(storedUserInfo).toBeTruthy();
