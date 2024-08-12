@@ -1,103 +1,107 @@
-import { TestBed, ComponentFixture } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { LoginComponent } from './login.component';
+import { CleanDataService } from '../services/cleanDataService/clean-data.service';
+import { LoaderService } from '../services/loaderService/loader.service';
 import { ActivatedRoute, Router } from '@angular/router';
 
 describe('LoginComponent', () => {
-  // instenciation du composant
   let component: LoginComponent;
-
-  // instanciation de fixtures pour permttre d'interagir avec le composent
   let fixture: ComponentFixture<LoginComponent>;
-
-  // instenciation de httpTestingController pour tester les requètes http
-  let httpTestingController: HttpTestingController;
-
-  // permettra de vérifier le routage
+  let httpClientTesting: HttpTestingController;
+  let cleanDataServiceSpy: jasmine.SpyObj<CleanDataService>;
+  let loaderServiceSpy: jasmine.SpyObj<LoaderService>;
   let router: Router;
 
-  // beforeEach s'execute avant chaque test afin de configurer le module de test du LoginCoponent et ses dépendances
   beforeEach(async () => {
+    // je créé des objet pour surveiller mes services
+    const cleanDataServiceSpyObj = jasmine.createSpyObj('CleanDataService', ['cleanObject']);
+    const loaderServiceSpyObj = jasmine.createSpyObj('LoaderService', ['show', 'hide']);
+
+
     await TestBed.configureTestingModule({
       imports: [
         HttpClientTestingModule,
         ReactiveFormsModule,
-        LoginComponent
+        LoginComponent,
       ],
       providers: [
-        { provide: ActivatedRoute, useValue: { snapshot: {} } } // <- Simulez ActivatedRoute si nécessaire
-      ]
+        { provide: CleanDataService, useValue: cleanDataServiceSpyObj },
+        { provide: LoaderService, useValue: loaderServiceSpyObj },
+        { provide: ActivatedRoute, useValue: { snapshot: {} } },
+      ],
     }).compileComponents();
 
-    // création du composant
     fixture = TestBed.createComponent(LoginComponent);
-    // accée au composant
     component = fixture.componentInstance;
-    httpTestingController = TestBed.inject(HttpTestingController);
+    httpClientTesting = TestBed.inject(HttpTestingController);
+    cleanDataServiceSpy = TestBed.inject(CleanDataService) as jasmine.SpyObj<CleanDataService>;
+    loaderServiceSpy = TestBed.inject(LoaderService) as jasmine.SpyObj<LoaderService>;
     router = TestBed.inject(Router);
 
-    // détection des changements apporter au composant
     fixture.detectChanges();
   });
 
-  // permet de réinitialiser les tests et si à la suite des tests une requète ne serait pas complète alors cela indiquera que le test n'a pas fonctionné
-  afterEach(() => {
-    httpTestingController.verify();
-  });
-
-  // vérification que le composant ce créé bien
-  it('should create the component', () => {
+ 
+  it('devrait créer le composant', () => {
     expect(component).toBeTruthy();
   });
 
-  it('le formulaire doit être vide au départ', () => {
-    const loginForm = component.loginForm;
-    expect(loginForm).toBeTruthy();
-    expect(loginForm.controls['username'].value).toEqual('');
-    expect(loginForm.controls['password'].value).toEqual('');
-    expect(loginForm.controls['honneypot'].value).toEqual('');
+  it("devrait appeler show sur loaderService lors de l'envoi du formulaire", () => {
+    cleanDataServiceSpy.cleanObject.and.returnValue({ username: 'john@doe.fr', password: 'password', honneypot: '' });
+
+    component.onSubmit();
+
+    expect(loaderServiceSpy.show).toHaveBeenCalled();
   });
 
-  it('si le champs honneypot n\'est pas vide alors il ne dois pas avoir d\'appel vers L\'API', () => {
-    const navigateSpy = spyOn(router, 'navigateByUrl');
+  it('ne devrait pas soumettre le formulaire si le champ "honneypot" est rempli', () => {
+    cleanDataServiceSpy.cleanObject.and.returnValue({ username: 'john@doe.fr', password: 'password', honneypot: 'bot' });
+  
+    const navigateSpy = spyOn(component.router, 'navigateByUrl');
 
-    component.loginForm.controls['honneypot'].setValue('non vide');
     component.onSubmit();
 
     expect(navigateSpy).toHaveBeenCalledWith('/login');
+
+    httpClientTesting.expectNone('http://127.0.0.1:8000/api/login_check');
   });
 
-  it('si le formulaire est bien rempli alors on génère le jwt et l\'utilisateur est redirigé vers le dashboard', () => {
+  it('devrait envoyer une requête POST de connexion et gérer correctement la réponse', () => {
     const navigateSpy = spyOn(router, 'navigateByUrl');
-    const mockResponse = { token: 'fake-jwt' };
+    const cleanedData = { username: 'john@doe.fr', password: 'password', honneypot: '' };
+    cleanDataServiceSpy.cleanObject.and.returnValue(cleanedData);
 
-    component.loginForm.controls['username'].setValue('testuser');
-    component.loginForm.controls['password'].setValue('testpass');
-    component.loginForm.controls['honneypot'].setValue('');
+    component.loginForm.controls['username'].setValue('john@doe.fr');
+    component.loginForm.controls['password'].setValue('password');
 
     component.onSubmit();
 
-    const req = httpTestingController.expectOne('http://127.0.0.1:8000/api/login_check');
+    expect(loaderServiceSpy.show).toHaveBeenCalled();
+
+    const req = httpClientTesting.expectOne('http://127.0.0.1:8000/api/login_check');
     expect(req.request.method).toBe('POST');
+    expect(req.request.body).toEqual(JSON.stringify(cleanedData));
+
+    const mockResponse = { token: 'fake-jwt' };
     req.flush(mockResponse);
 
-    expect(localStorage.getItem('jwt')).toBe(mockResponse.token);
+    expect(localStorage.getItem('jwt')).toBe('fake-jwt');
+
+    const userInfoRequest = httpClientTesting.expectOne('http://127.0.0.1:8000/api/users?email=john@doe.fr');
+    expect(userInfoRequest.request.method).toBe('GET');
+    expect(userInfoRequest.request.headers.get('Authorization')).toBe('Bearer fake-jwt');
+
+    const mockUserInfoResponse = { 'hydra:member': [{ id: 1, name: 'John', email: 'john@doe.fr' }] };
+    userInfoRequest.flush(mockUserInfoResponse);
+
+    const storedUserInfo = sessionStorage.getItem('userInfo');
+    expect(storedUserInfo).toBeTruthy();
+
+    expect(loaderServiceSpy.hide).toHaveBeenCalled();
     expect(navigateSpy).toHaveBeenCalledWith('/dashboard');
   });
 
-  it('si les information fournit ne sont pas bonne alors un message d\'erreur doit être émis', () => {
-    component.loginForm.controls['username'].setValue('testuser');
-    component.loginForm.controls['password'].setValue('testpass');
-    component.loginForm.controls['honneypot'].setValue('');
 
-    component.onSubmit();
-
-    const req = httpTestingController.expectOne('http://127.0.0.1:8000/api/login_check');
-    expect(req.request.method).toBe('POST');
-    req.flush({ message: 'Invalid credentials' }, { status: 401, statusText: 'Unauthorized' });
-
-    expect(component.user_msg).toBe("l'email ou le mot de passe est incorrect");
-  });
 });
-

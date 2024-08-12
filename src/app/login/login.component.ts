@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { CleanDataService } from '../services/cleanDataService/clean-data.service';
@@ -18,7 +18,7 @@ export class LoginComponent {
   ) {}
   http : HttpClient =inject(HttpClient);
   router: Router = inject(Router);
-  user_msg!: string;
+  user_msg : string = "";
 
   loginForm = new FormGroup({
     username: new FormControl(''),
@@ -29,8 +29,8 @@ export class LoginComponent {
   onSubmit() {
     this.loaderService.show();
     const form=this.CleanDataService.cleanObject(this.loginForm.value)
-    console.log(this.loginForm.value); 
-    console.log(form);
+    // console.log(this.loginForm.value); 
+    // console.log(form);
     
     if (!form['honneypot'] && form['honneypot'].length==0) {
       
@@ -45,8 +45,7 @@ export class LoginComponent {
           .subscribe({
             
             next: (response: any) => {
-            console.log(response['hydra:member'][0]);
-  
+              
             // création de la clé de décriptage grace à l'algorithme de hashage SHA256 qui fourni un hashe de 32 octet( taille max autorisé pour une clé)
             // cela permet également de ce défaire des caractères spéciaux pouvant être présent dans le jwt 
             const secretKey = CryptoJS.SHA256(resp.token).toString();
@@ -62,7 +61,7 @@ export class LoginComponent {
   
       },
 
-      error: (err)=>{this.user_msg="l'email ou le mot de passe est incorrect"},
+      error: (err)=>{this.user_msg="l'email ou le mot de passe est incorrect",this.loaderService.hide()},
       }
 
     ) 

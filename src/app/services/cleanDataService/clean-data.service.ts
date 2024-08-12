@@ -23,7 +23,7 @@ export class CleanDataService {
       if (typeof value === 'string') {
         cleanObj[key] = this.stripTags(value);
         
-      } else if (typeof value === 'object' && value !== null) {
+      } else if (typeof value === 'object') {
         // si l'élément est un objet je realise une récursive 
         cleanObj[key] = this.cleanObject(value);
       } else {
