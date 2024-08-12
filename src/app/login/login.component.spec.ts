@@ -16,8 +16,8 @@ describe('LoginComponent', () => {
 
   beforeEach(async () => {
     // je créé des objet pour surveiller mes services
-    const cleanDataServiceSpyObj = jasmine.createSpyObj('CleanDataService', ['cleanObject']);
-    const loaderServiceSpyObj = jasmine.createSpyObj('LoaderService', ['show', 'hide']);
+    cleanDataServiceSpy = jasmine.createSpyObj('CleanDataService', ['cleanObject']);
+    loaderServiceSpy = jasmine.createSpyObj('LoaderService', ['show', 'hide']);
 
 
     await TestBed.configureTestingModule({
@@ -27,8 +27,8 @@ describe('LoginComponent', () => {
         LoginComponent,
       ],
       providers: [
-        { provide: CleanDataService, useValue: cleanDataServiceSpyObj },
-        { provide: LoaderService, useValue: loaderServiceSpyObj },
+        { provide: CleanDataService, useValue: cleanDataServiceSpy },
+        { provide: LoaderService, useValue: loaderServiceSpy },
         { provide: ActivatedRoute, useValue: { snapshot: {} } },
       ],
     }).compileComponents();
