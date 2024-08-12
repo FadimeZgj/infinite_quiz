@@ -6,16 +6,16 @@
             <div class="form-group">
                 <label for="InputFirstName">Entrer votre prénom</label>
                 <input formControlName="firstname" type="text" class="form-control"
-                    aria-describedby="Saissisez votre prénom" [(value)]="user_name">
+                    aria-describedby="Saissisez votre prénom">
 
                 <label for="InputEmail1">Entrer votre Email</label>
                 <input formControlName="email" type="email" class="form-control"
-                    aria-describedby="Saissisez votre email" [(value)]="user_email">
+                    aria-describedby="Saissisez votre email">
 
                 @if ((userForm.get('email')?.errors?.['email'] || userForm.get('email')?.errors?.['required']) &&
                 userForm.get('email')?.touched){
                 <p class="errors-msg">
-                    Veuillez entrez un mail valide.
+                    Veuillez entrer un mail valide.
                 </p>
                 }
             </div>
