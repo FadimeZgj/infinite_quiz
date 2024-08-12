@@ -3,7 +3,9 @@ import { NavbarComponent } from '../navbar/navbar.component';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { JwtService } from '../services/jwtServices/jwt.service';
+import { CleanDataService } from '../services/cleanDataService/clean-data.service';
+import { LoaderService } from '../services/loaderService/loader.service';
+import * as CryptoJS from 'crypto-js';
 
 @Component({
   selector: 'app-change-password',
@@ -13,10 +15,15 @@ import { JwtService } from '../services/jwtServices/jwt.service';
   styleUrl: './change-password.component.scss'
 })
 export class ChangePasswordComponent {
+
+  constructor(private CleanDataService: CleanDataService,
+    private loaderService: LoaderService
+  ) {}
+
   formBuilder: FormBuilder = inject(FormBuilder);
   http: HttpClient = inject(HttpClient);
   router: Router = inject(Router);
-  constructor(private jwtService: JwtService) {}
+  
 
   jwt:string | null  = localStorage.getItem('jwt');
   changePw_title="Modifier mon mot de passe"
@@ -28,64 +35,61 @@ export class ChangePasswordComponent {
   noMatch : boolean = false
 
   passwordForm = new FormGroup ({
-    // plainPassword:new FormControl('', [Validators.required, Validators.pattern(/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{12,}$/)]),
-    // plainPassword:new FormControl('', [Validators.required, Validators.pattern(/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[ !"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~])/)]),
+    // plainPassword:  new FormControl('', [Validators.required, Validators.pattern(/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[\!"\#\$\%\&\'\(\)\*\+\,\-\.\/\:\;\<\=\>\?\@\[\\\]\^\_\`\{\|\}\~]).{12,}$/)]),
+    plainPassword:  new FormControl('', [Validators.required, Validators.pattern(/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[\!"\#\$\%\&\'\(\)\*\+\,\-\.\/\:\;\<\=\>\?\@\[\\\]\^\_\`\{\|\}\~])/)]),
     cpw: new FormControl('', [Validators.required]),
-    plainPassword:new FormControl('', [Validators.required]),
     honneypot: new FormControl(''),
   });
 
   ngOnInit(): void {
-
-    if (this.jwt && this.jwt?.split('.').length === 3) {
-    const decodedToken: any = this.jwtService.decode(this.jwt);
-    console.log(decodedToken);
-    
-    const username = decodedToken?.username;
-
-    this.http.get(`http://127.0.0.1:8000/api/users?email=${username}`, { headers: { Authorization: 'Bearer ' + this.jwt } })
-    .subscribe({
+    this.loaderService.show();
+    const encryptData = sessionStorage.getItem('userInfo');
+    if (this.jwt?.split('.').length === 3 && encryptData) {
+      this.loaderService.show();
+      const secretKey = CryptoJS.SHA256(this.jwt).toString();
       
-      next: (response: any) => {
-      console.log(response);
-      
-      this.userId = response['hydra:member'][0]?.id;
-     
-    },
-    error: (err)=>{this.msg="Une erreur s'est produite. Veuillez réessayer plus tard.", this.style_class="p-3 text-warning-emphasis bg-warning border border-warning-subtle rounded-3"}
-    })
+      const decryptData = CryptoJS.AES.decrypt(encryptData, secretKey);
+      const userInfos = JSON.parse(decryptData.toString(CryptoJS.enc.Utf8));
+
+      this.userId=userInfos.id;
+
+      this.loaderService.hide();
 
     } else{
+      this.loaderService.hide();
       this.router.navigateByUrl('/login');
     }
   }
 
   onSubmit() {
+    this.loaderService.show();
     this.noMatch=false
-    let formInputs=this.passwordForm.value
-    console.log(this.passwordForm.value);
-    console.log('form', this.passwordForm);
-    if (formInputs['plainPassword']!=formInputs['cpw']) {
-      this.noMatch = true;
+    let formInputs=this.CleanDataService.cleanObject(this.passwordForm.value)
 
+    if (formInputs['plainPassword']!=formInputs['cpw']) {
+      this.loaderService.hide();
+      this.noMatch = true;
     } 
-    else if(this.passwordForm.valid){
+    else if(!formInputs['honneypot'] && formInputs['honneypot'].length==0 && this.passwordForm.valid){
       delete formInputs['cpw'];
   
       this.http.patch(`http://127.0.0.1:8000/api/users/${this.userId}`,JSON.stringify(formInputs),{ headers: { Authorization: 'Bearer ' + this.jwt, 'Content-Type': 'application/merge-patch+json' } })
       .subscribe({
         
         next: (response: any) => {
-        console.log(response);
-        this.msg="Modifications réalisées avec succés"
-        this.style_class="p-3 text-success-emphasis bg-success-subtle border border-success rounded-3"     
+        this.msg="Modifications réalisées avec succès"
+        this.style_class="p-3 text-success-emphasis bg-success-subtle border border-success rounded-3",
+        this.loaderService.hide()     
       },
-      error: (err)=>{this.msg="Une erreur s'est produite. Veuillez réessayer plus tard.", this.style_class="p-3 text-warning-emphasis bg-warning border border-warning-subtle rounded-3"}
+      error: (err)=>{this.msg="Une erreur s'est produite. Veuillez réessayer plus tard.", 
+        this.style_class="p-3 text-warning-emphasis bg-warning border border-warning-subtle rounded-3",
+        this.loaderService.hide()}
       });
 
       }
     
     else{
+      this.loaderService.hide();
       this.router.navigateByUrl('/login');
       
     }
