@@ -1,4 +1,4 @@
-import { TestBed, ComponentFixture } from '@angular/core/testing';
+import { TestBed, ComponentFixture, tick, fakeAsync } from '@angular/core/testing';
 import { LogoutComponent } from './logout.component';
 import { LoaderService } from '../services/loaderService/loader.service';
 import { SessionDestroyService } from '../services/sessionDestroyService/session-destroy.service';
@@ -69,11 +69,13 @@ describe('LogoutComponent', () => {
     expect(loaderServiceSpy.hide).toHaveBeenCalled();
   });
 
-  it("devrait rediriger vers /login si le JWT est invalide ou absent", () => {
+  it("devrait rediriger vers /login si le JWT est invalide ou absent", fakeAsync(() => {
     spyOn(sessionStorage, 'getItem').and.returnValue(null); // Absence de données utilisateur
     component.jwt = ''; 
 
     component.ngOnInit(); 
+    tick(); //Simule le delais de traitement et ne peut être utilisé qu'avec fakAsync
+    // ils assurent que les fonctions asynchrone tel ngOnInit ce termine complettement avant de passé à la suite du test
 
     expect(loaderServiceSpy.hide).toHaveBeenCalled();
     expect(sessionDestroyServiceSpy.sessionDestroy).toHaveBeenCalled();
@@ -83,17 +85,19 @@ describe('LogoutComponent', () => {
     router.navigateByUrl('/login').then(() => {
       expect(location.path()).toBe('/login');
     });
-  });
+  }));
 
-  it('devrait rediriger vers /login lors de l\'appel de onSubmit', () => {
+  it('devrait rediriger vers /login lors de l\'appel de onSubmit', fakeAsync(() => {
     component.onSubmit(); 
-
+    tick();//Simule le delais de traitement et ne peut être utilisé qu'avec fakAsync
+    // ils assurent que les fonctions asynchrone tel ngOnInit ce termine complettement avant de passé à la suite du test
+    
     expect(sessionDestroyServiceSpy.sessionDestroy).toHaveBeenCalled();
-
+    
     // Vérifie la redirection après l'appel de onSubmit()
      // Le .then permet d'attendre que la redirection se fasse avant de vérifié l'url
     router.navigateByUrl('/login').then(() => {
       expect(location.path()).toBe('/login');
     });
-  });
+  }));
 });
