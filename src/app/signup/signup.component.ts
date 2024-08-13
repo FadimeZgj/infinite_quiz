@@ -5,6 +5,7 @@ import { Router, RouterLink } from '@angular/router';
 import { CleanDataService } from '../services/cleanDataService/clean-data.service';
 import { LoaderService } from '../services/loaderService/loader.service';
 import * as CryptoJS from 'crypto-js';
+import { SessionDestroyService } from '../services/sessionDestroyService/session-destroy.service';
 
 @Component({
   selector: 'app-signup',
@@ -16,7 +17,8 @@ import * as CryptoJS from 'crypto-js';
 export class SignupComponent {
 
   constructor(private CleanDataService: CleanDataService,
-    private loaderService: LoaderService
+    private loaderService: LoaderService,
+    private sessionDestroyService: SessionDestroyService
   ) {}
 
   http : HttpClient =inject(HttpClient);
@@ -46,6 +48,7 @@ export class SignupComponent {
         
     if (formInputs['honneypot'] && formInputs['honneypot'].length > 0) {
       this.loaderService.hide();
+      this.sessionDestroyService.sessionDestroy();
       this.router.navigateByUrl('/login');
 
     } else {
@@ -69,10 +72,7 @@ export class SignupComponent {
   
         this.http.post<any>('http://127.0.0.1:8000/api/users',JSON.stringify(formInputs), {headers: {'Content-Type': 'application/ld+json' }}).subscribe({
           next: (resp) =>{
-         
-          console.log("inscrit");
-
-          
+                   
           this.http.post<any>('http://127.0.0.1:8000/api/login_check',JSON.stringify(user), {headers: {'Content-Type': 'application/ld+json' }})
           .subscribe({
             next :  (resp) => {

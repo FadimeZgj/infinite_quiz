@@ -3,6 +3,7 @@ import { NavbarComponent } from '../navbar/navbar.component';
 import { Router, RouterLink } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { jwtDecode } from 'jwt-decode';
+import { SessionDestroyService } from '../services/sessionDestroyService/session-destroy.service';
 
 @Component({
   selector: 'app-setting',
@@ -12,6 +13,10 @@ import { jwtDecode } from 'jwt-decode';
   styleUrl: './setting.component.scss'
 })
 export class SettingComponent {
+  constructor(
+    private sessionDestroyService: SessionDestroyService
+  ) {}
+
   http: HttpClient = inject(HttpClient);
   router: Router = inject(Router);
   setting_title="Paramètres"
@@ -37,7 +42,7 @@ export class SettingComponent {
 
         this.http.delete(`http://127.0.0.1:8000/api/users/${userId}`, { headers: { Authorization: 'Bearer ' + jwt} })
         .subscribe((response: any) => {
-        localStorage.removeItem("jwt");
+        this.sessionDestroyService.sessionDestroy();
         this.router.navigateByUrl('/signup');
         
         })

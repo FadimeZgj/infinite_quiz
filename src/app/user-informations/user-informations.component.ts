@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { CleanDataService } from '../services/cleanDataService/clean-data.service';
 import { LoaderService } from '../services/loaderService/loader.service';
 import * as CryptoJS from 'crypto-js';
+import { SessionDestroyService } from '../services/sessionDestroyService/session-destroy.service';
 
 @Component({
   selector: 'app-user-informations',
@@ -17,7 +18,8 @@ import * as CryptoJS from 'crypto-js';
 export class UserInformationsComponent implements OnInit {
 
   constructor(private CleanDataService: CleanDataService,
-    private loaderService: LoaderService
+    private loaderService: LoaderService,
+    private sessionDestroyService: SessionDestroyService
   ) {}
   
   formBuilder: FormBuilder = inject(FormBuilder);
@@ -62,6 +64,7 @@ export class UserInformationsComponent implements OnInit {
 
     } else{
       this.loaderService.hide();
+      this.sessionDestroyService.sessionDestroy();
       this.router.navigateByUrl('/login');
     }
   }
@@ -96,6 +99,7 @@ export class UserInformationsComponent implements OnInit {
      
    } else {
     this.loaderService.hide();
+    this.sessionDestroyService.sessionDestroy();
     this.router.navigateByUrl('/login');
    }
     

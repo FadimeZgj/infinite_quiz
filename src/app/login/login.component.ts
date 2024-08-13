@@ -5,6 +5,7 @@ import { Router, RouterLink } from '@angular/router';
 import { CleanDataService } from '../services/cleanDataService/clean-data.service';
 import * as CryptoJS from 'crypto-js';
 import { LoaderService } from '../services/loaderService/loader.service';
+import { SessionDestroyService } from '../services/sessionDestroyService/session-destroy.service';
 @Component({
   selector: 'app-login',
   standalone: true,
@@ -14,7 +15,8 @@ import { LoaderService } from '../services/loaderService/loader.service';
 })
 export class LoginComponent {
   constructor(private CleanDataService: CleanDataService,
-    private loaderService: LoaderService
+    private loaderService: LoaderService,
+    private sessionDestroyService: SessionDestroyService
   ) {}
   http : HttpClient =inject(HttpClient);
   router: Router = inject(Router);
@@ -66,6 +68,7 @@ export class LoginComponent {
 
     ) 
     } else {
+      this.sessionDestroyService.sessionDestroy();
       this.router.navigateByUrl('/login');
     }
     
