@@ -40,7 +40,7 @@ describe('UserInformationsComponent', () => {
 
   it("devrait initialiser les informations utilisateur dans ngOnInit et les afficher dans les champs du formulaire", () => {
     const userInfos = {
-      id: '123',
+      id: '1',
       email: 'john@doe.fr',
       firstname: 'John'
     };
@@ -68,7 +68,7 @@ describe('UserInformationsComponent', () => {
   });
 
   it("ne devrait pas soummettre le formulaire si honneypot n'est pas vide", () => {
-    component.userId = '123';
+    component.userId = '1';
     component.jwt = 'valid.jwt.token';
 
     const formvalue = {
@@ -96,7 +96,7 @@ describe('UserInformationsComponent', () => {
   
 
   it('devrait soumettre le formulaire si le formulaire est valide', () => {
-    component.userId = '123';
+    component.userId = '1';
     component.jwt = 'valid.jwt.token';
     component.userForm.setValue({
       firstname: 'John',
@@ -123,7 +123,7 @@ describe('UserInformationsComponent', () => {
   });
   
   it('devrait afficher un message en cas de problème lors de la soumission', () => {
-    component.userId = '123';
+    component.userId = '1';
     component.jwt = 'valid.jwt.token';
     component.userForm.setValue({
       firstname: 'John',
