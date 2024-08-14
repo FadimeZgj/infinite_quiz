@@ -12,18 +12,19 @@
       <table class="table">
         <tbody formArrayName="responses">
           @for (response of getResponses(i).controls; let j=$index; track j) {
-            <ng-container >
-          <tr>
-            <th><label for="TextInput1" class="form-label">Proposition {{j + 1}} </label></th>
-            <th><label for="checkInput" class="form-label ps-5">Bonne(s) réponse(s)</label></th>
-          </tr>
-          <tr [formGroupName]="j">
-            <td class="w-75"><input type="text" id="TextInput1" class="form-control" formControlName="response"></td>
-            <td class="ps-5"><input type="checkbox" class="form-check-input" id="checkInput" formControlName="correct">
-            </td>
-          </tr>
+          <ng-container>
+            <tr>
+              <th><label for="TextInput1" class="form-label">Proposition {{j + 1}} </label></th>
+              <th><label for="checkInput" class="form-label ps-5">Bonne(s) réponse(s)</label></th>
+            </tr>
+            <tr [formGroupName]="j">
+              <td class="w-75"><input type="text" id="TextInput1" class="form-control" formControlName="response"></td>
+              <td class="ps-5"><input type="checkbox" class="form-check-input" id="checkInput"
+                  formControlName="correct">
+              </td>
+            </tr>
           </ng-container>
-        }
+          }
         </tbody>
       </table>
     </div>

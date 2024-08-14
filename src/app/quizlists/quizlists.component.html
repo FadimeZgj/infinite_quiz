@@ -1,27 +1,34 @@
 <app-navbar [title]="quizlists_title"></app-navbar>
 
 <div class="container">
-    <form class="d-flex w-50 mt-5" role="search">
+  <form class="d-flex w-50 mt-5" role="search" (ngSubmit)="searchQuizzes()">
 
-        <div class="input-group me-2">
-        <span class="input-group-text"><i class="bi bi-search"></i></span>
-        <input class="form-control" type="search" placeholder="Rédiger ici votre recherche" aria-label="Rédiger ici votre recherche">
-        </div>
-        <button class="btn btn-sm btn-outline-secondary" type="submit">recherche</button>       
-      </form>
+    <div class="input-group me-2">
+      <span class="input-group-text"><i class="bi bi-search"></i></span>
+      <input class="form-control" type="search" placeholder="Rédiger ici votre recherche"
+        aria-label="Rédiger ici votre recherche" [(ngModel)]="searchTerm" name="search">
+    </div>
+    <button class="btn btn-sm btn-outline-secondary" type="submit">recherche</button>
+  </form>
 
-      @for (quiz of listQuiz ; track quiz.id) {
-      <div class="card-list d-flex flex-md-row flex-column justify-content-between align-items-center">
-        <div>
-            <h2>N° du quiz : {{quiz.id}}</h2>
-            <h3>{{quiz.title}}</h3>
-            <p class="quiz-type">{{quiz.group ? "En équipe" : "En solo"}}</p>
-        </div>
-        <div class="icons-card-list">
-          <a class="icons details" routerLink="/questionlist/{{quiz.id}}"><i class="bi bi-eye fs-2"></i><span>Voir le détail</span></a>
-          <a class=" icons play" routerLink="/startgame/{{quiz.id}}"> <i class="bi bi-play-circle fs-2"></i> <span>Jouer</span></a>
-        </div>
-      </div>
-    }
+  @if (filteredQuizzes.length > 0) {
+  @for (quiz of filteredQuizzes; track trackById) {
+  <div class="card-list d-flex flex-md-row flex-column justify-content-between align-items-center">
+    <div>
+      <h2>N° du quiz : {{quiz.id}}</h2>
+      <h3>{{quiz.title}}</h3>
+      <p class="quiz-type">{{quiz.group ? "En équipe" : "En solo"}}</p>
+    </div>
+    <div class="icons-card-list">
+      <a class="icons details" routerLink="/questionlist/{{quiz.id}}"><i class="bi bi-eye fs-2"></i><span>Voir le
+          détail</span></a>
+      <a class=" icons play" routerLink="/startgame/{{quiz.id}}"> <i class="bi bi-play-circle fs-2"></i>
+        <span>Jouer</span></a>
+    </div>
+  </div>
+  }
+  }
+  <ng-template #noResults>
+    <p>Aucun quiz disponible</p>
+  </ng-template>
 </div>
-

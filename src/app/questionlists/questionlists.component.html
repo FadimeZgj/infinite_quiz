@@ -2,21 +2,61 @@
 
 <div class="container">
   <div class="d-flex flex-column flex-md-row justify-content-between align-items-center">
-    <a class="add-quesstion-btn text-center p-2 my-4" routerLink="/addquestion/{{quizId}}" > <i class="bi bi-plus-lg"></i> Ajouter une question</a>
-    <a type="button" data-bs-toggle="modal" data-bs-target="#exampleModal" class="delete-quiz-btn text-center p-2 my-4" >Supprimer le quiz</a>
+    <a class="add-quesstion-btn text-center p-2 my-4" routerLink="/addquestion/{{quizId}}"> <i
+        class="bi bi-plus-lg"></i> Ajouter une question</a>
+    <a type="button" data-bs-toggle="modal" data-bs-target="#exampleModal"
+      class="delete-quiz-btn text-center p-2 my-4">Supprimer le quiz</a>
   </div>
   @for (question of questionTitles; track $index) {
   <div class="card-list d-flex flex-lg-row flex-column justify-content-between align-items-center">
-    <h2 class="question">{{question}}</h2>
+    <h2 class="question">{{question.title}}</h2>
     <div class="icons-card-list">
-      <a href="http://" class="icons details"><i class="bi bi-eye fs-2"></i><span>Voir le détail</span></a>
-      <a href="http://" class=" icons delete-question"> <i class="bi bi-x-circle fs-2"></i> <span>Supprimer</span></a>
+      <a (click)="onViewQuestionDetails(question.id)" class="icons details" data-bs-toggle="modal"
+        data-bs-target="#viewDetail"><i class="bi bi-eye fs-2"></i><span>Voir le détail</span></a>
+      <a (click)="onDeleteQuestion(question.id)" class=" icons delete-question"> <i class="bi bi-x-circle fs-2"></i>
+        <span>Supprimer</span></a>
     </div>
   </div>
   }
 </div>
 
-<!-- Modal -->
+<!-- Modal voir détail -->
+<div class="modal fade" id="viewDetail" tabindex="-1" aria-labelledby="viewDetailLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="viewDetailLabel">Détails de la question</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <h2>{{selectedQuestionDetails?.question}}</h2>
+        <div class="d-flex justify-content-end">
+          <h3 class="fs-5">Bonne réponse</h3>
+        </div>
+        @for (answer of selectedQuestionResponses; track $index) {
+        <div class="d-flex justify-content-between">
+          <p>{{answer.response}}</p>
+          <div>
+            @if (answer.correct === true) {
+            <input type="checkbox" checked disabled>
+            }
+            @else {
+            <input type="checkbox" disabled>
+            }
+          </div>
+        </div>
+        }
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="cancel-removal-btn" data-bs-dismiss="modal">Fermer</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<!-- Modal suppression quiz -->
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -29,7 +69,8 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="cancel-removal-btn" data-bs-dismiss="modal">Annuler</button>
-        <button type="button" class="confirm-quiz-btn" (click)="onDeleteQuiz()" data-bs-dismiss="modal">Supprimer</button>
+        <button type="button" class="confirm-quiz-btn" (click)="onDeleteQuiz()"
+          data-bs-dismiss="modal">Supprimer</button>
       </div>
     </div>
   </div>
