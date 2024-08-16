@@ -24,6 +24,10 @@
             color: #9d2e33;
         }
 
+        .infos{
+            font-size: small;
+        }
+
         .signup-btn {
             @include button-style($yellow, $yellow, $nav-font-color, false);
 
