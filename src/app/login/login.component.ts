@@ -31,9 +31,7 @@ export class LoginComponent {
   onSubmit() {
     this.loaderService.show();
     const form=this.CleanDataService.cleanObject(this.loginForm.value)
-    // console.log(this.loginForm.value); 
-    // console.log(form);
-    
+
     if (!form['honneypot'] && form['honneypot'].length==0) {
       
       this.http.post<any>('http://127.0.0.1:8000/api/login_check',JSON.stringify(form), {headers: {'Content-Type': 'application/ld+json' }})
@@ -52,13 +50,14 @@ export class LoginComponent {
             // cela permet également de ce défaire des caractères spéciaux pouvant être présent dans le jwt 
             const secretKey = CryptoJS.SHA256(resp.token).toString();
             const encryptData = CryptoJS.AES.encrypt(JSON.stringify(response['hydra:member'][0]), secretKey).toString();
-            sessionStorage.setItem('userInfo', encryptData);       
-            
+            sessionStorage.setItem('userInfo', encryptData);
+
+            this.loaderService.hide();
+            this.router.navigateByUrl('/dashboard');
           },
           error: (err)=>{this.user_msg="Une erreur s'est produite. Veuillez réessayer plus tard.", this.loaderService.hide()}
           })
-          this.loaderService.hide();
-          this.router.navigateByUrl('/dashboard');
+          
         } 
   
       },
