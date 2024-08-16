@@ -84,8 +84,8 @@ describe('LoginComponent', () => {
     expect(req.request.method).toBe('POST');
     expect(req.request.body).toEqual(JSON.stringify(cleanedData));
 
-    const mockResponse = { token: 'fake-jwt' };
-    req.flush(mockResponse);
+    const response = { token: 'fake-jwt' };
+    req.flush(response);
 
     expect(localStorage.getItem('jwt')).toBe('fake-jwt');
 
@@ -93,8 +93,8 @@ describe('LoginComponent', () => {
     expect(userInfoRequest.request.method).toBe('GET');
     expect(userInfoRequest.request.headers.get('Authorization')).toBe('Bearer fake-jwt');
 
-    const mockUserInfoResponse = { 'hydra:member': [{ id: 1, name: 'John', email: 'john@doe.fr' }] };
-    userInfoRequest.flush(mockUserInfoResponse);
+    const userInfoResponse = { 'hydra:member': [{ id: 1, name: 'John', email: 'john@doe.fr' }] };
+    userInfoRequest.flush(userInfoResponse);
 
     const storedUserInfo = sessionStorage.getItem('userInfo');
     expect(storedUserInfo).toBeTruthy();
