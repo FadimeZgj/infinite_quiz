@@ -4,6 +4,7 @@ import { Router, RouterLink } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { jwtDecode } from 'jwt-decode';
 import { SessionDestroyService } from '../services/sessionDestroyService/session-destroy.service';
+import { Meta, Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-setting',
@@ -14,14 +15,29 @@ import { SessionDestroyService } from '../services/sessionDestroyService/session
 })
 export class SettingComponent {
   constructor(
+    private meta: Meta,
+    private title: Title,
     private sessionDestroyService: SessionDestroyService
   ) {}
+
+  private setMetaData() {
+    this.title.setTitle('Paramètres de compte - Infinite Quiz');
+    this.meta.addTags([
+      { name: 'description', content: 'Gérez vos paramètres de compte et supprimez votre compte si nécessaire. Assurez-vous de sauvegarder vos données avant la suppression.' },
+      { name: 'robots', content: 'noindex, nofollow' } // Empêche l'indexation de cette page, car elle est privée
+    ]);
+  }
 
   http: HttpClient = inject(HttpClient);
   router: Router = inject(Router);
   setting_title="Paramètres"
   message = "Vous allez supprimer votre compte ?"
   style_class = "fs-1 text-center text-danger"
+
+  ngOnInit(): void {
+    this.setMetaData();
+  }
+
 
   onDelete(){
 
@@ -31,7 +47,7 @@ export class SettingComponent {
       const decodedToken: any = jwtDecode(jwt);
       const username = decodedToken?.username;
 
-      if (jwt) {
+      if (jwt && jwt.split('.').length === 3) {
 
         this.http.get(`http://127.0.0.1:8000/api/users?email=${username}`, { headers: { Authorization: 'Bearer ' + jwt } })
       .subscribe({

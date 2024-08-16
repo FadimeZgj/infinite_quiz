@@ -7,6 +7,7 @@ import { CleanDataService } from '../services/cleanDataService/clean-data.servic
 import { LoaderService } from '../services/loaderService/loader.service';
 import * as CryptoJS from 'crypto-js';
 import { SessionDestroyService } from '../services/sessionDestroyService/session-destroy.service';
+import { Meta, Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-user-informations',
@@ -17,7 +18,10 @@ import { SessionDestroyService } from '../services/sessionDestroyService/session
 })
 export class UserInformationsComponent implements OnInit {
 
-  constructor(private CleanDataService: CleanDataService,
+  constructor(
+    private meta: Meta,
+    private title: Title,
+    private CleanDataService: CleanDataService,
     private loaderService: LoaderService,
     private sessionDestroyService: SessionDestroyService
   ) {}
@@ -26,13 +30,21 @@ export class UserInformationsComponent implements OnInit {
   http: HttpClient = inject(HttpClient);
   router: Router = inject(Router);
 
+  private setMetaData() {
+    this.title.setTitle('Modification des Informations - Infinite Quiz');
+    this.meta.addTags([
+      { name: 'description', content: 'Modifiez vos informations personnelles dans votre espace utilisateur. Assurez-vous que vos données sont à jour et exactes.' },
+      { name: 'robots', content: 'noindex, nofollow' } // Ne pas indexer cette page
+    ]);
+  }
+
   user_information="Mes informations";
   msg = "";
   style_class ="";
   userId =""
   user_name ="";
   user_email = "";
-  jwt:string | null  = localStorage.getItem('jwt');
+  jwt = localStorage.getItem('jwt');
   
   userForm  = this.formBuilder.group({
     firstname: [''],
@@ -41,6 +53,7 @@ export class UserInformationsComponent implements OnInit {
   });
 
   ngOnInit(): void {
+    this.setMetaData();
     
     const encryptData = sessionStorage.getItem('userInfo');
     if (this.jwt?.split('.').length === 3 && encryptData) {
@@ -86,7 +99,6 @@ export class UserInformationsComponent implements OnInit {
    .subscribe({
      
      next: (response: any) => {
-      this.loaderService.hide();
       this.msg="Modifications réalisées avec succès"
       this.style_class="p-3 text-success-emphasis bg-success-subtle border border-success rounded-3",
       this.loaderService.hide()     

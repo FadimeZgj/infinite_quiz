@@ -4,6 +4,7 @@ import { LoaderService } from '../services/loaderService/loader.service';
 import { Router } from '@angular/router';
 import * as CryptoJS from 'crypto-js';
 import { SessionDestroyService } from '../services/sessionDestroyService/session-destroy.service';
+import { Meta, Title } from '@angular/platform-browser';
 
 
 @Component({
@@ -15,9 +16,19 @@ import { SessionDestroyService } from '../services/sessionDestroyService/session
 })
 export class LogoutComponent {
   constructor(
+    private meta: Meta,
+    private title: Title,
     private loaderService: LoaderService,
     private sessionDestroyService: SessionDestroyService
   ) {}
+
+  private setMetaData() {
+    this.title.setTitle('Déconnexion - Infinite Quiz');
+    this.meta.addTags([
+      { name: 'description', content: 'Déconnectez-vous de votre compte. Assurez-vous de sauvegarder vos données avant de quitter.' },
+      { name: 'robots', content: 'noindex, nofollow' } // Empêche l'indexation de cette page
+    ]);
+  }
 
   router: Router = inject(Router);
 
@@ -26,10 +37,13 @@ export class LogoutComponent {
   user_name ="";
   user_email = "";
   user_badge=""
-  jwt:string | null  = localStorage.getItem('jwt');
+  jwt = localStorage.getItem('jwt');
 
   ngOnInit(): void {
+    this.setMetaData();
+
     this.loaderService.show();
+    
     const encryptData = sessionStorage.getItem('userInfo');
     if (this.jwt?.split('.').length === 3 && encryptData) {
       const secretKey = CryptoJS.SHA256(this.jwt).toString();

@@ -7,6 +7,7 @@ import { CleanDataService } from '../services/cleanDataService/clean-data.servic
 import { LoaderService } from '../services/loaderService/loader.service';
 import * as CryptoJS from 'crypto-js';
 import { SessionDestroyService } from '../services/sessionDestroyService/session-destroy.service';
+import { Meta, Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-change-password',
@@ -17,10 +18,21 @@ import { SessionDestroyService } from '../services/sessionDestroyService/session
 })
 export class ChangePasswordComponent {
 
-  constructor(private CleanDataService: CleanDataService,
+  constructor(
+    private meta: Meta,
+    private title: Title,
+    private CleanDataService: CleanDataService,
     private loaderService: LoaderService,
     private sessionDestroyService: SessionDestroyService
   ) {}
+
+  private setMetaData() {
+    this.title.setTitle('Modifier mon mot de passe - Infinite Quiz');
+    this.meta.addTags([
+      { name: 'description', content: 'Modifiez votre mot de passe pour votre compte sur notre application. Assurez-vous de choisir un mot de passe fort et sécurisé.' },
+      { name: 'robots', content: 'noindex, nofollow' } // Empêche l'indexation de cette page, car elle est privée
+    ]);
+  }
 
   formBuilder: FormBuilder = inject(FormBuilder);
   http: HttpClient = inject(HttpClient);
@@ -44,7 +56,10 @@ export class ChangePasswordComponent {
   });
 
   ngOnInit(): void {
+    this.setMetaData();
+
     this.loaderService.show();
+
     const encryptData = sessionStorage.getItem('userInfo');
     if (this.jwt?.split('.').length === 3 && encryptData) {
       this.loaderService.show();

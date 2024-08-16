@@ -6,6 +6,7 @@ import { CleanDataService } from '../services/cleanDataService/clean-data.servic
 import { LoaderService } from '../services/loaderService/loader.service';
 import * as CryptoJS from 'crypto-js';
 import { SessionDestroyService } from '../services/sessionDestroyService/session-destroy.service';
+import { Meta, Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-signup',
@@ -16,10 +17,22 @@ import { SessionDestroyService } from '../services/sessionDestroyService/session
 })
 export class SignupComponent {
 
-  constructor(private CleanDataService: CleanDataService,
+  constructor(
+    private meta: Meta,
+    private title: Title,
+    private CleanDataService: CleanDataService,
     private loaderService: LoaderService,
     private sessionDestroyService: SessionDestroyService
   ) {}
+
+  private setMetaData() {
+    this.title.setTitle('Inscription - Créez vos quiz facilement avec Infinite Quiz');
+    this.meta.addTags([
+      { name: 'description', content: 'Inscrivez-vous pour accéder à notre service. Remplissez le formulaire d’inscription avec vos informations personnelles pour créer un compte.' },
+      { name: 'keywords', content: 'inscription, quiz, création de quiz, gestion de quiz' },
+      { name: 'robots', content: 'index, follow' } // Permet l'indexation de cette page
+    ]);
+  }
 
   http : HttpClient =inject(HttpClient);
   router : Router = inject(Router);
@@ -33,6 +46,10 @@ export class SignupComponent {
     cpw: new FormControl('', [Validators.required, ]),
     honneypot: new FormControl(''),
   });
+
+  ngOnInit(): void {
+    this.setMetaData();
+  }
 
   onSubmit() {
 

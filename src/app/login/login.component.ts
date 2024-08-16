@@ -6,6 +6,7 @@ import { CleanDataService } from '../services/cleanDataService/clean-data.servic
 import * as CryptoJS from 'crypto-js';
 import { LoaderService } from '../services/loaderService/loader.service';
 import { SessionDestroyService } from '../services/sessionDestroyService/session-destroy.service';
+import { Meta, Title } from '@angular/platform-browser';
 @Component({
   selector: 'app-login',
   standalone: true,
@@ -14,10 +15,23 @@ import { SessionDestroyService } from '../services/sessionDestroyService/session
   styleUrl: './login.component.scss',
 })
 export class LoginComponent {
-  constructor(private CleanDataService: CleanDataService,
+  constructor(
+    private meta: Meta,
+    private title: Title,
+    private CleanDataService: CleanDataService,
     private loaderService: LoaderService,
     private sessionDestroyService: SessionDestroyService
   ) {}
+
+  private setMetaData() {
+    this.title.setTitle('Login - Créez vos quiz facilement avec Infinite Quiz');
+    this.meta.addTags([
+      { name: 'description', content: 'Connectez-vous pour accéder à vos quiz et commencer à créer de nouveaux défis. Découvrez comment créer des quiz amusants et engageants.' },
+      { name: 'keywords', content: 'connexion, quiz, création de quiz, gestion de quiz' },
+      { name: 'robots', content: 'index, follow' } // Permet l'indexation de la page de bienvenue
+    ]);
+  }
+
   http : HttpClient =inject(HttpClient);
   router: Router = inject(Router);
   user_msg : string = "";
@@ -27,6 +41,10 @@ export class LoginComponent {
     password:  new FormControl(''),
     honneypot: new FormControl(''),
   });
+
+  ngOnInit(): void {
+    this.setMetaData();
+  }
 
   onSubmit() {
     this.loaderService.show();
