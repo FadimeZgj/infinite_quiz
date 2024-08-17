@@ -1,10 +1,10 @@
 <app-navbar [title]="logout_title"></app-navbar>
 
 <div class="div-form d-flex justify-center align-items-center">
-    <form class="card-profile p-5 m-auto d-flex flex-column align-items-center">
+    <div class="card-profile p-5 m-auto d-flex flex-column align-items-center">
         <h2>{{user_name}}</h2>
         <p>{{user_email}}</p>
         <p>{{user_badge}}</p>
-        <button type="submit" (click)="onSubmit()" class="m-3 logout-btn">Déconnexion</button>
-    </form>
+        <button type="button" (click)="onSubmit()" class="m-3 logout-btn">Déconnexion</button>
+    </div>
 </div>
