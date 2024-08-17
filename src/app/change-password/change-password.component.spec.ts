@@ -41,7 +41,7 @@ describe('ChangePasswordComponent', () => {
 
   it("devrait initialiser les informations utilisateur dans ngOnInit", () => {
     const userInfos = {
-      id: '123',
+      id: '1',
     };
     component.jwt = 'valid.jwt.token';
     spyOn(sessionStorage, 'getItem').and.returnValue(CryptoJS.AES.encrypt(JSON.stringify(userInfos), CryptoJS.SHA256(component.jwt).toString()).toString());
@@ -81,7 +81,7 @@ describe('ChangePasswordComponent', () => {
   });
 
   it("ne devrait pas soummettre le formulaire si honneypot n'est pas vide", () => {
-    component.userId = '123';
+    component.userId = '1';
     component.jwt = 'valid.jwt.token';
 
     const formvalue = {
@@ -109,7 +109,7 @@ describe('ChangePasswordComponent', () => {
   
 
   it('devrait soumettre le formulaire si le formulaire est valide', () => {
-    component.userId = '123';
+    component.userId = '1';
     component.jwt = 'valid.jwt.token';
     component.passwordForm.setValue({
       plainPassword: 'Password123!',
@@ -136,7 +136,7 @@ describe('ChangePasswordComponent', () => {
   });
   
   it('devrait afficher un message en cas de problème lors de la soumission', () => {
-    component.userId = '123';
+    component.userId = '1';
     component.jwt = 'valid.jwt.token';
     component.passwordForm.setValue({
       plainPassword: 'Password123!',
