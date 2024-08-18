@@ -1,0 +1,42 @@
+@import "../../app.component.scss";
+.div-form {
+    background-color: $purple;
+    height: 100vh;
+
+    form {
+
+        @include card-style(360px, auto, white,white, 30px);
+        box-shadow: $shadow;
+
+        label {
+            color: $purple;
+            margin-top: 3%;
+        }
+
+        input {
+            @include input-style(314px)
+ 
+        }
+
+        .errors-msg{
+            margin: auto;
+            font-size: medium;
+            color: #9d2e33;
+        }
+
+        .infos{
+            font-size: small;
+        }
+
+        .signup-btn {
+            @include button-style($yellow, $yellow, $nav-font-color, false);
+
+        }
+
+        .cancel-btn {
+            @include button-style($yellow, white, $nav-font-color, true);
+        }
+
+
+    }
+}

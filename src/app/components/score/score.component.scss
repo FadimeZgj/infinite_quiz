@@ -1,0 +1,23 @@
+@import "../../app.component.scss";
+
+.div-score{
+    height: 100vh;
+
+    .card-score{
+        @include card-style(auto, auto, none, none, 30px);
+
+        // img{
+        //     width: 160px;
+        //     height: 160px;
+        // }
+
+        .team_name{
+            color: $purple;
+        }
+        .btn-rating{
+            @include button-style($purple,$purple,white, false);
+            text-decoration: none;
+            text-align: center;
+        }
+    }
+}

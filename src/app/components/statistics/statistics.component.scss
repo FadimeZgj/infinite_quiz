@@ -1,0 +1,27 @@
+@import "../../app.component.scss";
+
+.card-quiz{
+   @include card-style(280px, auto, white, $purple, 30px);
+
+
+   .card-title{
+      background-color: $purple;
+      color: white;
+      border-radius: 28px 28px 0px 0px;
+      text-align: center;
+
+   }
+
+   div>img{
+      width: 80px;
+      height: 80px;
+   }
+   h2,h3{
+      font-size: 24px;
+   }
+
+   p{
+      font-size: 20px;
+   }
+
+}

@@ -1,0 +1,29 @@
+@import "../../app.component.scss";
+
+.dashboard{
+
+  margin-top: 10%;
+    .card{
+        border: none;
+        height: 280px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+
+        background-color: $yellow;
+        .dashboard-btn{
+            text-decoration: none;
+            @include button-style($purple,$purple,white,false);
+            width: 160px;
+            align-content: center;
+            text-align: center;
+        }
+    }
+
+}
+    
+    
+
+

@@ -7,17 +7,17 @@ export const routes: Routes = [
   {
     path: 'login',
     loadComponent: () =>
-      import('./login/login.component').then((m) => m.LoginComponent),
+      import('./components/login/login.component').then((m) => m.LoginComponent),
   },
   {
     path: 'signup',
     loadComponent: () =>
-      import('./signup/signup.component').then((m) => m.SignupComponent),
+      import('./components/signup/signup.component').then((m) => m.SignupComponent),
   },
   {
     path: 'dashboard',
     loadComponent: () =>
-      import('./dashboard/dashboard.component').then(
+      import('./components/dashboard/dashboard.component').then(
         (m) => m.DashboardComponent
       ),
       canActivate: [userGuard],
@@ -26,7 +26,7 @@ export const routes: Routes = [
       {
         path: ':id',
         loadComponent: () =>
-          import('./dashboard/dashboard.component').then(
+          import('./components/dashboard/dashboard.component').then(
             (m) => m.DashboardComponent
           ),
       },
@@ -35,7 +35,7 @@ export const routes: Routes = [
   {
     path: 'quizlists',
     loadComponent: () =>
-      import('./quizlists/quizlists.component').then(
+      import('./components/quizlists/quizlists.component').then(
         (m) => m.QuizlistsComponent
       ),canActivate: [userGuard],
       
@@ -43,7 +43,7 @@ export const routes: Routes = [
   {
     path: 'questionlist',
     loadComponent: () =>
-      import('./questionlists/questionlists.component').then(
+      import('./components/questionlists/questionlists.component').then(
         (m) => m.QuestionlistsComponent
       ),
       canActivate: [userGuard],
@@ -52,7 +52,7 @@ export const routes: Routes = [
       {
         path: ':id',
         loadComponent: () =>
-          import('./questionlists/questionlists.component').then(
+          import('./components/questionlists/questionlists.component').then(
             (m) => m.QuestionlistsComponent
           ),
       },
@@ -61,14 +61,14 @@ export const routes: Routes = [
   {
     path: 'addquiz',
     loadComponent: () =>
-      import('./add-quiz/add-quiz.component').then((m) => m.AddQuizComponent),
+      import('./components/add-quiz/add-quiz.component').then((m) => m.AddQuizComponent),
     canActivate: [userGuard],
     
   },
   {
     path: 'addquestion',
     loadComponent: () =>
-      import('./addquestion/addquestion.component').then(
+      import('./components/addquestion/addquestion.component').then(
         (m) => m.AddquestionComponent
       ),
       canActivate: [userGuard],
@@ -77,7 +77,7 @@ export const routes: Routes = [
       {
         path: ':id',
         loadComponent: () =>
-          import('./addquestion/addquestion.component').then(
+          import('./components/addquestion/addquestion.component').then(
             (m) => m.AddquestionComponent
           ),
       },
@@ -86,7 +86,7 @@ export const routes: Routes = [
   {
     path: 'startgame',
     loadComponent: () =>
-      import('./start-game/start-game.component').then(
+      import('./components/start-game/start-game.component').then(
         (m) => m.StartGameComponent
       ),
       canActivate: [userGuard],
@@ -95,7 +95,7 @@ export const routes: Routes = [
       {
         path: ':quizId',
         loadComponent: () =>
-          import('./start-game/start-game.component').then(
+          import('./components/start-game/start-game.component').then(
             (m) => m.StartGameComponent
           ),
       },
@@ -104,7 +104,7 @@ export const routes: Routes = [
   {
     path: 'inviteplayers',
     loadComponent: () =>
-      import('./invite-players/invite-players.component').then(
+      import('./components/invite-players/invite-players.component').then(
         (m) => m.InvitePlayersComponent
       ),
       canActivate: [userGuard],
@@ -112,7 +112,7 @@ export const routes: Routes = [
   {
     path: 'waitingroom',
     loadComponent: () =>
-      import('./waiting-room/waiting-room.component').then(
+      import('./components/waiting-room/waiting-room.component').then(
         (m) => m.WaitingRoomComponent
       ),
       canActivate: [userGuard],
@@ -120,7 +120,7 @@ export const routes: Routes = [
   {
     path: 'entergame',
     loadComponent: () =>
-      import('./enter-game/enter-game.component').then(
+      import('./components/enter-game/enter-game.component').then(
         (m) => m.EnterGameComponent
       ),
       canActivate: [userGuard],
@@ -128,32 +128,32 @@ export const routes: Routes = [
   {
     path: 'team',
     loadComponent: () =>
-      import('./team/team.component').then((m) => m.TeamComponent),
+      import('./components/team/team.component').then((m) => m.TeamComponent),
     canActivate: [userGuard],
   },
   {
     path: 'game',
     loadComponent: () =>
-      import('./game/game.component').then((m) => m.GameComponent),
+      import('./components/game/game.component').then((m) => m.GameComponent),
     canActivate: [userGuard],
     
   },
   {
     path: 'score',
     loadComponent: () =>
-      import('./score/score.component').then((m) => m.ScoreComponent),
+      import('./components/score/score.component').then((m) => m.ScoreComponent),
     canActivate: [userGuard],
   },
   {
     path: 'rank',
     loadComponent: () =>
-      import('./ranking/ranking.component').then((m) => m.RankingComponent),
+      import('./components/ranking/ranking.component').then((m) => m.RankingComponent),
     canActivate: [userGuard],
   },
   {
     path: 'statistics',
     loadComponent: () =>
-      import('./statistics/statistics.component').then(
+      import('./components/statistics/statistics.component').then(
         (m) => m.StatisticsComponent
       ),
     canActivate: [userGuard],
@@ -161,13 +161,13 @@ export const routes: Routes = [
   {
     path: 'setting',
     loadComponent: () =>
-      import('./setting/setting.component').then((m) => m.SettingComponent),
+      import('./components/setting/setting.component').then((m) => m.SettingComponent),
     canActivate: [userGuard],
   },
   {
     path: 'userinfos',
     loadComponent: () =>
-      import('./user-informations/user-informations.component').then(
+      import('./components/user-informations/user-informations.component').then(
         (m) => m.UserInformationsComponent
       ),
     canActivate: [userGuard],
@@ -175,7 +175,7 @@ export const routes: Routes = [
   {
     path: 'changepassword',
     loadComponent: () =>
-      import('./change-password/change-password.component').then(
+      import('./components/change-password/change-password.component').then(
         (m) => m.ChangePasswordComponent
       ),
     canActivate: [userGuard],
@@ -183,7 +183,7 @@ export const routes: Routes = [
   {
     path: 'createorganization',
     loadComponent: () =>
-      import('./create-organization/create-organization.component').then(
+      import('./components/create-organization/create-organization.component').then(
         (m) => m.CreateOrganizationComponent
       ),
     canActivate: [userGuard],
@@ -191,7 +191,7 @@ export const routes: Routes = [
   {
     path: 'stafflist',
     loadComponent: () =>
-      import('./stafflist/stafflist.component').then(
+      import('./components/stafflist/stafflist.component').then(
         (m) => m.StafflistComponent
       ),
     canActivate: [userGuard],
@@ -199,13 +199,13 @@ export const routes: Routes = [
   {
     path: 'staff',
     loadComponent: () =>
-      import('./addstaff/addstaff.component').then((m) => m.AddstaffComponent),
+      import('./components/addstaff/addstaff.component').then((m) => m.AddstaffComponent),
     canActivate: [userGuard],
   },
   {
     path: 'logout',
     loadComponent: () =>
-      import('./logout/logout.component').then((m) => m.LogoutComponent),
+      import('./components/logout/logout.component').then((m) => m.LogoutComponent),
     canActivate: [userGuard],
   },
   

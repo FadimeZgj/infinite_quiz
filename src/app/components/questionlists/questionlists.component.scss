@@ -1,0 +1,40 @@
+@import "../quizlists/quizlists.component.scss";
+// @import "../../app.component.scss";
+
+.add-quesstion-btn{
+    @include button-style($yellow,$yellow,$nav-font-color,false);
+    text-decoration: none;
+}
+
+.delete-quiz-btn{
+    @include button-style($purple, white, $purple,true);
+    text-decoration: none;
+
+}
+
+.delete-question{
+    color: $purple;
+    cursor: pointer;
+}
+
+.details {
+    cursor: pointer;
+}
+
+.question{
+    font-size: 20px;
+    font-weight: bold;
+    color: $purple
+}
+
+.confirm-quiz-btn {
+    @include button-style($warning,$warning,$grey,false);
+    max-width: 8em;
+    font-size: 17px;
+}
+
+.cancel-removal-btn {
+    @include button-style($grey,$grey,$nav-font-color,false);
+    max-width: 8em;
+    font-size: 17px;
+}

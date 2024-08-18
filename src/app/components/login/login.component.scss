@@ -1,0 +1,46 @@
+@import "../../app.component.scss";
+
+.div-form {
+    background-color: $purple;
+    height: 100vh;
+
+    form {
+
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        @include card-style(360px, auto, white,white, 30px);
+        box-shadow: $shadow;
+
+
+        label {
+            color: $purple;
+            margin-top: 4%;
+        }
+
+        input {
+          @include input-style(314px);
+        }
+
+        .login-btn {
+            @include button-style($yellow,$yellow,$nav-font-color,false);
+
+        }
+        .signup-btn{
+            @include button-style($yellow, white, $nav-font-color,true)
+        }
+
+        a{
+            color: $nav-font-color;
+            font-size: 20px;
+        }
+
+        .errors-msg{
+            margin: auto;
+            font-size: 17px;
+            color: #9d2e33;
+        }
+
+    }
+}
