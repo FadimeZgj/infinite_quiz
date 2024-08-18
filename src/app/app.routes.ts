@@ -208,11 +208,6 @@ export const routes: Routes = [
       import('./logout/logout.component').then((m) => m.LogoutComponent),
     canActivate: [userGuard],
   },
-  {
-    path: 'nav',
-    loadComponent: () =>
-      import('./navbar/navbar.component').then((m) => m.NavbarComponent),
-    canActivate: [userGuard],
-  },
+  
   { path: '**', redirectTo: 'login' },
 ];
