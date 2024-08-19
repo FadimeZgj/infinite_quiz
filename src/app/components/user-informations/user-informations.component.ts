@@ -7,6 +7,7 @@ import { CleanDataService } from '../../services/cleanDataService/clean-data.ser
 import { LoaderService } from '../../services/loaderService/loader.service';
 import { Meta, Title } from '@angular/platform-browser';
 import { jwtDecode } from 'jwt-decode';
+import { JwtService } from '../../services/jwtServices/jwt.service';
 
 @Component({
   selector: 'app-user-informations',
@@ -22,6 +23,7 @@ export class UserInformationsComponent implements OnInit {
     private title: Title,
     private CleanDataService: CleanDataService,
     private loaderService: LoaderService,
+    private jwtService: JwtService
   ) {}
   
   formBuilder: FormBuilder = inject(FormBuilder);
@@ -52,12 +54,13 @@ export class UserInformationsComponent implements OnInit {
 
   ngOnInit(): void {
     this.setMetaData();
-    
-    const decodedToken: any = jwtDecode(this.jwt);
 
+    this.loaderService.show();
+    
     if (this.jwt?.split('.').length === 3 && this.jwt) {
-      this.loaderService.show();
-      
+
+      const decodedToken = this.jwtService.decode(this.jwt);
+
       this.http.get<any>(`http://127.0.0.1:8000/api/users?email=${decodedToken?.username}`, { headers: { Authorization: 'Bearer ' + this.jwt} })
               .subscribe({
                 

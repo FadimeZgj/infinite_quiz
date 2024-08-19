@@ -7,6 +7,7 @@ import { CleanDataService } from '../../services/cleanDataService/clean-data.ser
 import { LoaderService } from '../../services/loaderService/loader.service';
 import { Meta, Title } from '@angular/platform-browser';
 import { jwtDecode } from 'jwt-decode';
+import { JwtService } from '../../services/jwtServices/jwt.service';
 
 @Component({
   selector: 'app-change-password',
@@ -22,6 +23,7 @@ export class ChangePasswordComponent {
     private title: Title,
     private CleanDataService: CleanDataService,
     private loaderService: LoaderService,
+    private jwtService: JwtService
   ) {}
 
   private setMetaData() {
@@ -62,10 +64,9 @@ export class ChangePasswordComponent {
 
       this.loaderService.show();
 
-      const decodedToken: any = jwtDecode(this.jwt);
-      const username = decodedToken?.username;
+      const decodedToken = this.jwtService.decode(this.jwt);
 
-      this.http.get<any>(`http://127.0.0.1:8000/api/users?email=${username}`, { headers: { Authorization: 'Bearer ' + this.jwt } })
+      this.http.get<any>(`http://127.0.0.1:8000/api/users?email=${decodedToken?.username}`, { headers: { Authorization: 'Bearer ' + this.jwt } })
       .subscribe({
         
         next: (response: any) => {

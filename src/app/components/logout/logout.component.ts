@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { Meta, Title } from '@angular/platform-browser';
 import { jwtDecode } from 'jwt-decode';
 import { HttpClient } from '@angular/common/http';
+import { JwtService } from '../../services/jwtServices/jwt.service';
 
 
 @Component({
@@ -19,6 +20,7 @@ export class LogoutComponent {
     private meta: Meta,
     private title: Title,
     private loaderService: LoaderService,
+    private jwtService: JwtService
   ) {}
 
   private setMetaData() {
@@ -44,8 +46,9 @@ export class LogoutComponent {
 
     this.loaderService.show();
 
-    if(this.jwt){
-      const decodedToken: any = jwtDecode(this.jwt);
+    if(this.jwt?.split('.').length === 3 && this.jwt){
+      
+      const decodedToken = this.jwtService.decode(this.jwt);
     
       this.http.get<any>(`http://127.0.0.1:8000/api/users?email=${decodedToken?.username}`, { headers: { Authorization: 'Bearer ' + this.jwt} })
               .subscribe({
