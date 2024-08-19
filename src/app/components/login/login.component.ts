@@ -3,9 +3,7 @@ import { Component, inject } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { CleanDataService } from '../../services/cleanDataService/clean-data.service';
-import * as CryptoJS from 'crypto-js';
 import { LoaderService } from '../../services/loaderService/loader.service';
-import { SessionDestroyService } from '../../services/sessionDestroyService/session-destroy.service';
 import { Meta, Title } from '@angular/platform-browser';
 @Component({
   selector: 'app-login',
@@ -20,7 +18,6 @@ export class LoginComponent {
     private title: Title,
     private CleanDataService: CleanDataService,
     private loaderService: LoaderService,
-    private sessionDestroyService: SessionDestroyService
   ) {}
 
   private setMetaData() {
@@ -66,7 +63,7 @@ export class LoginComponent {
 
     ) 
     } else {
-      this.sessionDestroyService.sessionDestroy();
+      localStorage.removeItem('jwt');
       this.router.navigateByUrl('/login');
     }
     

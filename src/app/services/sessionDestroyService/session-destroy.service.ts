@@ -9,6 +9,5 @@ export class SessionDestroyService {
 
   sessionDestroy(){
     localStorage.removeItem('jwt');
-    sessionStorage.removeItem('userInfo');
   }
 }

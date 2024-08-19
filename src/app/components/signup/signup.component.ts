@@ -4,8 +4,6 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { Router, RouterLink } from '@angular/router';
 import { CleanDataService } from '../../services/cleanDataService/clean-data.service';
 import { LoaderService } from '../../services/loaderService/loader.service';
-import * as CryptoJS from 'crypto-js';
-import { SessionDestroyService } from '../../services/sessionDestroyService/session-destroy.service';
 import { Meta, Title } from '@angular/platform-browser';
 
 @Component({
@@ -22,7 +20,6 @@ export class SignupComponent {
     private title: Title,
     private CleanDataService: CleanDataService,
     private loaderService: LoaderService,
-    private sessionDestroyService: SessionDestroyService
   ) {}
 
   private setMetaData() {
@@ -65,7 +62,7 @@ export class SignupComponent {
         
     if (formInputs['honneypot'] && formInputs['honneypot'].length > 0) {
       this.loaderService.hide();
-      this.sessionDestroyService.sessionDestroy();
+      localStorage.removeItem('jwt');
       this.router.navigateByUrl('/login');
 
     } else {

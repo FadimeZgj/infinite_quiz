@@ -3,7 +3,6 @@ import { NavbarComponent } from '../navbar/navbar.component';
 import { Router, RouterLink } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { jwtDecode } from 'jwt-decode';
-import { SessionDestroyService } from '../../services/sessionDestroyService/session-destroy.service';
 import { Meta, Title } from '@angular/platform-browser';
 
 @Component({
@@ -17,7 +16,6 @@ export class SettingComponent {
   constructor(
     private meta: Meta,
     private title: Title,
-    private sessionDestroyService: SessionDestroyService
   ) {}
 
   private setMetaData() {
@@ -58,7 +56,7 @@ export class SettingComponent {
 
         this.http.delete(`http://127.0.0.1:8000/api/users/${userId}`, { headers: { Authorization: 'Bearer ' + jwt} })
         .subscribe((response: any) => {
-        this.sessionDestroyService.sessionDestroy();
+        localStorage.removeItem('jwt');
         this.router.navigateByUrl('/signup');
         
         })

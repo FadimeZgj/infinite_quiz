@@ -2,8 +2,6 @@ import { Component, inject } from '@angular/core';
 import { NavbarComponent } from '../navbar/navbar.component';
 import { LoaderService } from '../../services/loaderService/loader.service';
 import { Router } from '@angular/router';
-import * as CryptoJS from 'crypto-js';
-import { SessionDestroyService } from '../../services/sessionDestroyService/session-destroy.service';
 import { Meta, Title } from '@angular/platform-browser';
 import { jwtDecode } from 'jwt-decode';
 import { HttpClient } from '@angular/common/http';
@@ -21,7 +19,6 @@ export class LogoutComponent {
     private meta: Meta,
     private title: Title,
     private loaderService: LoaderService,
-    private sessionDestroyService: SessionDestroyService
   ) {}
 
   private setMetaData() {
@@ -67,13 +64,13 @@ export class LogoutComponent {
 
     } else{
       this.loaderService.hide();
-      this.sessionDestroyService.sessionDestroy();
+      localStorage.removeItem('jwt');
       this.router.navigateByUrl('/login');
     }
   }
 
   onSubmit() {
-    this.sessionDestroyService.sessionDestroy();
+    localStorage.removeItem('jwt');
     this.router.navigateByUrl('/login');
    }
     
