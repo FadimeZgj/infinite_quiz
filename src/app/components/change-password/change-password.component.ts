@@ -8,6 +8,7 @@ import { LoaderService } from '../../services/loaderService/loader.service';
 import * as CryptoJS from 'crypto-js';
 import { SessionDestroyService } from '../../services/sessionDestroyService/session-destroy.service';
 import { Meta, Title } from '@angular/platform-browser';
+import { jwtDecode } from 'jwt-decode';
 
 @Component({
   selector: 'app-change-password',
@@ -60,17 +61,28 @@ export class ChangePasswordComponent {
 
     this.loaderService.show();
 
-    const encryptData = sessionStorage.getItem('userInfo');
-    if (this.jwt?.split('.').length === 3 && encryptData) {
+    if (this.jwt?.split('.').length === 3 && this.jwt) {
+
       this.loaderService.show();
-      const secretKey = CryptoJS.SHA256(this.jwt).toString();
+
+      const decodedToken: any = jwtDecode(this.jwt);
+      const username = decodedToken?.username;
+
+      this.http.get<any>(`http://127.0.0.1:8000/api/users?email=${username}`, { headers: { Authorization: 'Bearer ' + this.jwt } })
+      .subscribe({
+        
+        next: (response: any) => {
       
-      const decryptData = CryptoJS.AES.decrypt(encryptData, secretKey);
-      const userInfos = JSON.parse(decryptData.toString(CryptoJS.enc.Utf8));
+        this.userId=response['hydra:member'][0]?.id;
+        this.loaderService.hide();
 
-      this.userId=userInfos.id;
+      },
+      error: (err)=>{this.msg="Une erreur s'est produite. Veuillez réessayer plus tard.", 
+        this.style_class="p-3 text-warning-emphasis bg-warning border border-warning-subtle rounded-3",
+        this.loaderService.hide();
+      }
+      })
 
-      this.loaderService.hide();
 
     } else{
       this.loaderService.hide();
