@@ -3,8 +3,8 @@
 <div class="div-form d-flex justify-center align-items-center">
     <div class="card-profile p-5 m-auto d-flex flex-column align-items-center">
         <img class="my-3"
-            src="https://api.dicebear.com/9.x/fun-emoji/svg?size=120&scale=90&radius=15&backgroundColor=059ff2,71cf62,d84be5,fcbc34&mouth=cute,kissHeart,lilSmile,pissed,shout,smileLol,smileTeeth,tongueOut,wideSmile"
-            alt="avatar" />
+            [src]="user_avatar"
+            alt="avatar" (error)="onError()"/>
         <h2>{{user_name}}</h2>
         <p>{{user_email}}</p>
         <p>{{user_badge}}</p>

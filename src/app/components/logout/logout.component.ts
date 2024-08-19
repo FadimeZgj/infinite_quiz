@@ -36,8 +36,9 @@ export class LogoutComponent {
   userId =""
   user_name ="";
   user_email = "";
-  user_badge=""
+  user_badge="";
   jwt = localStorage.getItem('jwt');
+  user_avatar ="https://api.dicebear.com/9.x/fun-emoji/svg?size=120&scale=90&radius=15&backgroundColor=059ff2,71cf62,d84be5,fcbc34&mouth=cute,kissHeart,lilSmile,pissed,shout,smileLol,smileTeeth,tongueOut,wideSmile"
 
   ngOnInit(): void {
     this.setMetaData();
@@ -70,6 +71,10 @@ export class LogoutComponent {
     this.router.navigateByUrl('/login');
    }
     
+  //  Dans le cas où l'api ne fourni pas d'image j'applique image par defaut
+   onError(){
+    this.user_avatar="/assets/images/logo.png"
+   }
   }
 
 
