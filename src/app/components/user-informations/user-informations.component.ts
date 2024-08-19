@@ -8,6 +8,7 @@ import { LoaderService } from '../../services/loaderService/loader.service';
 import * as CryptoJS from 'crypto-js';
 import { SessionDestroyService } from '../../services/sessionDestroyService/session-destroy.service';
 import { Meta, Title } from '@angular/platform-browser';
+import { jwtDecode } from 'jwt-decode';
 
 @Component({
   selector: 'app-user-informations',
@@ -44,7 +45,7 @@ export class UserInformationsComponent implements OnInit {
   userId =""
   user_name ="";
   user_email = "";
-  jwt = localStorage.getItem('jwt');
+  jwt:any = localStorage.getItem('jwt');
   
   userForm  = this.formBuilder.group({
     firstname: [''],
@@ -55,25 +56,34 @@ export class UserInformationsComponent implements OnInit {
   ngOnInit(): void {
     this.setMetaData();
     
-    const encryptData = sessionStorage.getItem('userInfo');
-    if (this.jwt?.split('.').length === 3 && encryptData) {
+    const decodedToken: any = jwtDecode(this.jwt);
+
+    if (this.jwt?.split('.').length === 3 && this.jwt) {
       this.loaderService.show();
-      const secretKey = CryptoJS.SHA256(this.jwt).toString();
       
-      const decryptData = CryptoJS.AES.decrypt(encryptData, secretKey);
-      const userInfos = JSON.parse(decryptData.toString(CryptoJS.enc.Utf8));
-      console.log(userInfos);
+      this.http.get<any>(`http://127.0.0.1:8000/api/users?email=${decodedToken?.username}`, { headers: { Authorization: 'Bearer ' + this.jwt} })
+              .subscribe({
+                
+                next: (response: any) => {
 
-      this.userId=userInfos.id;
-      this.user_email=userInfos.email;
-      this.user_name=userInfos.firstname;
+                  this.user_name=response['hydra:member'][0]['firstname'];
+                  this.user_email=response['hydra:member'][0]['email'];
+                  this.userId=response['hydra:member'][0]['id'];
 
-      // patchValue permet de définir des valeurs initiale pour ces champs du formulaire
-      this.userForm.patchValue({
-        firstname: this.user_name,
-        email: this.user_email
-    })
-      this.loaderService.hide();
+                  // patchValue permet de définir des valeurs initiale pour ces champs du formulaire
+                  this.userForm.patchValue({
+                    firstname: this.user_name,
+                    email: this.user_email
+                })
+                this.loaderService.hide();
+                
+              },
+              error: (err)=>{this.msg="Une erreur s'est produite. Veuillez réessayer plus tard.", 
+                this.style_class="p-3 text-warning-emphasis bg-warning border border-warning-subtle rounded-3",
+                this.loaderService.hide()}
+              })
+
+
 
     } else{
       this.loaderService.hide();
