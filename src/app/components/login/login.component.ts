@@ -55,7 +55,7 @@ export class LoginComponent {
       this.http.post<any>('http://127.0.0.1:8000/api/login_check',JSON.stringify(form), {headers: {'Content-Type': 'application/ld+json' }})
       .subscribe({
         next :  (resp) => {
-
+          localStorage.setItem('jwt', resp.token);
           this.loaderService.hide();
           this.router.navigateByUrl('/dashboard');
             
