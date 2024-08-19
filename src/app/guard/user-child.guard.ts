@@ -4,7 +4,7 @@ import { CanActivateChildFn, Router } from '@angular/router';
 export const userChildGuard: CanActivateChildFn = (childRoute, state) => {
   const router = inject(Router);
 
-  if (localStorage.getItem('jwt') && sessionStorage.getItem('userInfo')) {
+  if (localStorage.getItem('jwt')) {
     return true;
   }
 

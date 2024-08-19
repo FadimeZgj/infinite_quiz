@@ -4,7 +4,7 @@ import { CanActivateFn, Router } from '@angular/router';
 export const userGuard: CanActivateFn = (route, state) => {
   const router = inject(Router);
 
-  if (localStorage.getItem('jwt') && sessionStorage.getItem('userInfo')) {
+  if (localStorage.getItem('jwt')) {
     return true;
   }
 
