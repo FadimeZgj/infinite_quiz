@@ -39,7 +39,7 @@ export class LogoutComponent {
   user_name ="";
   user_email="";
   user_badge="";
-  user_avatar ="https://api.dicebear.com/9.x/fun-emoji/svg?size=120&scale=90&radius=15&backgroundColor=059ff2,71cf62,d84be5,fcbc34&mouth=cute,kissHeart,lilSmile,pissed,shout,smileLol,smileTeeth,tongueOut,wideSmile"
+  user_avatar =`https://api.dicebear.com/9.x/fun-emoji/svg?seed=${Math.floor(Math.random() * 100)}&size=120&scale=90&radius=15&backgroundColor=059ff2,71cf62,d84be5,fcbc34&mouth=cute,kissHeart,lilSmile,smileLol,smileTeeth,tongueOut,wideSmile`
 
   ngOnInit(): void {
     this.setMetaData();
