@@ -2,9 +2,10 @@ import { Component, inject } from '@angular/core';
 import { NavbarComponent } from '../navbar/navbar.component';
 import { LoaderService } from '../../services/loaderService/loader.service';
 import { Router } from '@angular/router';
-import * as CryptoJS from 'crypto-js';
-import { SessionDestroyService } from '../../services/sessionDestroyService/session-destroy.service';
 import { Meta, Title } from '@angular/platform-browser';
+import { jwtDecode } from 'jwt-decode';
+import { HttpClient } from '@angular/common/http';
+import { JwtService } from '../../services/jwtServices/jwt.service';
 
 
 @Component({
@@ -19,7 +20,7 @@ export class LogoutComponent {
     private meta: Meta,
     private title: Title,
     private loaderService: LoaderService,
-    private sessionDestroyService: SessionDestroyService
+    private jwtService: JwtService
   ) {}
 
   private setMetaData() {
@@ -31,43 +32,48 @@ export class LogoutComponent {
   }
 
   router: Router = inject(Router);
+  http : HttpClient =inject(HttpClient);
 
   logout_title="Mon profil"
-  userId =""
+  jwt:any=localStorage.getItem('jwt')
   user_name ="";
-  user_email = "";
+  user_email="";
   user_badge="";
-  jwt = localStorage.getItem('jwt');
   user_avatar ="https://api.dicebear.com/9.x/fun-emoji/svg?size=120&scale=90&radius=15&backgroundColor=059ff2,71cf62,d84be5,fcbc34&mouth=cute,kissHeart,lilSmile,pissed,shout,smileLol,smileTeeth,tongueOut,wideSmile"
 
   ngOnInit(): void {
     this.setMetaData();
 
     this.loaderService.show();
-    
-    const encryptData = sessionStorage.getItem('userInfo');
-    if (this.jwt?.split('.').length === 3 && encryptData) {
-      const secretKey = CryptoJS.SHA256(this.jwt).toString();
-      
-      const decryptData = CryptoJS.AES.decrypt(encryptData, secretKey);
-      const userInfos = JSON.parse(decryptData.toString(CryptoJS.enc.Utf8));
-      
-      this.userId=userInfos.id;
-      this.user_email=userInfos.email;
-      this.user_name=userInfos.firstname;
-      this.user_badge=userInfos.badge
 
-      this.loaderService.hide();
+    if(this.jwt?.split('.').length === 3 && this.jwt){
+      
+      const decodedToken = this.jwtService.decode(this.jwt);
+    
+      this.http.get<any>(`http://127.0.0.1:8000/api/users?email=${decodedToken?.username}`, { headers: { Authorization: 'Bearer ' + this.jwt} })
+              .subscribe({
+                
+                next: (response: any) => {
+
+                  this.user_name=response['hydra:member'][0]['firstname'];
+                  this.user_email=response['hydra:member'][0]['email'];
+                  this.user_badge=response['hydra:member'][0]['badge'];
+                  this.loaderService.hide();
+                
+              },
+              error: (err)=>{this.user_name=decodedToken?.username, this.loaderService.hide()}
+              })
+             
 
     } else{
       this.loaderService.hide();
-      this.sessionDestroyService.sessionDestroy();
+      localStorage.removeItem('jwt');
       this.router.navigateByUrl('/login');
     }
   }
 
   onSubmit() {
-    this.sessionDestroyService.sessionDestroy();
+    localStorage.removeItem('jwt');
     this.router.navigateByUrl('/login');
    }
     

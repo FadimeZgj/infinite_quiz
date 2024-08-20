@@ -15,8 +15,7 @@ describe('SignupComponent', () => {
   let cleanDataServiceSpy: jasmine.SpyObj<CleanDataService>;
 
   beforeEach(async () => {
-
-    // je créé des objet pour surveiller mes services
+    // Création d'espion pour surveiller les services
     cleanDataServiceSpy = jasmine.createSpyObj('CleanDataService', ['cleanObject']);
     loaderServiceSpy = jasmine.createSpyObj('LoaderService', ['show', 'hide']);
 
@@ -37,8 +36,6 @@ describe('SignupComponent', () => {
     component = fixture.componentInstance;
     httpClientTesting = TestBed.inject(HttpTestingController);
     router = TestBed.inject(Router);
-    cleanDataServiceSpy = TestBed.inject(CleanDataService) as jasmine.SpyObj<CleanDataService>;
-    loaderServiceSpy = TestBed.inject(LoaderService) as jasmine.SpyObj<LoaderService>;
     fixture.detectChanges();
   });
 
@@ -50,14 +47,14 @@ describe('SignupComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('devrait ne pas soumettre le formulaire si les mots de passe ne match pas', () => {
+  it('devrait ne pas soumettre le formulaire si les mots de passe ne correspondent pas', () => {
     const formvalue = {
       firstname: 'John',
       email: 'john@doe.fr',
       plainPassword: 'Password123!',
       cpw: 'Password124!', 
       honneypot: ''
-    }
+    };
 
     cleanDataServiceSpy.cleanObject.and.returnValue(formvalue);
 
@@ -77,8 +74,8 @@ describe('SignupComponent', () => {
       plainPassword: 'Password123!',
       cpw: 'Password123!', 
       honneypot: ''
-    }
-    // simulation de l'action de mon service CleanData pour que celui-ci soit bien pris en compte dans ce test
+    };
+
     cleanDataServiceSpy.cleanObject.and.returnValue(formvalue);
 
     component.signUpForm.setValue(formvalue);
@@ -99,7 +96,8 @@ describe('SignupComponent', () => {
       plainPassword: 'Password123!',
       cpw: 'Password123!', 
       honneypot: 'bot'
-    }
+    };
+
     cleanDataServiceSpy.cleanObject.and.returnValue(formvalue);
 
     component.signUpForm.setValue(formvalue);
@@ -119,7 +117,8 @@ describe('SignupComponent', () => {
       plainPassword: 'Password123!',
       cpw: 'Password123!', 
       honneypot: ''
-    }
+    };
+
     cleanDataServiceSpy.cleanObject.and.returnValue(formvalue);
 
     component.signUpForm.setValue(formvalue);
@@ -133,30 +132,22 @@ describe('SignupComponent', () => {
     const loginReq = httpClientTesting.expectOne('http://127.0.0.1:8000/api/login_check');
     expect(loginReq.request.method).toBe('POST');
     loginReq.flush({ token: 'jwt' });
-    expect(localStorage.getItem('jwt')).toBe('jwt');
-
-    const userInfoRequest = httpClientTesting.expectOne('http://127.0.0.1:8000/api/users?email=john@doe.fr');
-    expect(userInfoRequest.request.method).toBe('GET');
-    
-    const userInfoResponse = { 'hydra:member': [{ id: 1, name: 'John', email: 'john@doe.fr' }] };
-    userInfoRequest.flush(userInfoResponse);
-
-    const storedUserInfo = sessionStorage.getItem('userInfo');
-    expect(storedUserInfo).toBeTruthy();
 
     expect(localStorage.getItem('jwt')).toBe('jwt');
+
     expect(loaderServiceSpy.hide).toHaveBeenCalled();
     expect(router.navigateByUrl).toHaveBeenCalledWith('/dashboard');
   });
 
-  it("devrait afficher un message d'erreur si l'inscription échou", () => {
+  it("devrait afficher un message d'erreur si l'inscription échoue", () => {
     const formvalue = {
       firstname: 'John',
       email: 'john@doe.fr',
       plainPassword: 'Password123!',
       cpw: 'Password123!', 
       honneypot: ''
-    }
+    };
+
     cleanDataServiceSpy.cleanObject.and.returnValue(formvalue);
 
     component.signUpForm.setValue(formvalue);
@@ -169,14 +160,15 @@ describe('SignupComponent', () => {
     expect(component.error_msg).toBe("Le formulaire n'est pas conforme. Veuillez réessayer.");
   });
 
-  it("devrait afficher un message d'erreur si la connexion échou", () => {
+  it("devrait afficher un message d'erreur si la connexion échoue", () => {
     const formvalue = {
       firstname: 'John',
       email: 'john@doe.fr',
       plainPassword: 'Password123!',
       cpw: 'Password123!', 
       honneypot: ''
-    }
+    };
+
     cleanDataServiceSpy.cleanObject.and.returnValue(formvalue);
 
     component.signUpForm.setValue(formvalue);

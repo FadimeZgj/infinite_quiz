@@ -7,7 +7,7 @@ import { SettingComponent } from './setting.component';
 describe('SettingComponent', () => {
   let component: SettingComponent;
   let fixture: ComponentFixture<SettingComponent>;
-  let httpMock: HttpTestingController;
+  let httpClientTesting: HttpTestingController;
   let router: Router;
 
   beforeEach(async () => {
@@ -23,14 +23,14 @@ describe('SettingComponent', () => {
 
     fixture = TestBed.createComponent(SettingComponent);
     component = fixture.componentInstance;
-    httpMock = TestBed.inject(HttpTestingController);
+    httpClientTesting = TestBed.inject(HttpTestingController);
     router = TestBed.inject(Router);
     spyOn(router, 'navigateByUrl');
     fixture.detectChanges();
   });
 
   afterEach(() => {
-    httpMock.verify();
+    httpClientTesting.verify();
   });
 
   it('should create the component', () => {
@@ -49,12 +49,12 @@ describe('SettingComponent', () => {
     component.onDelete();
 
     // Attendez la requête GET
-    const reqGetUser = httpMock.expectOne(`http://127.0.0.1:8000/api/users?email=${decodedToken.username}`);
+    const reqGetUser = httpClientTesting.expectOne(`http://127.0.0.1:8000/api/users?email=${decodedToken.username}`);
     expect(reqGetUser.request.method).toBe('GET');
     reqGetUser.flush({ 'hydra:member': [{ id: 123 }] });
 
     // Attendez la requête DELETE
-    const reqDeleteUser = httpMock.expectOne(`http://127.0.0.1:8000/api/users/123`);
+    const reqDeleteUser = httpClientTesting.expectOne(`http://127.0.0.1:8000/api/users/123`);
     expect(reqDeleteUser.request.method).toBe('DELETE');
     reqDeleteUser.flush({});
 
@@ -73,7 +73,7 @@ describe('SettingComponent', () => {
     // Simulez une erreur lors de la requête GET pour récupérer les informations de l'utilisateur
     component.onDelete();
 
-    const reqGetUser = httpMock.expectOne(`http://127.0.0.1:8000/api/users?email=${decodedToken.username}`);
+    const reqGetUser = httpClientTesting.expectOne(`http://127.0.0.1:8000/api/users?email=${decodedToken.username}`);
     expect(reqGetUser.request.method).toBe('GET');
     reqGetUser.flush({}, { status: 500, statusText: 'Server Error' });
 

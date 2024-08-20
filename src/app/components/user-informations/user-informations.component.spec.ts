@@ -7,22 +7,26 @@ import { LoaderService } from '../../services/loaderService/loader.service';
 import * as CryptoJS from 'crypto-js';
 import { ActivatedRoute } from '@angular/router';
 import { of, throwError } from 'rxjs';
+import { JwtService } from '../../services/jwtServices/jwt.service';
 
 describe('UserInformationsComponent', () => {
   let component: UserInformationsComponent;
   let fixture: ComponentFixture<UserInformationsComponent>;
   let cleanDataServiceSpy: jasmine.SpyObj<CleanDataService>;
   let loaderServiceSpy: jasmine.SpyObj<LoaderService>;
+  let jwtServiceSpy: jasmine.SpyObj<JwtService>;
 
   beforeEach(async () => {
     cleanDataServiceSpy = jasmine.createSpyObj('CleanDataService', ['cleanObject']);
     loaderServiceSpy = jasmine.createSpyObj('LoaderService', ['show', 'hide']);
+    jwtServiceSpy = jasmine.createSpyObj('JwtService', ['decode']);
 
     await TestBed.configureTestingModule({
       imports: [ReactiveFormsModule, HttpClientTestingModule, UserInformationsComponent],
       providers: [
         { provide: CleanDataService, useValue: cleanDataServiceSpy },
         { provide: LoaderService, useValue: loaderServiceSpy },
+        { provide: JwtService, useValue: jwtServiceSpy },
         { provide: ActivatedRoute, useValue: { snapshot: {} } } 
       ],
     }).compileComponents();
@@ -38,22 +42,31 @@ describe('UserInformationsComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it("devrait initialiser les informations utilisateur dans ngOnInit et les afficher dans les champs du formulaire", () => {
-    const userInfos = {
-      id: '1',
-      email: 'john@doe.fr',
-      firstname: 'John'
+  it('devrait initialiser les informations utilisateur dans ngOnInit et les afficher dans les champs du formulaire', () => {
+    const decodedToken = {
+      username: 'john@doe.fr'
+    };
+    const response = {
+      'hydra:member': [
+        {
+          id: '1',
+          firstname: 'John',
+          email: 'john@doe.fr'
+        }
+      ]
     };
     component.jwt = 'valid.jwt.token';
-    spyOn(sessionStorage, 'getItem').and.returnValue(CryptoJS.AES.encrypt(JSON.stringify(userInfos), CryptoJS.SHA256(component.jwt).toString()).toString());
-    
+    jwtServiceSpy.decode.and.returnValue(decodedToken);
+
+    spyOn(component.http, 'get').and.returnValue(of(response));
+
     component.ngOnInit();
-  
-    expect(component.userId).toBe(userInfos.id);
-    expect(component.user_email).toBe(userInfos.email);
-    expect(component.user_name).toBe(userInfos.firstname);
-    expect(component.userForm.value.firstname).toBe(userInfos.firstname);
-    expect(component.userForm.value.email).toBe(userInfos.email);
+
+    expect(component.userId).toBe(response['hydra:member'][0].id);
+    expect(component.user_email).toBe(response['hydra:member'][0].email);
+    expect(component.user_name).toBe(response['hydra:member'][0].firstname);
+    expect(component.userForm.value.firstname).toBe(response['hydra:member'][0].firstname);
+    expect(component.userForm.value.email).toBe(response['hydra:member'][0].email);
     expect(loaderServiceSpy.hide).toHaveBeenCalled();
   });
 

@@ -27,7 +27,21 @@
 
     <button aria-label="Bouton de Connection" type="submit" class="login-btn my-3">Connexion</button>
     <button routerLink="/signup" class="signup-btn" aria-describedby="lien vers le formulaire d'inscription" type="button">Créer mon compte</button>
-    <a href="" class="mt-3" aria-describedby="Mot de passe oublié ? ">Mot de passe oublié ?</a>
+    <a href="" class="mt-3" aria-describedby="Mot de passe oublié ? " data-bs-toggle="modal" data-bs-target="#contact">Mot de passe oublié ?</a>
 
   </form>
+</div>
+
+<div class="modal" id="contact" tabindex="-1" aria-labelledby="pop-up informations de contact d'Infinite Quiz en cas d'oublie de mot de passe" aria-hidden="true">
+  <div class="modal-dialog bg-body">
+    <span class="modal-content w-100 h-100 border border-white">
+      <div class="d-flex justify-content-around p-3">
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          <h5 class="modal-title fs-5">Contactez nous à l'adresse mail suivante :</h5>
+      </div>           
+      <div class="text-center fs-3">
+        <p>support.infinite&#64;quiz.fr</p>
+      </div>
+    </span>
+  </div>
 </div>

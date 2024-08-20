@@ -4,8 +4,6 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { Router, RouterLink } from '@angular/router';
 import { CleanDataService } from '../../services/cleanDataService/clean-data.service';
 import { LoaderService } from '../../services/loaderService/loader.service';
-import * as CryptoJS from 'crypto-js';
-import { SessionDestroyService } from '../../services/sessionDestroyService/session-destroy.service';
 import { Meta, Title } from '@angular/platform-browser';
 
 @Component({
@@ -22,7 +20,6 @@ export class SignupComponent {
     private title: Title,
     private CleanDataService: CleanDataService,
     private loaderService: LoaderService,
-    private sessionDestroyService: SessionDestroyService
   ) {}
 
   private setMetaData() {
@@ -65,7 +62,7 @@ export class SignupComponent {
         
     if (formInputs['honneypot'] && formInputs['honneypot'].length > 0) {
       this.loaderService.hide();
-      this.sessionDestroyService.sessionDestroy();
+      localStorage.removeItem('jwt');
       this.router.navigateByUrl('/login');
 
     } else {
@@ -84,43 +81,24 @@ export class SignupComponent {
       else{
   
         delete formInputs['cpw']
-        
         const user={username:formInputs['email'], password:formInputs['plainPassword'], honneypot:formInputs['honneypot']}
-  
         this.http.post<any>('http://127.0.0.1:8000/api/users',JSON.stringify(formInputs), {headers: {'Content-Type': 'application/ld+json' }}).subscribe({
           next: (resp) =>{
-                   
-          this.http.post<any>('http://127.0.0.1:8000/api/login_check',JSON.stringify(user), {headers: {'Content-Type': 'application/ld+json' }})
-          .subscribe({
-            next :  (resp) => {
-              
-            if (resp) {
-              localStorage.setItem('jwt', resp.token);
-    
-              this.http.get<any>(`http://127.0.0.1:8000/api/users?email=${user['username']}`, { headers: { Authorization: 'Bearer ' + resp.token } })
-              .subscribe({
+          
+            this.http.post<any>('http://127.0.0.1:8000/api/login_check',JSON.stringify(user), {headers: {'Content-Type': 'application/ld+json' }})
+            .subscribe({
+              next :  (resp) => {
                 
-                next: (response: any) => {
-                  
-                // création de la clé de décriptage grace à l'algorithme de hashage SHA256 qui fourni un hashe de 32 octet( taille max autorisé pour une clé)
-                // cela permet également de ce défaire des caractères spéciaux pouvant être présent dans le jwt 
-                const secretKey = CryptoJS.SHA256(resp.token).toString();
-                const encryptData = CryptoJS.AES.encrypt(JSON.stringify(response['hydra:member'][0]), secretKey).toString();
-                sessionStorage.setItem('userInfo', encryptData);       
-                
-              },
-              error: (err)=>{this.error_msg="Une erreur s'est produite. Veuillez réessayer plus tard.", this.loaderService.hide()}
-              })
-              this.loaderService.hide();
-              this.router.navigateByUrl('/dashboard');
-            } 
+                localStorage.setItem('jwt', resp.token);
+                this.loaderService.hide();
+                this.router.navigateByUrl('/dashboard');
+        
+            },
       
-          },
-    
-          error: (err)=>{this.error_msg="Une erreur s'est produite. Veuillez réessayer plus tard.",this.loaderService.hide()},
-          }
-    
-        ) 
+            error: (err)=>{this.error_msg="Une erreur s'est produite. Veuillez réessayer plus tard.",this.loaderService.hide()},
+            }
+      
+          ) 
                 
         },
         error: (err)=>{this.error_msg="Le formulaire n'est pas conforme. Veuillez réessayer.",this.loaderService.hide()}})
@@ -131,7 +109,7 @@ export class SignupComponent {
   
       // invalid permet de vérifier s'il y a eu au moins une erreur dans le formGroup
       // console.log(this.signUpForm.invalid);
-      //le ? c pour que Typsecript ne mette pas une erreur car au départ l'erreur est null et ['pattern'] fait référence au validator plus haut
+      //['pattern'] fait référence au validator plus haut
       // console.log(this.signUpForm.controls.pw.errors?.['pattern']);
       
   
