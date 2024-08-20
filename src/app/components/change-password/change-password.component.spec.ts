@@ -7,6 +7,7 @@ import { LoaderService } from '../../services/loaderService/loader.service';
 import { ActivatedRoute } from '@angular/router';
 import { of, throwError } from 'rxjs';
 import { JwtService } from '../../services/jwtServices/jwt.service';
+import { Meta, Title } from '@angular/platform-browser';
 
 describe('ChangePasswordComponent', () => {
   let component: ChangePasswordComponent;
@@ -14,11 +15,15 @@ describe('ChangePasswordComponent', () => {
   let cleanDataServiceSpy: jasmine.SpyObj<CleanDataService>;
   let loaderServiceSpy: jasmine.SpyObj<LoaderService>;
   let jwtServiceSpy: jasmine.SpyObj<JwtService>;
+  let metaServiceSpy: jasmine.SpyObj<Meta>;
+  let titleServiceSpy: jasmine.SpyObj<Title>;
 
   beforeEach(async () => {
     cleanDataServiceSpy = jasmine.createSpyObj('CleanDataService', ['cleanObject']);
     loaderServiceSpy = jasmine.createSpyObj('LoaderService', ['show', 'hide']);
     jwtServiceSpy = jasmine.createSpyObj('JwtService', ['decode']);
+    metaServiceSpy = jasmine.createSpyObj('Meta', ['addTags']);
+    titleServiceSpy = jasmine.createSpyObj('Title', ['setTitle']);
 
     await TestBed.configureTestingModule({
       imports: [ReactiveFormsModule, HttpClientTestingModule, ChangePasswordComponent],
@@ -26,6 +31,8 @@ describe('ChangePasswordComponent', () => {
         { provide: CleanDataService, useValue: cleanDataServiceSpy },
         { provide: LoaderService, useValue: loaderServiceSpy },
         { provide: JwtService, useValue: jwtServiceSpy },
+        { provide: Meta, useValue: metaServiceSpy },
+        { provide: Title, useValue: titleServiceSpy },
         { provide: ActivatedRoute, useValue: { snapshot: {} } }
       ],
     }).compileComponents();
@@ -39,6 +46,14 @@ describe('ChangePasswordComponent', () => {
 
   it('devrait créer le composant', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('devrait initialiser les metadatas', () => {
+    expect(titleServiceSpy.setTitle).toHaveBeenCalledWith('Modifier mon mot de passe - Infinite Quiz');
+    expect(metaServiceSpy.addTags).toHaveBeenCalledWith([
+      { name: 'description', content: 'Modifiez votre mot de passe pour votre compte sur notre application. Assurez-vous de choisir un mot de passe fort et sécurisé.'  },
+      { name: 'robots', content: 'noindex, nofollow' }
+    ]);
   });
 
   it('devrait initialiser les informations utilisateur dans ngOnInit et les afficher dans les champs du formulaire', () => {

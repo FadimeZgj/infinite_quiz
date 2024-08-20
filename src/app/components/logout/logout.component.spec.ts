@@ -7,23 +7,29 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { JwtService } from '../../services/jwtServices/jwt.service';
 import { of } from 'rxjs';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { Meta, Title } from '@angular/platform-browser';
 
 describe('LogoutComponent', () => {
   let component: LogoutComponent;
   let fixture: ComponentFixture<LogoutComponent>;
   let loaderServiceSpy: jasmine.SpyObj<LoaderService>;
   let jwtServiceSpy: jasmine.SpyObj<JwtService>;
+  let metaServiceSpy: jasmine.SpyObj<Meta>;
+  let titleServiceSpy: jasmine.SpyObj<Title>;
   let router: Router;
 
   beforeEach(async () => {
     loaderServiceSpy = jasmine.createSpyObj('LoaderService', ['show', 'hide']);
     jwtServiceSpy = jasmine.createSpyObj('JwtService', ['decode']);
+    metaServiceSpy = jasmine.createSpyObj('Meta', ['addTags']);
+    titleServiceSpy = jasmine.createSpyObj('Title', ['setTitle']);
 
     await TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, LogoutComponent],
       providers: [
         { provide: LoaderService, useValue: loaderServiceSpy },
-        { provide: JwtService, useValue: jwtServiceSpy },
+        { provide: JwtService, useValue: jwtServiceSpy },{ provide: Meta, useValue: metaServiceSpy },
+        { provide: Title, useValue: titleServiceSpy },
         provideRouter([
           { path: 'login', component: LogoutComponent }
         ]),
@@ -44,6 +50,15 @@ describe('LogoutComponent', () => {
     expect(component).toBeTruthy();
   });
 
+  it('devrait initialiser les metadatas', () => {
+    expect(titleServiceSpy.setTitle).toHaveBeenCalledWith('Déconnexion - Infinite Quiz');
+    expect(metaServiceSpy.addTags).toHaveBeenCalledWith([
+      { name: 'description', content: 'Déconnectez-vous de votre compte. Assurez-vous de sauvegarder vos données avant de quitter.' },
+      { name: 'robots', content: 'noindex, nofollow' }
+   
+    ]);
+  });
+  
   it('devrait initialiser les informations utilisateur dans ngOnInit', fakeAsync(() => {
     const userInfos = {
       id: '1',

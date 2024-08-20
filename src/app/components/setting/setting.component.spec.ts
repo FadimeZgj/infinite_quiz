@@ -5,24 +5,23 @@ import { SettingComponent } from './setting.component';
 import { LoaderService } from '../../services/loaderService/loader.service';
 import { JwtService } from '../../services/jwtServices/jwt.service';
 import { Meta, Title } from '@angular/platform-browser';
-import { of, throwError } from 'rxjs';
 
 describe('SettingComponent', () => {
   let component: SettingComponent;
   let fixture: ComponentFixture<SettingComponent>;
   let httpClientTesting: HttpTestingController;
   let router: Router;
-  let loaderService: jasmine.SpyObj<LoaderService>;
-  let jwtService: jasmine.SpyObj<JwtService>;
-  let metaService: jasmine.SpyObj<Meta>;
-  let titleService: jasmine.SpyObj<Title>;
+  let loaderServiceSpy: jasmine.SpyObj<LoaderService>;
+  let jwtServiceSpy: jasmine.SpyObj<JwtService>;
+  let metaServiceSpy: jasmine.SpyObj<Meta>;
+  let titleServiceSpy: jasmine.SpyObj<Title>;
 
   beforeEach(async () => {
     // Création des mocks pour les services
-    const loaderServiceSpy = jasmine.createSpyObj('LoaderService', ['show', 'hide']);
-    const jwtServiceSpy = jasmine.createSpyObj('JwtService', ['decode']);
-    const metaServiceSpy = jasmine.createSpyObj('Meta', ['addTags']);
-    const titleServiceSpy = jasmine.createSpyObj('Title', ['setTitle']);
+    loaderServiceSpy = jasmine.createSpyObj('LoaderService', ['show', 'hide']);
+    jwtServiceSpy = jasmine.createSpyObj('JwtService', ['decode']);
+    metaServiceSpy = jasmine.createSpyObj('Meta', ['addTags']);
+    titleServiceSpy = jasmine.createSpyObj('Title', ['setTitle']);
 
     await TestBed.configureTestingModule({
       imports: [
@@ -42,10 +41,6 @@ describe('SettingComponent', () => {
     component = fixture.componentInstance;
     httpClientTesting = TestBed.inject(HttpTestingController);
     router = TestBed.inject(Router);
-    loaderService = TestBed.inject(LoaderService) as jasmine.SpyObj<LoaderService>;
-    jwtService = TestBed.inject(JwtService) as jasmine.SpyObj<JwtService>;
-    metaService = TestBed.inject(Meta) as jasmine.SpyObj<Meta>;
-    titleService = TestBed.inject(Title) as jasmine.SpyObj<Title>;
 
     spyOn(router, 'navigateByUrl');
     fixture.detectChanges();
@@ -60,8 +55,8 @@ describe('SettingComponent', () => {
   });
 
   it('devrait initialiser les metadatas', () => {
-    expect(titleService.setTitle).toHaveBeenCalledWith('Paramètres de compte - Infinite Quiz');
-    expect(metaService.addTags).toHaveBeenCalledWith([
+    expect(titleServiceSpy.setTitle).toHaveBeenCalledWith('Paramètres de compte - Infinite Quiz');
+    expect(metaServiceSpy.addTags).toHaveBeenCalledWith([
       { name: 'description', content: 'Gérez vos paramètres de compte et supprimez votre compte si nécessaire. Assurez-vous de sauvegarder vos données avant la suppression.' },
       { name: 'robots', content: 'noindex, nofollow' }
     ]);
@@ -73,7 +68,7 @@ describe('SettingComponent', () => {
 
     spyOn(localStorage, 'getItem').and.returnValue(fakeJwt);
     spyOn(localStorage, 'removeItem');
-    jwtService.decode.and.returnValue(decodedToken);
+    jwtServiceSpy.decode.and.returnValue(decodedToken);
 
     component.onDelete();
 
@@ -87,7 +82,7 @@ describe('SettingComponent', () => {
 
     expect(localStorage.removeItem).toHaveBeenCalledWith('jwt');
     expect(router.navigateByUrl).toHaveBeenCalledWith('/signup');
-    expect(loaderService.hide).toHaveBeenCalled();
+    expect(loaderServiceSpy.hide).toHaveBeenCalled();
   });
 
   it("devrait afficher un message d'erreur si un problème survient lors de la suppression du compte", () => {
@@ -95,7 +90,7 @@ describe('SettingComponent', () => {
     const decodedToken = { username: 'john@doe.fr' };
 
     spyOn(localStorage, 'getItem').and.returnValue(fakeJwt);
-    jwtService.decode.and.returnValue(decodedToken);
+    jwtServiceSpy.decode.and.returnValue(decodedToken);
 
     component.onDelete();
 
@@ -105,7 +100,7 @@ describe('SettingComponent', () => {
 
     expect(component.message).toBe("Une erreur s'est produite. Veuillez réessayer plus tard.");
     expect(component.style_class).toBe("p-3 text-warning-emphasis bg-warning border border-warning-subtle rounded-3");
-    expect(loaderService.hide).toHaveBeenCalled();
+    expect(loaderServiceSpy.hide).toHaveBeenCalled();
   });
 
   it("devrait afficher un message d'erreur si un problème arrive avec la requête patch", () => {
@@ -113,7 +108,7 @@ describe('SettingComponent', () => {
     const decodedToken = { username: 'john@doe.fr' };
 
     spyOn(localStorage, 'getItem').and.returnValue(fakeJwt);
-    jwtService.decode.and.returnValue(decodedToken);
+    jwtServiceSpy.decode.and.returnValue(decodedToken);
 
     component.onDelete();
 
@@ -127,6 +122,6 @@ describe('SettingComponent', () => {
 
     expect(component.message).toBe("Une erreur s'est produite. Veuillez réessayer plus tard.");
     expect(component.style_class).toBe("p-3 text-warning-emphasis bg-warning border border-warning-subtle rounded-3");
-    expect(loaderService.hide).toHaveBeenCalled();
+    expect(loaderServiceSpy.hide).toHaveBeenCalled();
   });
 });

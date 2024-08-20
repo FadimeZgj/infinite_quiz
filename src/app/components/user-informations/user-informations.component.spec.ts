@@ -4,10 +4,10 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { CleanDataService } from '../../services/cleanDataService/clean-data.service';
 import { LoaderService } from '../../services/loaderService/loader.service';
-import * as CryptoJS from 'crypto-js';
 import { ActivatedRoute } from '@angular/router';
 import { of, throwError } from 'rxjs';
 import { JwtService } from '../../services/jwtServices/jwt.service';
+import { Meta, Title } from '@angular/platform-browser';
 
 describe('UserInformationsComponent', () => {
   let component: UserInformationsComponent;
@@ -15,11 +15,15 @@ describe('UserInformationsComponent', () => {
   let cleanDataServiceSpy: jasmine.SpyObj<CleanDataService>;
   let loaderServiceSpy: jasmine.SpyObj<LoaderService>;
   let jwtServiceSpy: jasmine.SpyObj<JwtService>;
+  let metaServiceSpy: jasmine.SpyObj<Meta>;
+  let titleServiceSpy: jasmine.SpyObj<Title>;
 
   beforeEach(async () => {
     cleanDataServiceSpy = jasmine.createSpyObj('CleanDataService', ['cleanObject']);
     loaderServiceSpy = jasmine.createSpyObj('LoaderService', ['show', 'hide']);
     jwtServiceSpy = jasmine.createSpyObj('JwtService', ['decode']);
+    metaServiceSpy = jasmine.createSpyObj('Meta', ['addTags']);
+    titleServiceSpy = jasmine.createSpyObj('Title', ['setTitle']);
 
     await TestBed.configureTestingModule({
       imports: [ReactiveFormsModule, HttpClientTestingModule, UserInformationsComponent],
@@ -27,6 +31,8 @@ describe('UserInformationsComponent', () => {
         { provide: CleanDataService, useValue: cleanDataServiceSpy },
         { provide: LoaderService, useValue: loaderServiceSpy },
         { provide: JwtService, useValue: jwtServiceSpy },
+        { provide: Meta, useValue: metaServiceSpy },
+        { provide: Title, useValue: titleServiceSpy },
         { provide: ActivatedRoute, useValue: { snapshot: {} } } 
       ],
     }).compileComponents();
@@ -40,6 +46,14 @@ describe('UserInformationsComponent', () => {
 
   it('devrait créer le composant', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('devrait initialiser les metadatas', () => {
+    expect(titleServiceSpy.setTitle).toHaveBeenCalledWith('Modification des Informations - Infinite Quiz');
+    expect(metaServiceSpy.addTags).toHaveBeenCalledWith([
+      { name: 'description', content: 'Modifiez vos informations personnelles dans votre espace utilisateur. Assurez-vous que vos données sont à jour et exactes.' },
+      { name: 'robots', content: 'noindex, nofollow' } 
+    ]);
   });
 
   it('devrait initialiser les informations utilisateur dans ngOnInit et les afficher dans les champs du formulaire', () => {
