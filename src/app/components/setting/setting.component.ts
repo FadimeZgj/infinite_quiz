@@ -2,7 +2,6 @@ import { Component, inject } from '@angular/core';
 import { NavbarComponent } from '../navbar/navbar.component';
 import { Router, RouterLink } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
-import { jwtDecode } from 'jwt-decode';
 import { Meta, Title } from '@angular/platform-browser';
 import { LoaderService } from '../../services/loaderService/loader.service';
 import { JwtService } from '../../services/jwtServices/jwt.service';
