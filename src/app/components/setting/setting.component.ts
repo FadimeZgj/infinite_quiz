@@ -89,7 +89,9 @@ export class SettingComponent {
           })
 
       },
-      error: (err)=>{this.message="Une erreur s'est produite. Veuillez réessayer plus tard.", this.style_class="p-3 text-warning-emphasis bg-warning border border-warning-subtle rounded-3"}
+      error: (err)=>{this.message="Une erreur s'est produite. Veuillez réessayer plus tard.", 
+        this.style_class="p-3 text-warning-emphasis bg-warning border border-warning-subtle rounded-3",
+        this.loaderService.hide()}
       })
         
         
