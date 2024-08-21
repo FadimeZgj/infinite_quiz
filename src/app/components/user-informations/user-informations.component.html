@@ -1,20 +1,18 @@
 <app-navbar [title]="user_information"></app-navbar>
 <div class="div-form d-flex justify-center align-items-center">
     <form class="m-auto h-auto p-3 d-flex flex-column align-items-center" [formGroup]="userForm" (ngSubmit)="onSubmit()">
-        <div [class]="style_class" >{{msg}}</div>
+        <div [class]="style_class" role="alert" aria-live="assertive">{{msg}}</div>
         <div>
             <div class="form-group">
                 <label for="InputFirstName">Entrer votre prénom</label>
-                <input formControlName="firstname" type="text" class="form-control"
-                    aria-describedby="Saissisez votre prénom">
+                <input formControlName="firstname" type="text" class="form-control">
 
                 <label for="InputEmail1">Entrer votre Email</label>
-                <input formControlName="email" type="email" class="form-control"
-                    aria-describedby="Saissisez votre email">
+                <input formControlName="email" type="email" class="form-control">
 
                 @if ((userForm.get('email')?.errors?.['email'] || userForm.get('email')?.errors?.['required']) &&
                 userForm.get('email')?.touched){
-                <p class="errors-msg">
+                <p class="errors-msg" role="alert" aria-live="assertive">
                     Veuillez entrer un mail valide.
                 </p>
                 }

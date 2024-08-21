@@ -5,16 +5,14 @@
         <div>
             <div class="form-group">
                 <label for="InputFirstName">Entrer votre prénom</label>
-                <input formControlName="firstname" type="text" class="form-control"
-                    aria-describedby="Saissisez votre prénom" placeholder="Satoru">
+                <input formControlName="firstname" type="text" class="form-control" placeholder="Prénom">
 
                 <label for="InputEmail1">Entrer votre Email</label>
-                <input formControlName="email" type="email" class="form-control"
-                    aria-describedby="Saissisez votre email" placeholder="exemple@email.fr">
+                <input formControlName="email" type="email" class="form-control" placeholder="exemple@email.fr">
 
                 @if ((signUpForm.get('email')?.errors?.['email'] || signUpForm.get('email')?.errors?.['required']) &&
                 signUpForm.get('email')?.touched){
-                <p class="errors-msg text-center">
+                <p class="errors-msg text-center" role="alert" aria-live="assertive">
                     Veuillez entrez un mail valide.
                 </p>
                 }
@@ -23,13 +21,11 @@
 
             <div class="form-group">
                 <label for="InputPassword">Entrer votre mot de passe</label>
-                <input formControlName="plainPassword" type="password" class="form-control"
-                    aria-describedby="Saissisez votre mot de passe" placeholder="mot de passe">
+                <input formControlName="plainPassword" type="password" class="form-control" placeholder="mot de passe">
             </div>
             <div class="form-group mb-1">
                 <label for="ConfInputPassword">Confirmer votre mot de passe</label>
-                <input formControlName="cpw" type="password" class="form-control"
-                    aria-describedby="Confirmer votre mot de passe" placeholder="mot de passe">
+                <input formControlName="cpw" type="password" class="form-control" placeholder="mot de passe">
             </div>
 
             <div class="form-group pot">
@@ -37,13 +33,13 @@
             </div>
 
             @if (error_msg){
-            <p class="errors-msg">
+            <p class="errors-msg" role="alert" aria-live="assertive">
                 {{error_msg}}
             </p>
             }
             @else if ((signUpForm.get('plainPassword')?.errors?.['required'] ||
             signUpForm.get('plainPassword')?.errors?.['pattern'])&& signUpForm.get('plainPassword')?.touched){
-            <div class="errors-msg">
+            <div class="errors-msg" role="alert" aria-live="assertive">
                 Veuillez entrer un mot de passe de 12 caractères contenant au moins : <ul>
                     <li>une majuscule</li>
                     <li>une minuscule</li>
