@@ -22,12 +22,11 @@ export class QuizlistsComponent {
 
   // Injection des services nécessaires pour le composant
   http: HttpClient = inject(HttpClient);
-  loaderService: LoaderService = inject(LoaderService);
   cdr: ChangeDetectorRef = inject(ChangeDetectorRef);
 
   // Méthode appelée au chargement du composant
   async ngOnInit() {
-    this.loaderService.show(); // Affiche un indicateur de chargement
+    
     const jwt = localStorage.getItem('jwt'); // Récupération du token JWT stocké localement
 
     if (jwt != null) {
@@ -52,11 +51,9 @@ export class QuizlistsComponent {
       } catch (error) {
         console.error('Erreur lors de la récupération des quizs:', error); // Gère les erreurs lors de la requête
       } finally {
-        this.loaderService.hide(); // Cache l'indicateur de chargement
       }
     } else {
       console.error('JWT non disponible'); // Gère le cas où le JWT est absent
-      this.loaderService.hide(); // Cache l'indicateur de chargement
     }
   }
 

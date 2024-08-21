@@ -1,28 +1,56 @@
+<!-- <app-navbar [title]="quiz_title"></app-navbar>
+
+<div class="container">
+    
+    @for (question of questionsWithAnswers; track $index) {
+
+    <h2 class="mt-5 text-center">{{question.question}}</h2>
+    @for (answer of question.responsePairs ; track answer) {
+        
+    <div class="responses row">
+        <div class="col d-flex justify-content-center align-items-center">
+            <input type="checkbox" class="btn-check" id="btn-check-1" autocomplete="off">
+            <label [style.background-color]="answer[0]?.color" class="btn m-4" for="btn-check-1">{{answer[0]?.response}}</label>
+        </div>
+        <div class="col d-flex justify-content-center align-items-center">
+            <input type="checkbox" class="btn-check" id="btn-check-2" autocomplete="off">
+            <label [style.background-color]="answer[1]?.color" class="btn m-4" for="btn-check-2">{{answer[1]?.response}}</label>
+        </div>
+    </div>
+}
+}
+</div> -->
+
 <app-navbar [title]="quiz_title"></app-navbar>
 
 <div class="container">
-    <h2 class="mt-5 text-center">{{question}}</h2>
-    <div class="responses row">
-        <div class="col">
-            <input type="checkbox" class="btn-check" id="btn-check-1" autocomplete="off">
-            <label style="background-color: #5FB1DF;" class="btn m-4" for="btn-check-1">{{proposition_1}}</label>
-        </div>
-        <div class="col">
-            <input type="checkbox" class="btn-check" id="btn-check-2" autocomplete="off">
-            <label style="background-color: #DFB45F ;" class="btn m-4" for="btn-check-2">{{proposition_2}}</label>
-        </div>
-    </div>
+    <!-- Afficher uniquement la question actuelle -->
+    @if (currentQuestionIndex < questionsWithAnswers.length) {
+    <div>
+        <h2 class="mt-5 text-center">{{questionsWithAnswers[currentQuestionIndex].question}}</h2>
 
-    <div class="responses row">
-        <div class="col">
-            <input type="checkbox" class="btn-check" id="btn-check-3" autocomplete="off">
-            <label style="background-color: #E8865C ;" class="btn m-4" for="btn-check-3">{{proposition_3}}</label>
-        </div>
-        <div class="col">
-            <input type="checkbox" class="btn-check" id="btn-check-4" autocomplete="off">
-            <label style="background-color: #33CCB6 ;" class="btn m-4" for="btn-check-4">{{proposition_4}}</label>
-        </div>
+        <!-- Boucle sur les paires de réponses de la question actuelle -->
+        @for (answer of questionsWithAnswers[currentQuestionIndex].responsePairs; track answer) {
+        <div class="responses row">
+            
+            <!-- Première colonne -->
+            <div class="col d-flex justify-content-center align-items-center">
+                <input type="checkbox" class="btn-check" id="btn-check-{{answer[0]?.id}}" autocomplete="off" (change)="handleAnswerSelection(answer[0]?.correct)">
+                <label [style.background-color]="answer[0]?.color" class="btn m-4" for="btn-check-{{answer[0]?.id}}">
+                    {{answer[0]?.response}}
+                </label>
+            </div>
 
-    </div>
-
+            @if (answer[1]) {
+            <!-- Deuxième colonne -->
+            <div class="col d-flex justify-content-center align-items-center">
+                <input type="checkbox" class="btn-check" id="btn-check-{{answer[1]?.id}}" autocomplete="off" (change)="handleAnswerSelection(answer[1]?.correct)">
+                <label [style.background-color]="answer[1]?.color" class="btn m-4" for="btn-check-{{answer[1]?.id}}">
+                    {{answer[1]?.response}}
+                </label>
+            </div>}
+            
+        </div>
+        }
+    </div>}
 </div>

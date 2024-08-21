@@ -30,7 +30,6 @@ export class AddQuizComponent {
   http: HttpClient = inject(HttpClient);
   router: Router = inject(Router);
   jwt: any = localStorage.getItem('jwt'); // Récupération du token JWT stocké localement
-  loaderService: LoaderService = inject(LoaderService);
 
   // Variable pour indiquer si le formulaire a été soumis
   submitted: boolean = false;
@@ -47,7 +46,6 @@ export class AddQuizComponent {
 
   // Méthode appelée lors de la soumission du formulaire
   onAddQuiz() {
-    this.loaderService.show();
     // Décoder le JWT pour obtenir le nom d'utilisateur
     const decodedToken: any = jwtDecode(this.jwt);
     const username = decodedToken?.username;
@@ -109,7 +107,6 @@ export class AddQuizComponent {
               .subscribe((newQuiz: any) => {
                 if (newQuiz) {
                   const quizId = newQuiz.id; // Récupère l'ID du nouveau quiz créé
-                  this.loaderService.hide();
                   // Redirige vers la page d'ajout de questions pour ce quiz
                   this.router.navigateByUrl(`/addquestion/${quizId}`);
                 }

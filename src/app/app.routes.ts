@@ -125,6 +125,7 @@ export const routes: Routes = [
       ),
       canActivate: [userGuard],
   },
+
   {
     path: 'team',
     loadComponent: () =>
@@ -136,6 +137,37 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./components/game/game.component').then((m) => m.GameComponent),
     canActivate: [userGuard],
+    canActivateChild: [userChildGuard],
+    children: [
+      {
+        path: ':quizId',
+        loadComponent: () =>
+          import('./components/game/game.component').then(
+            (m) => m.GameComponent
+          ),
+      },
+      {
+        path: ':teamId',
+        loadComponent: () =>
+          import('./components/game/game.component').then(
+            (m) => m.GameComponent
+          ),
+      },
+      {
+        path: ':playerId',
+        loadComponent: () =>
+          import('./components/game/game.component').then(
+            (m) => m.GameComponent
+          ),
+      },
+      {
+        path: ':uuid',
+        loadComponent: () =>
+          import('./components/game/game.component').then(
+            (m) => m.GameComponent
+          ),
+      },
+    ],
     
   },
   {
