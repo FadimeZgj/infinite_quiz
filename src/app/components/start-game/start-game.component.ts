@@ -76,6 +76,8 @@ export class StartGameComponent {
             .subscribe(
               (userResponse: any) => {
                 const userId = userResponse['hydra:member'][0]?.id;
+                const userFirstname=userResponse['hydra:member'][0]?.firstname;
+                sessionStorage.setItem("player_name",userFirstname)
                 if (!userId) {
                   console.error('User ID is missing in the response');
                   return;

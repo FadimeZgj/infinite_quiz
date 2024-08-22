@@ -3,16 +3,11 @@
 <div class="div-score d-flex justify-center align-items-center">
     <div [style]="background" class="card-score p-5 m-auto d-flex flex-column justify-center align-items-center">
 
-        <img class="m-4" src="../../assets/images/logo-navbar.png" alt="">
-
+        <img class="m-4" [src]="user_avatar" alt="avatar" (error)="onError()">
         <div class="mb-3 text-center">
-            
-                <p>{{msg_for_player}}</p>
-                <p class="team_name">{{team_player}}</p>
-            
-            <p class="fw-bold fs-2"> {{score}}</p>
+            <p class="fs-2">{{player_name}}</p>
+            <p class="fw-bold fs-2"> {{player_score}} %</p>
         </div>
-        <a class="btn-rating p-1" href="http://">Voir le classement</a>
-      
+        <a class="back-link text-decoration-none" routerLink="/quizlists">Retour à la liste des questions</a>
     </div>
 </div>

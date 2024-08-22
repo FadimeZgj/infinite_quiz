@@ -12,7 +12,6 @@ import { Router, RouterLink } from '@angular/router';
 import { jwtDecode } from 'jwt-decode';
 import { catchError } from 'rxjs/operators';
 import { of } from 'rxjs';
-import { LoaderService } from '../../services/loaderService/loader.service';
 
 @Component({
   selector: 'app-add-quiz', // Sélecteur utilisé pour insérer ce composant dans un template
