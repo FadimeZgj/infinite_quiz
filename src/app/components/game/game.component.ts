@@ -3,6 +3,8 @@ import { NavbarComponent } from '../navbar/navbar.component';
 import { HttpClient } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Quiz } from '../../models/quiz.type';
+import { Meta, Title } from '@angular/platform-browser';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-game',
@@ -12,6 +14,10 @@ import { Quiz } from '../../models/quiz.type';
   styleUrl: './game.component.scss',
 })
 export class GameComponent {
+  constructor(
+    private meta: Meta,
+    private title: Title,
+  ) {}
   quiz_title = 'Nom du quiz';
   http: HttpClient = inject(HttpClient);
   route: ActivatedRoute = inject(ActivatedRoute);
@@ -26,7 +32,18 @@ export class GameComponent {
   answers: any[] = []
   nbQuestion: number = 0
 
+  private setMetaData() {
+    this.title.setTitle('Game - Infinite Quiz');
+    this.meta.addTags([
+      { name: 'description', content: 'Répondre aux questions' },
+      { name: 'robots', content: 'noindex, nofollow' } // Empêche l'indexation de cette page
+    ]);
+  }
+
+
   ngOnInit() {
+
+    this.setMetaData()
 
     this.route.queryParams.subscribe(params => {
       this.quizId = params['quizId'];
@@ -79,40 +96,48 @@ async getQuestions() {
     const questionUrls = response.question;
 
     const fetchAnswers = async (questionData: any, answerUrls: any[]) => {
-      const responses = await Promise.all(
-        answerUrls.map((answerUrl: any) => 
-          this.http
-            .get(`http://127.0.0.1:8000${answerUrl}`, {
-              headers: { Authorization: 'Bearer ' + this.jwt },
-            })
-            .toPromise()
-        )
-      );
-
-      responses.forEach((response: any, index: number) => {
-        response.color = this.colors[index % this.colors.length]; // Attribuer une couleur en boucle
-      });
-
-      questionData.responsePairs = this.getAnswerPairs(responses);
+      try {
+        const responses = await Promise.all(
+          answerUrls.map((answerUrl: any) =>
+            firstValueFrom(
+              this.http.get(`http://127.0.0.1:8000${answerUrl}`, {
+                headers: { Authorization: 'Bearer ' + this.jwt },
+              })
+            )
+          )
+        );
+    
+        responses.forEach((response: any, index: number) => {
+          response.color = this.colors[index % this.colors.length]; // Attribuer une couleur en boucle
+        });
+    
+        questionData.responsePairs = this.getAnswerPairs(responses);
+      } catch (error) {
+        console.error('Erreur lors de la récupération des réponses:', error);
+      }
     };
 
     const fetchQuestion = async (questionUrl: any) => {
-      const responsQuestion: any = await this.http
-        .get(`http://127.0.0.1:8000${questionUrl}`, {
-          headers: { Authorization: 'Bearer ' + this.jwt },
-        })
-        .toPromise();
-  
-      const questionData = {
-        question: responsQuestion.question,
-        responsePairs: []
-      };
-  
-      if (responsQuestion.response.length === 0) {
-        this.questionsWithAnswers.push(questionData);
-      } else {
-        await fetchAnswers(questionData, responsQuestion.response);
-        this.questionsWithAnswers.push(questionData);
+      try {
+        const responsQuestion: any = await firstValueFrom(
+          this.http.get(`http://127.0.0.1:8000${questionUrl}`, {
+            headers: { Authorization: 'Bearer ' + this.jwt },
+          })
+        );
+    
+        const questionData = {
+          question: responsQuestion.question,
+          responsePairs: []
+        };
+    
+        if (responsQuestion.response.length === 0) {
+          this.questionsWithAnswers.push(questionData);
+        } else {
+          await fetchAnswers(questionData, responsQuestion.response);
+          this.questionsWithAnswers.push(questionData);
+        }
+      } catch (error) {
+        console.error('Erreur lors de la récupération de la question:', error);
       }
     };
 
@@ -152,8 +177,7 @@ handleAnswerSelection(isCorrect: boolean) {
       this.finishQuiz();
     }
   }
-  
-  
+
 }
 
 // Passer à la question suivante après avoir sélectionné une réponse
@@ -183,6 +207,4 @@ finishQuiz() {
         }
       )
 }
-
-  
 }

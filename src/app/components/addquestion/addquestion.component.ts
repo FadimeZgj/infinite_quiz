@@ -11,6 +11,7 @@ import {
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
+import { Meta, Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-addquestion',
@@ -20,6 +21,10 @@ import { firstValueFrom } from 'rxjs';
   styleUrl: './addquestion.component.scss',
 })
 export class AddquestionComponent {
+  constructor(
+    private meta: Meta,
+    private title: Title,
+  ) {}
   addQuestion_title = 'titre du quiz'; // Titre affiché sur le formulaire d'ajout de question
 
   nb_questions?: any; // Nombre de questions à ajouter, potentiellement défini via sessionStorage
@@ -31,8 +36,17 @@ export class AddquestionComponent {
   quizId: string | null | undefined = null; // ID du quiz, récupéré depuis les paramètres de la route
   jwt: any = localStorage.getItem('jwt'); // Récupération du token JWT stocké localement
 
+  private setMetaData() {
+    this.title.setTitle('Créer des question - Infinite Quiz');
+    this.meta.addTags([
+      { name: 'description', content: 'Créer les questions du quiz' },
+      { name: 'robots', content: 'noindex, nofollow' } // Empêche l'indexation de cette page
+    ]);
+  }
+
   // Méthode appelée au chargement du composant
   ngOnInit() {
+    this.setMetaData()
     // Récupération de l'ID du quiz depuis les paramètres de la route
     this.quizId = this.route.snapshot.firstChild?.paramMap.get('id');
 
@@ -86,7 +100,7 @@ export class AddquestionComponent {
   // Crée un groupe de formulaire pour une question
   createQuestionFormGroup(): FormGroup {
     return this.formBuilder.group({
-      question: ['', Validators.required], // Champ pour la question, requis
+      question: ['', [Validators.required, Validators.minLength(3)]], // Champ pour la question, requis
       responses: this.formBuilder.array(this.createDefaultResponses()), // Initialisation des réponses par défaut
     });
   }
@@ -94,7 +108,7 @@ export class AddquestionComponent {
   // Crée un groupe de formulaire pour une réponse
   createResponseFormGroup(): FormGroup {
     return this.formBuilder.group({
-      response: ['', Validators.required], // Champ pour la réponse, requis
+      response: ['', [Validators.required, Validators.minLength(3)]], // Champ pour la réponse, requis
       correct: [false], // Indicateur si la réponse est correcte
     });
   }

@@ -5,8 +5,15 @@
     @for (question of questions.controls; let i= $index; track i) {
     <div [formGroupName]="i">
       <div class="mb-3">
-        <label for="TextInput0" class="form-label">Entrez votre question</label>
-        <input type="text" id="TextInput0" class="form-control" formControlName="question">
+        <label for="questionText" class="form-label">Entrez votre question</label>
+        <input type="text" id="questionText" class="form-control" formControlName="question" aria-required="true">
+        @if(submitted && questions.at(i).get('question')?.hasError("required")) {
+          <div class="text-danger fs-6" role="alert">L'intitulé de la question est obligatoire</div>
+        }
+        @else if (questions.at(i).get('question')?.hasError("minlength")) {
+          <div class="text-danger fs-6" role="alert">L'intitulé doit avoir 3 caractères minimum</div>
+
+          }
       </div>
 
       <table class="table">
@@ -14,13 +21,23 @@
           @for (response of getResponses(i).controls; let j=$index; track j) {
           <ng-container>
             <tr>
-              <th><label for="TextInput1" class="form-label">Proposition {{j + 1}} </label></th>
-              <th><label for="checkInput" class="form-label ps-5">Bonne(s) réponse(s)</label></th>
+              <th><label for="answer" class="form-label">Proposition {{j + 1}} </label></th>
+              <th><label for="isCorrect" class="form-label ps-5">Bonne(s) réponse(s)</label></th>
             </tr>
             <tr [formGroupName]="j">
-              <td class="w-75"><input type="text" id="TextInput1" class="form-control" formControlName="response"></td>
-              <td class="ps-5"><input type="checkbox" class="form-check-input" id="checkInput"
-                  formControlName="correct">
+              <td class="w-75"><input type="text" id="answer" class="form-control" formControlName="response"
+                aria-required="true"
+                [attr.aria-invalid]="submitted && getResponses(i).at(j).get('response')?.invalid">
+                @if(submitted && getResponses(i).at(j).get('response')?.hasError("required")) {
+                  <div class="text-danger fs-6" role="alert">L'intitulé de la réponse est obligatoire</div>
+                }
+                @else if (getResponses(i).at(j).get('response')?.hasError("minlength")) {
+                  <div class="text-danger fs-6" role="alert">L'intitulé doit avoir 3 caractères minimum</div>
+        
+                  }
+              </td>
+              <td class="ps-5"><input type="checkbox" class="form-check-input" id="isCorrect"
+                  formControlName="correct"  >
               </td>
             </tr>
           </ng-container>

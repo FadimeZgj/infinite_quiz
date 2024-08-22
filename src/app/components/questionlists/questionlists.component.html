@@ -2,19 +2,20 @@
 
 <div class="container">
   <div class="d-flex flex-column flex-md-row justify-content-between align-items-center">
-    <a class="add-quesstion-btn text-center p-2 my-4" routerLink="/addquestion/{{quizId}}"> <i
-        class="bi bi-plus-lg"></i> Ajouter une question</a>
-    <a type="button" data-bs-toggle="modal" data-bs-target="#exampleModal"
-      class="delete-quiz-btn text-center p-2 my-4">Supprimer le quiz</a>
+    <button class="add-quesstion-btn text-center p-2 my-4" routerLink="/addquestion/{{quizId}}" aria-label="Ajouter une question au quiz">
+      <i class="bi bi-plus-lg" aria-hidden="true"></i> Ajouter une question</button>
+    <button type="button" data-bs-toggle="modal" data-bs-target="#supressionModal"
+      class="delete-quiz-btn text-center p-2 my-4" aria-label="Supprimer le quiz">Supprimer le quiz</button>
   </div>
   @for (question of questionTitles; track $index) {
   <div class="card-list d-flex flex-lg-row flex-column justify-content-between align-items-center">
-    <h2 class="question">{{question.title}}</h2>
+    <h2 class="question">{{question.title}} </h2>
     <div class="icons-card-list">
-      <a (click)="onViewQuestionDetails(question.id)" class="icons details" data-bs-toggle="modal"
-        data-bs-target="#viewDetail"><i class="bi bi-eye fs-2"></i><span>Voir le détail</span></a>
-      <a (click)="onDeleteQuestion(question.id)" class=" icons delete-question"> <i class="bi bi-x-circle fs-2"></i>
-        <span>Supprimer</span></a>
+      <button (click)="onViewQuestionDetails(question.id)" class="btn icons details" data-bs-toggle="modal"
+        data-bs-target="#viewDetail" aria-label="Voir les détails de la question">
+        <i class="bi bi-eye fs-2" aria-hidden="true"></i><span>Voir le détail</span></button>
+      <button (click)="onDeleteQuestion(question.id)" class="btn icons delete-question"> <i class="bi bi-x-circle fs-2"></i>
+        <span>Supprimer</span></button>
     </div>
   </div>
   }
@@ -26,7 +27,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <h1 class="modal-title fs-5" id="viewDetailLabel">Détails de la question</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer la fenêtre"></button>
       </div>
       <div class="modal-body">
         <h2>{{selectedQuestionDetails?.question}}</h2>
@@ -38,17 +39,17 @@
           <p>{{answer.response}}</p>
           <div>
             @if (answer.correct === true) {
-            <input type="checkbox" checked disabled>
+            <input type="checkbox" checked disabled aria-checked="true" aria-label="Bonne réponse">
             }
             @else {
-            <input type="checkbox" disabled>
+            <input type="checkbox" disabled disabled aria-checked="false">
             }
           </div>
         </div>
         }
       </div>
       <div class="modal-footer">
-        <button type="button" class="cancel-removal-btn" data-bs-dismiss="modal">Fermer</button>
+        <button type="button" class="cancel-removal-btn" data-bs-dismiss="modal" aria-label="Fermer">Fermer</button>
       </div>
     </div>
   </div>
@@ -57,20 +58,20 @@
 
 
 <!-- Modal suppression quiz -->
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="supressionModal" tabindex="-1" aria-labelledby="supressionModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h1 class="modal-title fs-5" id="exampleModalLabel">{{questionlists_title}}</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <h1 class="modal-title fs-5" id="supressionModalLabel">{{questionlists_title}}</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
       </div>
       <div class="modal-body">
         <p>Êtes-vous sûr(e) de vouloir supprimer le quiz ?</p>
       </div>
       <div class="modal-footer">
-        <button type="button" class="cancel-removal-btn" data-bs-dismiss="modal">Annuler</button>
+        <button type="button" class="cancel-removal-btn" data-bs-dismiss="modal" aria-label="Annuler la suppression du quiz">Annuler</button>
         <button type="button" class="confirm-quiz-btn" (click)="onDeleteQuiz()"
-          data-bs-dismiss="modal">Supprimer</button>
+          data-bs-dismiss="modal" aria-label="Confirmer la suppression du quiz">Supprimer</button>
       </div>
     </div>
   </div>

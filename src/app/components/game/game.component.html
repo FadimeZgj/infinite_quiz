@@ -8,11 +8,13 @@
 
         <!-- Boucle sur les paires de réponses de la question actuelle -->
         @for (answer of questionsWithAnswers[currentQuestionIndex].responsePairs; track answer) {
-        <div class="responses row">
+        <div class="responses row" role="group">
             
             <!-- Première colonne -->
             <div class="col d-flex justify-content-center align-items-center">
-                <input type="checkbox" class="btn-check" id="btn-check-{{answer[0]?.id}}" autocomplete="off" (change)="handleAnswerSelection(answer[0]?.correct)">
+                <input type="checkbox" class="btn-check" id="btn-check-{{answer[0]?.id}}" autocomplete="off" 
+                aria-checked="false" 
+                (change)="handleAnswerSelection(answer[0]?.correct)">
                 <label [style.background-color]="answer[0]?.color" class="btn m-4" for="btn-check-{{answer[0]?.id}}">
                     {{answer[0]?.response}}
                 </label>
@@ -21,7 +23,9 @@
             @if (answer[1]) {
             <!-- Deuxième colonne -->
             <div class="col d-flex justify-content-center align-items-center">
-                <input type="checkbox" class="btn-check" id="btn-check-{{answer[1]?.id}}" autocomplete="off" (change)="handleAnswerSelection(answer[1]?.correct)">
+                <input type="checkbox" class="btn-check" id="btn-check-{{answer[1]?.id}}" autocomplete="off" 
+                aria-checked="false" 
+                (change)="handleAnswerSelection(answer[1]?.correct)">
                 <label [style.background-color]="answer[1]?.color" class="btn m-4" for="btn-check-{{answer[1]?.id}}">
                     {{answer[1]?.response}}
                 </label>

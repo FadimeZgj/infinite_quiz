@@ -1,13 +1,13 @@
 <app-navbar [title]="score_title"></app-navbar>
 
 <div class="div-score d-flex justify-center align-items-center">
-    <div [style]="background" class="card-score p-5 m-auto d-flex flex-column justify-center align-items-center">
+    <div [style]="background" class="card-score p-5 m-auto d-flex flex-column justify-center align-items-center" aria-labelledby="score-header">
 
-        <img class="m-4" [src]="user_avatar" alt="avatar" (error)="onError()">
+        <img class="m-4" [src]="user_avatar" alt="avatar" (error)="onError()" aria-describedby="avatar-description">
         <div class="mb-3 text-center">
-            <p class="fs-2">{{player_name}}</p>
-            <p class="fw-bold fs-2"> {{player_score}} %</p>
+            <p class="fs-2" aria-live="polite">{{player_name}}</p>
+            <p class="fw-bold fs-2"  aria-live="polite"> {{player_score}} %</p>
         </div>
-        <a class="back-link text-decoration-none" routerLink="/quizlists">Retour à la liste des questions</a>
+        <a class="back-link text-decoration-none" routerLink="/quizlists" aria-label="Retour à la liste des quiz">Retour à la liste des questions</a>
     </div>
 </div>

@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { Quiz } from '../../models/quiz.type';
 import { firstValueFrom } from 'rxjs';
+import { Meta, Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-questionlists',
@@ -13,6 +14,10 @@ import { firstValueFrom } from 'rxjs';
   styleUrl: './questionlists.component.scss',
 })
 export class QuestionlistsComponent {
+  constructor(
+    private meta: Meta,
+    private title: Title,
+  ) {}
   questionlists_title = 'Titre du quiz'; // Titre de la liste des questions
 
   // Injection des services nécessaires pour le composant
@@ -29,8 +34,16 @@ export class QuestionlistsComponent {
   selectedQuestionDetails: any; // Variable pour stocker les détails de la question sélectionnée
   selectedQuestionResponses: any[] = []; // Variable pour stocker les réponses de la question sélectionnée
 
+  private setMetaData() {
+    this.title.setTitle('Liste des questions - Infinite Quiz');
+    this.meta.addTags([
+      { name: 'description', content: 'Liste des questions du quiz' },
+      { name: 'robots', content: 'noindex, nofollow' } // Empêche l'indexation de cette page
+    ]);
+  }
   // Méthode appelée au chargement du composant
   ngOnInit() {
+    this.setMetaData()
     // Vérification de la présence du JWT et de l'ID du quiz
     if (!this.jwt) {
       console.error('Accès non autorisé'); // Affichage d'une erreur si le JWT est absent

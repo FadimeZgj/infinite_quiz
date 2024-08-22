@@ -12,6 +12,7 @@ import { Router, RouterLink } from '@angular/router';
 import { jwtDecode } from 'jwt-decode';
 import { catchError } from 'rxjs/operators';
 import { of } from 'rxjs';
+import { Meta, Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-add-quiz', // Sélecteur utilisé pour insérer ce composant dans un template
@@ -21,6 +22,10 @@ import { of } from 'rxjs';
   styleUrl: './add-quiz.component.scss', // Styles spécifiques au composant
 })
 export class AddQuizComponent {
+  constructor(
+    private meta: Meta,
+    private title: Title,
+  ) {}
   // Titre affiché en haut de la page
   addQuiz_title = 'Créer un quiz';
 
@@ -35,6 +40,18 @@ export class AddQuizComponent {
 
   // Variable pour stocker les messages d'erreur
   errorMessage: string = '';
+
+  private setMetaData() {
+    this.title.setTitle('Créer un quiz - Infinite Quiz');
+    this.meta.addTags([
+      { name: 'description', content: 'Créer un nouveau quiz' },
+      { name: 'robots', content: 'noindex, nofollow' } // Empêche l'indexation de cette page
+    ]);
+  }
+
+  ngOnInit(){
+    this.setMetaData()
+  }
 
   // Définition du formulaire avec les champs requis et leurs validateurs
   formulaire: FormGroup = this.formBuilder.group({

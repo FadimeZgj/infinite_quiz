@@ -6,6 +6,7 @@ import { RouterLink } from '@angular/router';
 import { LoaderService } from '../../services/loaderService/loader.service';
 import { FormsModule } from '@angular/forms';
 import { firstValueFrom } from 'rxjs';
+import { Meta, Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-quizlists',
@@ -15,6 +16,10 @@ import { firstValueFrom } from 'rxjs';
   styleUrl: './quizlists.component.scss',
 })
 export class QuizlistsComponent {
+  constructor(
+    private meta: Meta,
+    private title: Title,
+  ) {}
   quizlists_title = 'Listes des quizs'; // Titre affiché en haut de la page
   listQuiz: Quiz[] = []; // Liste des quizs récupérés depuis l'API
   filteredQuizzes: Quiz[] = []; // Liste des quizs filtrés en fonction du terme de recherche
@@ -24,8 +29,18 @@ export class QuizlistsComponent {
   http: HttpClient = inject(HttpClient);
   cdr: ChangeDetectorRef = inject(ChangeDetectorRef);
 
+  private setMetaData() {
+    this.title.setTitle('Liste des quizs - Infinite Quiz');
+    this.meta.addTags([
+      { name: 'description', content: 'Liste des quizs' },
+      { name: 'robots', content: 'noindex, nofollow' } // Empêche l'indexation de cette page
+    ]);
+  }
+
   // Méthode appelée au chargement du composant
   async ngOnInit() {
+
+    this.setMetaData()
     
     const jwt = localStorage.getItem('jwt'); // Récupération du token JWT stocké localement
 
