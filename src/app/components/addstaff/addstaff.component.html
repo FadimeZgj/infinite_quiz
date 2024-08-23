@@ -6,16 +6,13 @@
         <div class="d-flex flex-md-row flex-column">
             <div class="form-group">
                 <label for="InputFirstName">Prénom</label>
-                <input formControlName="firstname" type="text" class="form-control"
-                    aria-describedby="Saissisez le prénom" placeholder={{staff_firstname}}>
+                <input formControlName="firstname" type="text" class="form-control" placeholder={{staff_firstname}}>
 
                 <label for="InputLastName">Nom</label>
-                <input formControlName="lastname" type="text" class="form-control" aria-describedby="Saissisez le nom"
-                    placeholder={{staff_lastname}}>
+                <input formControlName="lastname" type="text" class="form-control" placeholder={{staff_lastname}}>
 
                 <label for="InputEmail">Email</label>
-                <input formControlName="email" type="email" class="form-control"
-                    aria-describedby="Saissisez un email" placeholder={{staff_email}}>
+                <input formControlName="email" type="email" class="form-control" placeholder={{staff_email}}>
 
                 @if ((staffForm.get('email')?.errors?.['email'] || staffForm.get('email')?.errors?.['required']) &&
                 staffForm.get('email')?.touched){
@@ -26,11 +23,9 @@
             </div>
             <div class="form-group">
                 <label for="InputDepartement">Service</label>
-                <input formControlName="departement" type="text" class="form-control"
-                    aria-describedby="Saissisez le service" placeholder={{staff_departement}}>
+                <input formControlName="departement" type="text" class="form-control" placeholder={{staff_departement}}>
                 <label for="InputPosition">Poste</label>
-                <input formControlName="position" type="text" class="form-control"
-                    aria-describedby="Saissisez le poste occupé" placeholder={{staff_position}}>
+                <input formControlName="position" type="text" class="form-control" placeholder={{staff_position}}>
             </div>
 
         </div>

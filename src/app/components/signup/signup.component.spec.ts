@@ -5,6 +5,7 @@ import { SignupComponent } from './signup.component';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LoaderService } from '../../services/loaderService/loader.service';
 import { CleanDataService } from '../../services/cleanDataService/clean-data.service';
+import { Meta, Title } from '@angular/platform-browser';
 
 describe('SignupComponent', () => {
   let component: SignupComponent;
@@ -13,11 +14,15 @@ describe('SignupComponent', () => {
   let router: Router;
   let loaderServiceSpy: jasmine.SpyObj<LoaderService>;
   let cleanDataServiceSpy: jasmine.SpyObj<CleanDataService>;
+  let metaServiceSpy: jasmine.SpyObj<Meta>;
+  let titleServiceSpy: jasmine.SpyObj<Title>;
 
   beforeEach(async () => {
     // Création d'espion pour surveiller les services
     cleanDataServiceSpy = jasmine.createSpyObj('CleanDataService', ['cleanObject']);
     loaderServiceSpy = jasmine.createSpyObj('LoaderService', ['show', 'hide']);
+    metaServiceSpy = jasmine.createSpyObj('Meta', ['addTags']);
+    titleServiceSpy = jasmine.createSpyObj('Title', ['setTitle']);
 
     await TestBed.configureTestingModule({
       imports: [
@@ -28,6 +33,8 @@ describe('SignupComponent', () => {
       providers: [
         { provide: CleanDataService, useValue: cleanDataServiceSpy },
         { provide: LoaderService, useValue: loaderServiceSpy },
+        { provide: Meta, useValue: metaServiceSpy },
+        { provide: Title, useValue: titleServiceSpy },
         { provide: ActivatedRoute, useValue: { snapshot: {} } } 
       ]
     }).compileComponents();
@@ -45,6 +52,15 @@ describe('SignupComponent', () => {
 
   it('devrait créer le composant', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('devrait initialiser les metadatas', () => {
+    expect(titleServiceSpy.setTitle).toHaveBeenCalledWith('Inscription - Créez vos quiz facilement avec Infinite Quiz');
+    expect(metaServiceSpy.addTags).toHaveBeenCalledWith([
+      { name: 'description', content: 'Inscrivez-vous pour accéder à notre service. Remplissez le formulaire d’inscription avec vos informations personnelles pour créer un compte.' },
+      { name: 'keywords', content: 'inscription, quiz, création de quiz, gestion de quiz' },
+      { name: 'robots', content: 'index, follow' } 
+    ]);
   });
 
   it('devrait ne pas soumettre le formulaire si les mots de passe ne correspondent pas', () => {

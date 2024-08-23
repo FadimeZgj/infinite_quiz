@@ -5,6 +5,7 @@ import { LoginComponent } from './login.component';
 import { CleanDataService } from '../../services/cleanDataService/clean-data.service';
 import { LoaderService } from '../../services/loaderService/loader.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Meta, Title } from '@angular/platform-browser';
 
 describe('LoginComponent', () => {
   let component: LoginComponent;
@@ -12,12 +13,16 @@ describe('LoginComponent', () => {
   let httpClientTesting: HttpTestingController;
   let cleanDataServiceSpy: jasmine.SpyObj<CleanDataService>;
   let loaderServiceSpy: jasmine.SpyObj<LoaderService>;
+  let metaServiceSpy: jasmine.SpyObj<Meta>;
+  let titleServiceSpy: jasmine.SpyObj<Title>;
   let router: Router;
 
   beforeEach(async () => {
     // Création d'espion pour les services utilisés dans le composant
     cleanDataServiceSpy = jasmine.createSpyObj('CleanDataService', ['cleanObject']);
     loaderServiceSpy = jasmine.createSpyObj('LoaderService', ['show', 'hide']);
+    metaServiceSpy = jasmine.createSpyObj('Meta', ['addTags']);
+    titleServiceSpy = jasmine.createSpyObj('Title', ['setTitle']);
 
     await TestBed.configureTestingModule({
       imports: [
@@ -28,6 +33,8 @@ describe('LoginComponent', () => {
       providers: [
         { provide: CleanDataService, useValue: cleanDataServiceSpy },  // Injection de CleanDataService
         { provide: LoaderService, useValue: loaderServiceSpy },  // Injection de LoaderService
+        { provide: Meta, useValue: metaServiceSpy },
+        { provide: Title, useValue: titleServiceSpy },
         { provide: ActivatedRoute, useValue: { snapshot: {} } },  
       ],
     }).compileComponents();
@@ -36,8 +43,6 @@ describe('LoginComponent', () => {
     fixture = TestBed.createComponent(LoginComponent);
     component = fixture.componentInstance;
     httpClientTesting = TestBed.inject(HttpTestingController);
-    cleanDataServiceSpy = TestBed.inject(CleanDataService) as jasmine.SpyObj<CleanDataService>;
-    loaderServiceSpy = TestBed.inject(LoaderService) as jasmine.SpyObj<LoaderService>;
     router = TestBed.inject(Router);
 
     fixture.detectChanges();  // Déclenche la détection des changements pour initialiser le composant
@@ -46,6 +51,15 @@ describe('LoginComponent', () => {
   // Test de création du composant
   it('devrait créer le composant', () => {
     expect(component).toBeTruthy();  // Vérifie que le composant est bien créé
+  });
+
+  it('devrait initialiser les metadatas', () => {
+    expect(titleServiceSpy.setTitle).toHaveBeenCalledWith('Login - Créez vos quiz facilement avec Infinite Quiz');
+    expect(metaServiceSpy.addTags).toHaveBeenCalledWith([
+      { name: 'description', content: 'Connectez-vous pour accéder à vos quiz et commencer à créer de nouveaux défis. Découvrez comment créer des quiz amusants et engageants.' },
+      { name: 'keywords', content: 'connexion, quiz, création de quiz, gestion de quiz' },
+      { name: 'robots', content: 'index, follow' }
+    ]);
   });
 
   // Test pour vérifier que la méthode "show" du LoaderService est appelée lors de la soumission du formulaire
