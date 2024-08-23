@@ -1,6 +1,6 @@
 <app-navbar [title]="logout_title"></app-navbar>
 
-<div class="div-form d-flex justify-center align-items-center">
+<main class="div-form d-flex justify-center align-items-center">
     <div class="card-profile p-5 m-auto d-flex flex-column align-items-center">
         <img class="my-3"
             [src]="user_avatar"
@@ -10,4 +10,4 @@
         <p>{{user_badge}}</p>
         <button aria-label="bouton de déconnexion" type="button" (click)="onSubmit()" class="m-3 logout-btn">Déconnexion</button>
     </div>
-</div>
+</main>

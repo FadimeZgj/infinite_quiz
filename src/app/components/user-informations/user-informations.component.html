@@ -1,5 +1,5 @@
 <app-navbar [title]="user_information"></app-navbar>
-<div class="div-form d-flex justify-center align-items-center">
+<main class="div-form d-flex justify-center align-items-center">
     <form class="m-auto h-auto p-3 d-flex flex-column align-items-center" [formGroup]="userForm" (ngSubmit)="onSubmit()">
         <div [class]="style_class" role="alert" aria-live="assertive">{{msg}}</div>
         <div>
@@ -25,4 +25,4 @@
         <button aria-label="Bouton de validation" type="submit" class="validate-btn mt-3 mb-2">Valider</button>
         <button routerLink="/setting" aria-label="Bouton d'annulation" class="cancel-btn my-2" type="button">Annuler</button>
     </form>
-</div>
+</main>
