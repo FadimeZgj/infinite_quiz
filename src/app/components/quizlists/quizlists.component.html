@@ -1,6 +1,6 @@
 <app-navbar [title]="quizlists_title"></app-navbar>
 
-<div class="container">
+<main class="container">
   <form class="d-flex w-50 mt-5" role="search" (ngSubmit)="searchQuizzes()">
 
     <div class="input-group me-2">
@@ -31,4 +31,4 @@
   <ng-template #noResults>
     <p aria-live="polite">Aucun quiz disponible</p>
   </ng-template>
-</div>
+</main>
