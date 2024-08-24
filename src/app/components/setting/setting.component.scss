@@ -1,6 +1,6 @@
 @import "../../app.component.scss";
 
-div>div{
+main>div{
     padding: 20px;
     margin-top: 20px;
     @include card-style(auto, 120px, $grey, $grey, 18px);
