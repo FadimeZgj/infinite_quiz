@@ -21,7 +21,7 @@ describe('userGuard', () => {
   });
 
   it('devrait retourner true si le JWT est présent', () => {
-    spyOn(localStorage, 'getItem').and.returnValue('fake-jwt'); // Simule la présence du JWT dans le localStorage
+    spyOn(localStorage, 'getItem').and.returnValue('valid.jwt.token'); // Simule la présence du JWT dans le localStorage
 
     const result = executeGuard(null as any, null as any); // Appelle le guard
 
