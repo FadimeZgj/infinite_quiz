@@ -2,17 +2,16 @@ import { Component, inject } from '@angular/core';
 import { NavbarComponent } from '../navbar/navbar.component';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { CleanDataService } from '../../services/cleanDataService/clean-data.service';
 import { LoaderService } from '../../services/loaderService/loader.service';
 import { Meta, Title } from '@angular/platform-browser';
-import { jwtDecode } from 'jwt-decode';
 import { JwtService } from '../../services/jwtServices/jwt.service';
 
 @Component({
   selector: 'app-change-password',
   standalone: true,
-  imports: [NavbarComponent,ReactiveFormsModule],
+  imports: [NavbarComponent,ReactiveFormsModule,RouterLink],
   templateUrl: './change-password.component.html',
   styleUrl: './change-password.component.scss'
 })
@@ -49,8 +48,8 @@ export class ChangePasswordComponent {
   noMatch : boolean = false
 
   passwordForm = new FormGroup ({
-    // plainPassword:  new FormControl('', [Validators.required, Validators.pattern(/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[\!"\#\$\%\&\'\(\)\*\+\,\-\.\/\:\;\<\=\>\?\@\[\\\]\^\_\`\{\|\}\~]).{12,}$/)]),
-    plainPassword:  new FormControl('', [Validators.required, Validators.pattern(/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[\!"\#\$\%\&\'\(\)\*\+\,\-\.\/\:\;\<\=\>\?\@\[\\\]\^\_\`\{\|\}\~])/)]),
+    plainPassword:  new FormControl('', [Validators.required, Validators.pattern(/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[\!"\#\$\%\&\'\(\)\*\+\,\-\.\/\:\;\<\=\>\?\@\[\\\]\^\_\`\{\|\}\~]).{12,}$/)]),
+    // plainPassword:  new FormControl('', [Validators.required, Validators.pattern(/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[\!"\#\$\%\&\'\(\)\*\+\,\-\.\/\:\;\<\=\>\?\@\[\\\]\^\_\`\{\|\}\~])/)]),
     cpw: new FormControl('', [Validators.required]),
     honneypot: new FormControl(''),
   });

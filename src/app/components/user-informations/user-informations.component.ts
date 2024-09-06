@@ -2,17 +2,16 @@ import { Component, inject, OnInit } from '@angular/core';
 import { NavbarComponent } from '../navbar/navbar.component';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { CleanDataService } from '../../services/cleanDataService/clean-data.service';
 import { LoaderService } from '../../services/loaderService/loader.service';
 import { Meta, Title } from '@angular/platform-browser';
-import { jwtDecode } from 'jwt-decode';
 import { JwtService } from '../../services/jwtServices/jwt.service';
 
 @Component({
   selector: 'app-user-informations',
   standalone: true,
-  imports: [NavbarComponent,ReactiveFormsModule],
+  imports: [NavbarComponent,ReactiveFormsModule,RouterLink],
   templateUrl: './user-informations.component.html',
   styleUrl: './user-informations.component.scss'
 })
